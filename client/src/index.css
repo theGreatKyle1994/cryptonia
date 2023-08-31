@@ -1,5 +1,82 @@
+:root {
+  font-size: 20px;
+}
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+#root {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+header {
+  width: 100%;
+  height: 75px;
+  background-color: rgb(230, 230, 230);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+h2 {
+  margin: 25px 0;
+  width: 60%;
+}
+
+table {
+  text-align: center;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#table-scroll-container {
+  width: 60%;
+  max-height: 60vh;
+  overflow-y: auto;
+  border-right: 1px solid black;
+  border-left: 1px solid black;
+  border-bottom: 1px solid black;
+}
+
+#table-header {
+  width: 60%;
+  border: 1px solid black;
+}
+
+th,
+tr:nth-of-type(even) {
+  background-color: rgb(230, 230, 230);
+}
+
+th,
+td {
+  width: 25%;
+  padding: 5px;
+}
+
+th {
+  font-size: 1.1em;
+  padding-right: 15px;
+}
+
+td:not(:last-child) {
+  border-right: 1px solid lightgray;
+}
+
+.change-24hr-pos {
+  color: green;
+}
+.change-24hr-pos::before {
+  content: "+";
+}
+
+.change-24hr-neg {
+  color: red;
 }
