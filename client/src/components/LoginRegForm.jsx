@@ -4,6 +4,13 @@ import axios from "axios";
 
 const LoginRegForm = ({ authenticate }) => {
   const navigate = useNavigate();
+  const [errors, setErrors] = useState({
+    loginUsername: undefined,
+    loginPassword: undefined,
+    regUsername: undefined,
+    regPassword: undefined,
+    regConfirmPassword: undefined,
+  });
   const [formInput, setFormInput] = useState({
     loginUsername: "",
     loginPassword: "",
@@ -20,6 +27,36 @@ const LoginRegForm = ({ authenticate }) => {
     }));
   };
 
+  const authenticateUser = () => {
+    authenticate(true);
+    navigate("/home");
+  };
+
+  const loginSubmitHandler = (e) => {
+    e.preventDefault();
+    const { loginUsername: username, loginPassword: password } = formInput;
+    axios
+      .get("http://localhost:8000/user/login", {
+        params: {
+          username,
+          password,
+        },
+      })
+      .then((res) => {
+        if (!res.data.error) {
+          authenticateUser();
+        } else {
+          const { username, password } = res.data.error;
+          setErrors((prevErrors) => ({
+            ...prevErrors,
+            loginUsername: username,
+            loginPassword: password,
+          }));
+        }
+      })
+      .catch((err) => console.log(err));
+  };
+
   const regSubmitHandler = (e) => {
     e.preventDefault();
     const {
@@ -33,18 +70,30 @@ const LoginRegForm = ({ authenticate }) => {
         password,
         confirmPassword,
       })
-      .then(() => {
-        authenticate(true);
-        navigate("/home");
+      .then((res) => {
+        if (!res.data.error) {
+          authenticateUser();
+        } else {
+          const { username, password, confirmPassword } = res.data.error.errors;
+          setErrors((prevErrors) => ({
+            ...prevErrors,
+            regUsername: username,
+            regPassword: password,
+            regConfirmPassword: confirmPassword,
+          }));
+        }
       })
       .catch((err) => console.log(err));
   };
 
   return (
-    <div>
-      <form id="login-reg-container">
+    <div id="login-reg-container">
+      <form onSubmit={loginSubmitHandler} className="form-container">
         <h2>Login</h2>
-        <div className="form-container">
+        {errors.loginUsername && (
+          <div className="form-error">{errors.loginUsername.message}</div>
+        )}
+        <div>
           <label htmlFor="login-username">Username:</label>
           <input
             id="login-username"
@@ -54,6 +103,9 @@ const LoginRegForm = ({ authenticate }) => {
             value={formInput.loginUsername}
           />
         </div>
+        {errors.loginPassword && (
+          <div className="form-error">{errors.loginPassword.message}</div>
+        )}
         <div>
           <label htmlFor="login-password">Password:</label>
           <input
@@ -66,9 +118,12 @@ const LoginRegForm = ({ authenticate }) => {
         </div>
         <button>Login</button>
       </form>
-      <form onSubmit={regSubmitHandler}>
+      <form onSubmit={regSubmitHandler} className="form-container">
         <h2>Register</h2>
-        <div className="form-container">
+        {errors.regUsername && (
+          <div className="form-error">{errors.regUsername.message}</div>
+        )}
+        <div>
           <label htmlFor="reg-username">Username:</label>
           <input
             id="reg-username"
@@ -78,6 +133,9 @@ const LoginRegForm = ({ authenticate }) => {
             value={formInput.regUsername}
           />
         </div>
+        {errors.regPassword && (
+          <div className="form-error">{errors.regPassword.message}</div>
+        )}
         <div>
           <label htmlFor="reg-password">Password:</label>
           <input
@@ -88,6 +146,9 @@ const LoginRegForm = ({ authenticate }) => {
             value={formInput.regPassword}
           />
         </div>
+        {errors.regConfirmPassword && (
+          <div className="form-error">{errors.regConfirmPassword.message}</div>
+        )}
         <div>
           <label htmlFor="reg-confirm-password">Confirm Password:</label>
           <input

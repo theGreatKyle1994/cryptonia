@@ -1,6 +1,6 @@
 const UserController = require("../controllers/user.controller");
 
 module.exports = (app) => {
-  app.get("/users", UserController.findAllUsers);
+  app.get("/user/login", UserController.login);
   app.post("/user/create", UserController.createUser);
 };
