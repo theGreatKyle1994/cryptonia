@@ -26,7 +26,11 @@ const App = () => {
 
   return (
     <>
-      <Header isAuthenticated={isAuthenticated} />
+      <Header
+        authenticate={setIsAuthenticated}
+        isAuthenticated={isAuthenticated}
+        currentPath={currentPath.pathname}
+      />
       <h2>{headerName(currentPath.pathname)}</h2>
       <Routes>
         {["/home", "/favorites"].map((path, i) => (
