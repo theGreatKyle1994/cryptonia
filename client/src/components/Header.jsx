@@ -1,9 +1,13 @@
+import { Link } from "react-router-dom";
+
 const Header = () => {
   return (
     <header>
       <h1>Cryptonia</h1>
       <nav>
-        <button>Login | Register</button>
+        <Link to={"/login-reg"}>
+          <button type="submit">Login | Register</button>
+        </Link>
       </nav>
     </header>
   );

@@ -1,4 +1,25 @@
-const CryptoTable = ({ cryptoData }) => {
+import { useState, useEffect } from "react";
+import axios from "axios";
+
+const CryptoTable = ({ currentPath }) => {
+  const [cryptoData, setCryptoData] = useState([]);
+
+  const getCryptoData = () => {
+    console.log("making api call");
+    axios
+      .get("https://api.coincap.io/v2/assets")
+      .then((res) => setCryptoData(res.data.data))
+      .catch((err) => console.log(err));
+  };
+
+  useEffect(() => {
+    if (currentPath.pathname == "/home") {
+      getCryptoData();
+      const refreshCryptoData = setInterval(() => getCryptoData(), 5000);
+      return () => clearInterval(refreshCryptoData);
+    }
+  }, []);
+
   return (
     <>
       <table id="table-header">

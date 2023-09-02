@@ -1,6 +1,9 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
-const LoginRegForm = () => {
+const LoginRegForm = ({ authenticate }) => {
+  const navigate = useNavigate();
   const [formInput, setFormInput] = useState({
     loginUsername: "",
     loginPassword: "",
@@ -17,9 +20,29 @@ const LoginRegForm = () => {
     }));
   };
 
+  const regSubmitHandler = (e) => {
+    e.preventDefault();
+    const {
+      regUsername: username,
+      regPassword: password,
+      regConfirmPassword: confirmPassword,
+    } = formInput;
+    axios
+      .post("http://localhost:8000/user/create", {
+        username,
+        password,
+        confirmPassword,
+      })
+      .then(() => {
+        authenticate(true);
+        navigate("/home");
+      })
+      .catch((err) => console.log(err));
+  };
+
   return (
     <div>
-      <form>
+      <form id="login-reg-container">
         <h2>Login</h2>
         <div className="form-container">
           <label htmlFor="login-username">Username:</label>
@@ -43,7 +66,7 @@ const LoginRegForm = () => {
         </div>
         <button>Login</button>
       </form>
-      <form>
+      <form onSubmit={regSubmitHandler}>
         <h2>Register</h2>
         <div className="form-container">
           <label htmlFor="reg-username">Username:</label>
