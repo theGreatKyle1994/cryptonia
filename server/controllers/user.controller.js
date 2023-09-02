@@ -1,10 +1,23 @@
 const User = require("../models/user.model");
 const bcrypt = require("bcrypt");
 
-module.exports.createUser = (req, res) => {
-  User.create(req.body)
-    .then((newUser) => res.json(newUser))
-    .catch((err) => res.json({ message: "Something went wrong", error: err }));
+module.exports.register = async (req, res) => {
+  const alreadyUser = await User.findOne({ username: req.body.username });
+  if (!alreadyUser) {
+    User.create(req.body)
+      .then((newUser) => res.json(newUser))
+      .catch((err) =>
+        res.json({ message: "Something went wrong", error: err })
+      );
+  } else {
+    return res.json({
+      error: {
+        errors: {
+          username: { message: "User already registered." },
+        },
+      },
+    });
+  }
 };
 
 module.exports.login = async (req, res) => {
@@ -19,12 +32,12 @@ module.exports.login = async (req, res) => {
     req.query.password,
     user.password
   );
-  if (!correctPassword) {
+  if (!correctPassword)
     return res.json({
       error: {
         password: { message: "Incorrect password." },
       },
     });
-  }
-  return res.json({ msg: "success!" });
+
+  return res.json({ message: "Login successful." });
 };

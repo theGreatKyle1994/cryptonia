@@ -65,7 +65,7 @@ const LoginRegForm = ({ authenticate }) => {
       regConfirmPassword: confirmPassword,
     } = formInput;
     axios
-      .post("http://localhost:8000/user/create", {
+      .post("http://localhost:8000/user/register", {
         username,
         password,
         confirmPassword,
