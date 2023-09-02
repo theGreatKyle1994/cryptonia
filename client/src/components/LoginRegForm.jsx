@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const LoginRegForm = ({ authenticate }) => {
+const LoginRegForm = ({ authenticate, setUserID }) => {
   const navigate = useNavigate();
   const [errors, setErrors] = useState({
     loginUsername: undefined,
@@ -27,7 +27,8 @@ const LoginRegForm = ({ authenticate }) => {
     }));
   };
 
-  const authenticateUser = () => {
+  const authenticateUser = (id) => {
+    setUserID(id);
     authenticate(true);
     navigate("/home");
   };
@@ -44,7 +45,7 @@ const LoginRegForm = ({ authenticate }) => {
       })
       .then((res) => {
         if (!res.data.error) {
-          authenticateUser();
+          authenticateUser(res.data);
         } else {
           const { username, password } = res.data.error;
           setErrors((prevErrors) => ({
@@ -72,7 +73,7 @@ const LoginRegForm = ({ authenticate }) => {
       })
       .then((res) => {
         if (!res.data.error) {
-          authenticateUser();
+          authenticateUser(res.data);
         } else {
           const { username, password, confirmPassword } = res.data.error.errors;
           setErrors((prevErrors) => ({

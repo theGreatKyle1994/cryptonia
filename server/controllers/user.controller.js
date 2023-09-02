@@ -1,6 +1,12 @@
 const User = require("../models/user.model");
 const bcrypt = require("bcrypt");
 
+module.exports.getFavorites = (req, res) => {
+  User.findById({ _id: req.params.id })
+    .then((user) => res.json(user.favorites))
+    .catch((err) => res.json({ error: err }));
+};
+
 module.exports.register = async (req, res) => {
   const alreadyUser = await User.findOne({ username: req.body.username });
   if (!alreadyUser) {
@@ -39,5 +45,5 @@ module.exports.login = async (req, res) => {
       },
     });
 
-  return res.json({ message: "Login successful." });
+  return res.json(user._id);
 };

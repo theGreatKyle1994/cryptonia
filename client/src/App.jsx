@@ -6,6 +6,7 @@ import LoginRegForm from "./components/LoginRegForm";
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userID, setUserID] = useState("");
   const currentPath = useLocation();
 
   const headerName = (path) => {
@@ -24,6 +25,8 @@ const App = () => {
     [isAuthenticated]
   );
 
+  useEffect(() => console.log(userID), [userID]);
+
   return (
     <>
       <Header
@@ -37,12 +40,19 @@ const App = () => {
           <Route
             key={i}
             path={path}
-            element={<CryptoTable currentPath={currentPath} />}
+            element={
+              <CryptoTable currentPath={currentPath.pathname} userID={userID} />
+            }
           />
         ))}
         <Route
           path="/login-reg"
-          element={<LoginRegForm authenticate={setIsAuthenticated} />}
+          element={
+            <LoginRegForm
+              setUserID={setUserID}
+              authenticate={setIsAuthenticated}
+            />
+          }
         />
       </Routes>
     </>
