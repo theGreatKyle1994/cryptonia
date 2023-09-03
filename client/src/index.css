@@ -27,7 +27,7 @@ header {
 
 h2 {
   margin: 25px 0;
-  width: 60%;
+  width: 70%;
 }
 
 table {
@@ -37,7 +37,7 @@ table {
 }
 
 #table-scroll-container {
-  width: 60%;
+  width: 70%;
   max-height: 60vh;
   overflow-y: auto;
   border-right: 1px solid black;
@@ -46,7 +46,7 @@ table {
 }
 
 #table-header {
-  width: 60%;
+  width: 70%;
   border: 1px solid black;
 }
 
@@ -57,13 +57,13 @@ tr:nth-of-type(even) {
 
 th,
 td {
-  width: 25%;
+  width: 20%;
   padding: 5px;
 }
 
 th {
   font-size: 1.1em;
-  padding-right: 15px;
+  text-align: center;
 }
 
 td:not(:last-child) {

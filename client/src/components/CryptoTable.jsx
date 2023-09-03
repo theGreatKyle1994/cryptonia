@@ -1,52 +1,6 @@
-import { useState, useEffect } from "react";
 import axios from "axios";
 
-const CryptoTable = ({ currentPath, userID }) => {
-  const [cryptoData, setCryptoData] = useState([]);
-  const [favoriteList, setFavoriteList] = useState([
-    "bitcoin",
-    "ethereum",
-    "xrp",
-  ]);
-
-  const getCryptoData = async () => {
-    if (currentPath == "/home") {
-      axios
-        .get("https://api.coincap.io/v2/assets")
-        .then((res) => setCryptoData(res.data.data))
-        .catch((err) => console.log(err));
-    }
-    if (currentPath == "/favorites") {
-      const favList = [];
-      for (let i = 0; i < favoriteList.length; i++) {
-        const res = await axios
-          .get(`https://api.coincap.io/v2/assets/${favoriteList[i]}`)
-          .catch((err) => console.log(err));
-        favList.push(res.data.data);
-      }
-      setCryptoData(favList);
-    }
-  };
-
-  useEffect(() => {
-    if (currentPath == "/favorites") {
-      axios
-        .get(`http://localhost:8000/user/${userID}`)
-        .then((res) => {
-          // console.log(res.data);
-        })
-        .catch((err) => console.log(err));
-    }
-  }, [currentPath]);
-
-  useEffect(() => {
-    getCryptoData();
-    const refreshCryptoData = setInterval(() => getCryptoData(), 5000);
-    return () => clearInterval(refreshCryptoData);
-  }, [currentPath]);
-
-  useEffect(() => console.log(cryptoData), [cryptoData]);
-
+const CryptoTable = ({ cryptoData, favoriteList, isAuthenticated, userID }) => {
   return (
     <>
       <table id="table-header">
@@ -56,6 +10,7 @@ const CryptoTable = ({ currentPath, userID }) => {
             <th>Symbol</th>
             <th>Price</th>
             <th>24hr Change</th>
+            {isAuthenticated && <th>Actions</th>}
           </tr>
         </thead>
       </table>
@@ -77,6 +32,23 @@ const CryptoTable = ({ currentPath, userID }) => {
                   >
                     {Number(crypto.changePercent24Hr).toFixed(2)}
                   </td>
+                  {isAuthenticated && (
+                    <td>
+                      <button
+                        onClick={async () => {
+                          await axios.put(`http://localhost:8000/user/fav`, {
+                            id: userID,
+                            fav: crypto.id,
+                          });
+                        }}
+                      >
+                        {/* {favoriteList.includes(crypto.id)
+                          ? "Unfavorite"
+                          : "Favorite"} */}
+                        test
+                      </button>
+                    </td>
+                  )}
                 </tr>
               ))}
           </tbody>

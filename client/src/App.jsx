@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import Header from "./components/Header";
-import CryptoTable from "./components/CryptoTable";
+import HomeTable from "./components/HomeTable";
+import FavTable from "./components/FavTable";
 import LoginRegForm from "./components/LoginRegForm";
 
 const App = () => {
@@ -20,13 +21,6 @@ const App = () => {
     }
   };
 
-  useEffect(
-    () => console.log("Authenticated: " + isAuthenticated),
-    [isAuthenticated]
-  );
-
-  useEffect(() => console.log(userID), [userID]);
-
   return (
     <>
       <Header
@@ -36,15 +30,18 @@ const App = () => {
       />
       <h2>{headerName(currentPath.pathname)}</h2>
       <Routes>
-        {["/home", "/favorites"].map((path, i) => (
-          <Route
-            key={i}
-            path={path}
-            element={
-              <CryptoTable currentPath={currentPath.pathname} userID={userID} />
-            }
-          />
-        ))}
+        <Route
+          path={"/home"}
+          element={
+            <HomeTable isAuthenticated={isAuthenticated} userID={userID} />
+          }
+        />
+        <Route
+          path={"/favorites"}
+          element={
+            <FavTable isAuthenticated={isAuthenticated} userID={userID} />
+          }
+        />
         <Route
           path="/login-reg"
           element={

@@ -7,6 +7,16 @@ module.exports.getFavorites = (req, res) => {
     .catch((err) => res.json({ error: err }));
 };
 
+module.exports.addFavorite = (req, res) => {
+  User.findByIdAndUpdate(
+    { _id: req.body.id },
+    { $addToSet: { favorites: req.body.fav } },
+    { new: true, upsert: true }
+  )
+    .then((res) => res.json("Success"))
+    .catch((err) => res.json({ error: err }));
+};
+
 module.exports.register = async (req, res) => {
   const alreadyUser = await User.findOne({ username: req.body.username });
   if (!alreadyUser) {
