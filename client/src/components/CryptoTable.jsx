@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useState } from "react";
 import "./CryptoTable.css";
 
 const CryptoTable = ({
@@ -7,7 +8,38 @@ const CryptoTable = ({
   isAuthenticated,
   updateFavs,
   userID,
+  updateFilter,
+  filter,
 }) => {
+  const [symbols, setSymbols] = useState({});
+
+  const symbolHandler = (type) => {
+    const sym = symbols[type] == `\u2227` ? `	\u2228` : `\u2227`;
+    setSymbols(() => {
+      return { [type]: sym };
+    });
+    return symbols[type];
+  };
+
+  const filterHandler = (newFilter) => {
+    const filterObj = {
+      name() {
+        return filter == "nameAsc" ? "nameDesc" : "nameAsc";
+      },
+      symbol() {
+        return filter == "symbolAsc" ? "symbolDesc" : "symbolAsc";
+      },
+      price() {
+        return filter == "priceAsc" ? "priceDesc" : "priceAsc";
+      },
+      change() {
+        return filter == "changeAsc" ? "changeDesc" : "changeAsc";
+      },
+    };
+    updateFilter(filterObj[newFilter]());
+    symbolHandler(newFilter);
+  };
+
   const adjustFavList = async (cryptoId, action) => {
     await axios.put(
       `http://localhost:8000/user/fav/${action == "remove" ? "remove" : ""}`,
@@ -23,11 +55,17 @@ const CryptoTable = ({
     <>
       <table id="table-header">
         <thead>
-          <tr>
-            <th>Name</th>
-            <th>Symbol</th>
-            <th>Price</th>
-            <th>24hr Change</th>
+          <tr id="table-header-row">
+            <th onClick={() => filterHandler("name")}>Name {symbols.name}</th>
+            <th onClick={() => filterHandler("symbol")}>
+              Symbol {symbols.symbol}
+            </th>
+            <th onClick={() => filterHandler("price")}>
+              Price {symbols.price}
+            </th>
+            <th onClick={() => filterHandler("change")}>
+              24hr Change {symbols.change}
+            </th>
             {isAuthenticated && <th>Actions</th>}
           </tr>
         </thead>

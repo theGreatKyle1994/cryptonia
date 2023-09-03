@@ -9,6 +9,7 @@ import LoginRegForm from "./components/LoginRegForm";
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [favoriteList, setFavoriteList] = useState([]);
+  const [currentFilter, setCurrentFilter] = useState("none");
   const [userID, setUserID] = useState("");
   const currentPath = useLocation();
 
@@ -57,6 +58,8 @@ const App = () => {
               userID={userID}
               favoriteList={favoriteList}
               updateFavs={getFavData}
+              updateFilter={setCurrentFilter}
+              filter={currentFilter}
             />
           }
         />
@@ -68,6 +71,8 @@ const App = () => {
               userID={userID}
               favoriteList={favoriteList}
               updateFavs={getFavData}
+              updateFilter={setCurrentFilter}
+              filter={currentFilter}
             />
           }
         />
