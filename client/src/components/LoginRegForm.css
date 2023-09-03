@@ -1,0 +1,65 @@
+#login-reg-container {
+  width: 70%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.form-container {
+  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  width: 550px;
+  height: 500px;
+  background-color: var(--tertiary-color);
+  backdrop-filter: blur(10px);
+  border-radius: 5px;
+}
+
+.form-input-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+input {
+  width: 250px;
+  font-size: 0.9em;
+  border-radius: 10px;
+  padding: 3px 10px;
+  text-shadow: none;
+  color: black;
+  border: 1px solid black;
+}
+
+label,
+input,
+.form-error {
+  margin: 10px 30px;
+}
+
+form h2 {
+  background-color: var(--secondary-color);
+  width: 100%;
+  margin: 0 0 30px 0;
+  height: 75px;
+  padding: 20px 0 0 30px;
+  border-radius: 5px 5px 0 0;
+  border-bottom: 1px solid black;
+}
+
+form button {
+  align-self: flex-end;
+  margin: 20px;
+}
+
+.form-error {
+  padding: 5px 10px;
+  border-radius: 5px;
+  color: rgb(255, 81, 81);
+  background-color: rgba(255, 0, 0, 0.336);
+}
+
+.form-error::before {
+  content: "- ";
+}

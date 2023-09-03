@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import "./LoginRegForm.css";
 
 const LoginRegForm = ({ authenticate, setUserID }) => {
   const navigate = useNavigate();
@@ -94,7 +95,7 @@ const LoginRegForm = ({ authenticate, setUserID }) => {
         {errors.loginUsername && (
           <div className="form-error">{errors.loginUsername.message}</div>
         )}
-        <div>
+        <div className='form-input-container'>
           <label htmlFor="login-username">Username:</label>
           <input
             id="login-username"
@@ -107,7 +108,7 @@ const LoginRegForm = ({ authenticate, setUserID }) => {
         {errors.loginPassword && (
           <div className="form-error">{errors.loginPassword.message}</div>
         )}
-        <div>
+        <div className='form-input-container'>
           <label htmlFor="login-password">Password:</label>
           <input
             id="login-password"
@@ -124,7 +125,7 @@ const LoginRegForm = ({ authenticate, setUserID }) => {
         {errors.regUsername && (
           <div className="form-error">{errors.regUsername.message}</div>
         )}
-        <div>
+        <div className='form-input-container'>
           <label htmlFor="reg-username">Username:</label>
           <input
             id="reg-username"
@@ -137,7 +138,7 @@ const LoginRegForm = ({ authenticate, setUserID }) => {
         {errors.regPassword && (
           <div className="form-error">{errors.regPassword.message}</div>
         )}
-        <div>
+        <div className='form-input-container'>
           <label htmlFor="reg-password">Password:</label>
           <input
             id="reg-password"
@@ -150,7 +151,7 @@ const LoginRegForm = ({ authenticate, setUserID }) => {
         {errors.regConfirmPassword && (
           <div className="form-error">{errors.regConfirmPassword.message}</div>
         )}
-        <div>
+        <div className='form-input-container'>
           <label htmlFor="reg-confirm-password">Confirm Password:</label>
           <input
             id="reg-confirm-password"

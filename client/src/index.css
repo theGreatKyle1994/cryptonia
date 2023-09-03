@@ -1,9 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,400;0,700;1,400;1,700&display=swap");
 
 :root {
-  --main-color: #2684ff80;
-  --secondar-color: #2a91f180;
-  --tertiary-color: #4d4aff80;
+  --main-color: #226fd4b4;
+  --secondary-color: #2a91f180;
+  --tertiary-color: #4d4aff46;
   font-size: 20px;
   overflow: hidden;
 }
@@ -55,7 +55,7 @@ h2 {
 button {
   background-color: var(--main-color);
   padding: 7px 10px;
-  margin-right: 10px;
+  margin-right: 20px;
   border: 1px solid black;
   font-size: 0.8em;
   font-weight: 800;
