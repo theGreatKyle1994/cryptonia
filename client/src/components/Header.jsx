@@ -1,4 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
+import "./Header.css";
 
 const Header = ({ isAuthenticated, currentPath, authenticate }) => {
   const navigate = useNavigate();

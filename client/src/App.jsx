@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import axios from "axios";
 import Header from "./components/Header";
 import HomeTable from "./components/HomeTable";
@@ -33,8 +33,10 @@ const App = () => {
   };
 
   useEffect(() => {
-    const getData = async () => getFavData();
-    getData();
+    if (isAuthenticated) {
+      const getData = async () => getFavData();
+      getData();
+    }
   }, [userID]);
 
   return (
@@ -46,6 +48,7 @@ const App = () => {
       />
       <h2>{headerName(currentPath.pathname)}</h2>
       <Routes>
+        <Route path="/" element={<Navigate to={"/home"} />} />
         <Route
           path={"/home"}
           element={

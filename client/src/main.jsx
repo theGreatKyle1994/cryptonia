@@ -6,6 +6,9 @@ import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>
+    <div id="background-image">
+      <div id="background-radial"></div>
+    </div>
     <App />
   </BrowserRouter>
 );

@@ -1,11 +1,20 @@
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+
 :root {
+  --main-color: #2684ff80;
+  --secondar-color: #2a91f180;
+  --tertiary-color: #4d4aff80;
   font-size: 20px;
+  overflow: hidden;
 }
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: "Ubuntu", sans-serif;
+  color: white;
+  text-shadow: 1px 1px 3px black;
 }
 
 #root {
@@ -13,70 +22,55 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
 }
 
-header {
+#background-image {
+  height: 100vh;
   width: 100%;
-  height: 75px;
-  background-color: rgb(230, 230, 230);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  background-image: url(https://img.freepik.com/free-vector/gradient-stock-market-concept_23-2149215737.jpg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: absolute;
+  z-index: -1;
+  filter: blur(5px);
+  transform: scale(1.05);
+}
+
+#background-radial {
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0) 70%,
+    rgba(0, 0, 0, 0.2497373949579832) 100%
+  );
 }
 
 h2 {
+  width: 70%;
+  margin: 25px;
+}
+
+button {
+  background-color: var(--main-color);
+  padding: 7px 10px;
+  margin-right: 10px;
+  border: 1px solid black;
+  font-size: 0.8em;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+button:hover {
+  transform: scale(1.05);
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+button:hover h2 {
   margin: 25px 0;
   width: 70%;
-}
-
-table {
-  text-align: center;
-  border-collapse: collapse;
-  width: 100%;
-}
-
-#table-scroll-container {
-  width: 70%;
-  max-height: 60vh;
-  overflow-y: auto;
-  border-right: 1px solid black;
-  border-left: 1px solid black;
-  border-bottom: 1px solid black;
-}
-
-#table-header {
-  width: 70%;
-  border: 1px solid black;
-}
-
-th,
-tr:nth-of-type(even) {
-  background-color: rgb(230, 230, 230);
-}
-
-th,
-td {
-  width: 20%;
-  padding: 5px;
-}
-
-th {
-  font-size: 1.1em;
-  text-align: center;
-}
-
-td:not(:last-child) {
-  border-right: 1px solid lightgray;
-}
-
-.change-24hr-pos {
-  color: green;
-}
-.change-24hr-pos::before {
-  content: "+";
-}
-
-.change-24hr-neg {
-  color: red;
 }
