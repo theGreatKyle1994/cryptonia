@@ -2,7 +2,7 @@ import CryptoTable from "./CryptoTable";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-const HomeTable = ({ isAuthenticated, userID }) => {
+const HomeTable = ({ favoriteList, isAuthenticated, updateFavs, userID }) => {
   const [cryptoData, setCryptoData] = useState([]);
 
   const getCryptoData = () => {
@@ -21,7 +21,9 @@ const HomeTable = ({ isAuthenticated, userID }) => {
   return (
     <CryptoTable
       cryptoData={cryptoData}
+      favoriteList={favoriteList}
       isAuthenticated={isAuthenticated}
+      updateFavs={updateFavs}
       userID={userID}
     />
   );

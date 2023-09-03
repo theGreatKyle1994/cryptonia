@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
+import axios from "axios";
 import Header from "./components/Header";
 import HomeTable from "./components/HomeTable";
 import FavTable from "./components/FavTable";
@@ -7,8 +8,18 @@ import LoginRegForm from "./components/LoginRegForm";
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [favoriteList, setFavoriteList] = useState([]);
   const [userID, setUserID] = useState("");
   const currentPath = useLocation();
+
+  const getFavData = async () => {
+    const res = await axios
+      .get(`http://localhost:8000/user/${userID}`)
+      .catch((err) => console.log(err));
+    if (res) {
+      setFavoriteList(res.data);
+    }
+  };
 
   const headerName = (path) => {
     switch (path) {
@@ -20,6 +31,11 @@ const App = () => {
         return "Login | Register";
     }
   };
+
+  useEffect(() => {
+    const getData = async () => getFavData();
+    getData();
+  }, [userID]);
 
   return (
     <>
@@ -33,13 +49,23 @@ const App = () => {
         <Route
           path={"/home"}
           element={
-            <HomeTable isAuthenticated={isAuthenticated} userID={userID} />
+            <HomeTable
+              isAuthenticated={isAuthenticated}
+              userID={userID}
+              favoriteList={favoriteList}
+              updateFavs={getFavData}
+            />
           }
         />
         <Route
           path={"/favorites"}
           element={
-            <FavTable isAuthenticated={isAuthenticated} userID={userID} />
+            <FavTable
+              isAuthenticated={isAuthenticated}
+              userID={userID}
+              favoriteList={favoriteList}
+              updateFavs={getFavData}
+            />
           }
         />
         <Route

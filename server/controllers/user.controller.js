@@ -17,6 +17,15 @@ module.exports.addFavorite = (req, res) => {
     .catch((err) => res.json({ error: err }));
 };
 
+module.exports.removeFavorite = (req, res) => {
+  User.findByIdAndUpdate(
+    { _id: req.body.id },
+    { $pull: { favorites: req.body.fav } }
+  )
+    .then((res) => res.json("Sucess"))
+    .catch((err) => res.json({ error: err }));
+};
+
 module.exports.register = async (req, res) => {
   const alreadyUser = await User.findOne({ username: req.body.username });
   if (!alreadyUser) {

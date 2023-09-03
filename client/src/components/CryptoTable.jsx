@@ -1,6 +1,23 @@
 import axios from "axios";
 
-const CryptoTable = ({ cryptoData, favoriteList, isAuthenticated, userID }) => {
+const CryptoTable = ({
+  cryptoData,
+  favoriteList,
+  isAuthenticated,
+  updateFavs,
+  userID,
+}) => {
+  const adjustFavList = async (cryptoId, action) => {
+    await axios.put(
+      `http://localhost:8000/user/fav/${action == "remove" ? "remove" : ""}`,
+      {
+        id: userID,
+        fav: cryptoId,
+      }
+    );
+    updateFavs();
+  };
+
   return (
     <>
       <table id="table-header">
@@ -32,20 +49,18 @@ const CryptoTable = ({ cryptoData, favoriteList, isAuthenticated, userID }) => {
                   >
                     {Number(crypto.changePercent24Hr).toFixed(2)}
                   </td>
-                  {isAuthenticated && (
+                  {isAuthenticated && favoriteList && (
                     <td>
                       <button
-                        onClick={async () => {
-                          await axios.put(`http://localhost:8000/user/fav`, {
-                            id: userID,
-                            fav: crypto.id,
-                          });
-                        }}
+                        onClick={() =>
+                          favoriteList.includes(crypto.id)
+                            ? adjustFavList(crypto.id, "remove")
+                            : adjustFavList(crypto.id, "add")
+                        }
                       >
-                        {/* {favoriteList.includes(crypto.id)
+                        {favoriteList && favoriteList.includes(crypto.id)
                           ? "Unfavorite"
-                          : "Favorite"} */}
-                        test
+                          : "Favorite"}
                       </button>
                     </td>
                   )}

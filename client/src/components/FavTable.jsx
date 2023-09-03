@@ -1,44 +1,34 @@
 import CryptoTable from "./CryptoTable";
 import axios from "axios";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 
-const FavTable = ({ userID, isAuthenticated }) => {
+const FavTable = ({ favoriteList, isAuthenticated, updateFavs, userID }) => {
   const [cryptoData, setCryptoData] = useState([]);
-  const favoriteList = useRef([]);
 
-  const getCryptoData = async (favList) => {
+  const getCryptoData = async () => {
     const tempFavList = [];
-    for (let i = 0; i < favList.length; i++) {
+    for (let i = 0; i < favoriteList.length; i++) {
       const res = await axios
-        .get(`https://api.coincap.io/v2/assets/${favList[i]}`)
+        .get(`https://api.coincap.io/v2/assets/${favoriteList[i]}`)
         .catch((err) => console.log(err));
       tempFavList.push(res.data.data);
     }
     setCryptoData(tempFavList);
   };
 
-  const getFavData = async () => {
-    const res = await axios
-      .get(`http://localhost:8000/user/${userID}`)
-      .catch((err) => console.log(err));
-    favoriteList.current = res.data;
-    getCryptoData(favoriteList.current);
-  };
-
   useEffect(() => {
-    getFavData();
-    const refreshCryptoData = setInterval(() => getFavData(), 5000);
+    getCryptoData();
+    const refreshCryptoData = setInterval(() => getCryptoData(), 5000);
     return () => clearInterval(refreshCryptoData);
-  }, []);
-
-  useEffect(() => console.log(cryptoData), [cryptoData]);
+  }, [favoriteList]);
 
   return (
     <CryptoTable
       cryptoData={cryptoData}
-      favoriteList={favoriteList.current}
+      favoriteList={favoriteList}
       isAuthenticated={isAuthenticated}
-      updateFavs={getFavData}
+      updateFavs={updateFavs}
+      userID={userID}
     />
   );
 };
