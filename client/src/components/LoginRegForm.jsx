@@ -45,7 +45,7 @@ const LoginRegForm = ({ authenticate, setUserID }) => {
       })
       .then((res) => {
         if (!res.data.error) {
-          authenticateUser(res.data._id);
+          authenticateUser(res.data);
         } else {
           const { username, password } = res.data.error;
           setErrors((prevErrors) => ({
