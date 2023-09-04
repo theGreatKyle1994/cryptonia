@@ -48,7 +48,7 @@ const CryptoTable = ({ cryptoData }) => {
     e.stopPropagation();
     const adjustFavList = async (cryptoId, action) => {
       await axios.put(
-        `http://localhost:8000/user/fav/${action == "remove" ? "remove" : ""}`,
+        `http://localhost:8000/api/user/fav/${action == "remove" ? "remove" : ""}`,
         {
           id: userID,
           fav: cryptoId,

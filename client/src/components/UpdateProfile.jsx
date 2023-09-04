@@ -24,7 +24,7 @@ const UpdateProfile = () => {
     e.preventDefault();
     const { updateUsername, updateNewUsername, updatePassword } = formInput;
     await axios
-      .put(`http://localhost:8000/user/update/${userID}`, {
+      .put(`http://localhost:8000/api/user/update/${userID}`, {
         username: updateUsername,
         usernameNew: updateNewUsername,
         password: updatePassword,

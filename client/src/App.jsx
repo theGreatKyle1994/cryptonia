@@ -35,7 +35,7 @@ const App = () => {
 
   const getFavData = async () => {
     const res = await axios
-      .get(`http://localhost:8000/user/${userID}`)
+      .get(`http://localhost:8000/api/user/${userID}`)
       .catch((err) => console.log(err));
     if (res) {
       setFavoriteList(res.data);

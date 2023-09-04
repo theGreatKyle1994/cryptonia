@@ -1,10 +1,10 @@
 const UserController = require("../controllers/user.controller");
 
 module.exports = (app) => {
-  app.get("/user/login", UserController.login);
-  app.post("/user/register", UserController.register);
-  app.get("/user/:id", UserController.getFavorites);
-  app.put("/user/fav", UserController.addFavorite);
-  app.put("/user/fav/remove", UserController.removeFavorite);
-  app.put("/user/update/:id", UserController.updateUser);
+  app.get("/api/user/login", UserController.login);
+  app.post("/api/user/register", UserController.register);
+  app.get("/api/user/:id", UserController.getFavorites);
+  app.put("/api/user/fav", UserController.addFavorite);
+  app.put("/api/user/fav/remove", UserController.removeFavorite);
+  app.put("/api/user/update/:id", UserController.updateUser);
 };

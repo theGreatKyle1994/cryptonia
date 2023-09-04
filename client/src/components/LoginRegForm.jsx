@@ -42,7 +42,7 @@ const LoginRegForm = () => {
     e.preventDefault();
     const { loginUsername: username, loginPassword: password } = formInput;
     await axios
-      .get("http://localhost:8000/user/login", {
+      .get("http://localhost:8000/api/user/login", {
         params: {
           username,
           password,
@@ -71,7 +71,7 @@ const LoginRegForm = () => {
       regConfirmPassword: confirmPassword,
     } = formInput;
     await axios
-      .post("http://localhost:8000/user/register", {
+      .post("http://localhost:8000/api/user/register", {
         username,
         password,
         confirmPassword,
