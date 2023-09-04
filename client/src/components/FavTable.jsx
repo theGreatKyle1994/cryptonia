@@ -8,7 +8,6 @@ const FavTable = () => {
   const { cryptoData, favoriteList, isAuthenticated, currentFilter } =
     useContext(globalContext);
   const navigate = useNavigate();
-
   const [filteredData, setFilteredData] = useState(
     filterTable(currentFilter, filterFavs(favoriteList, cryptoData))
   );

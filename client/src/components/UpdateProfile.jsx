@@ -14,7 +14,6 @@ const UpdateProfile = () => {
   const [successMsg, setSuccessMsg] = useState({
     updateNewUsername: undefined,
   });
-
   const [formInput, setFormInput] = useState({
     updateUsername: "",
     updateNewUsername: "",
