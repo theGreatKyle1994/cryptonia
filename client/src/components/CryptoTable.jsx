@@ -1,8 +1,9 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./CryptoTable.css";
 
 const CryptoTable = ({
+  modalId,
   setModal,
   cryptoData,
   favoriteList,
@@ -37,7 +38,7 @@ const CryptoTable = ({
         return filter == "changeAsc" ? "changeDesc" : "changeAsc";
       },
     };
-    
+
     updateFilter(filterObj[newFilter]());
     symbolHandler(newFilter);
   };
@@ -57,6 +58,10 @@ const CryptoTable = ({
     favoriteList.includes(crypto.id)
       ? adjustFavList(crypto.id, "remove")
       : adjustFavList(crypto.id, "add");
+  };
+
+  const selectionHandler = (crypto) => {
+    setModal({ isEnabled: true, id: crypto.id });
   };
 
   return (
@@ -86,7 +91,8 @@ const CryptoTable = ({
                 cryptoData.map((crypto) => (
                   <tr
                     key={Math.random()}
-                    onClick={() => setModal({ isEnabled: true, id: crypto.id })}
+                    onClick={() => selectionHandler(crypto)}
+                    id={modalId == crypto.id ? "row-selected" : ""}
                   >
                     <td>{crypto.name}</td>
                     <td>{crypto.symbol}</td>

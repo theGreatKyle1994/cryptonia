@@ -70,6 +70,7 @@ const App = () => {
           path={"/home"}
           element={
             <HomeTable
+              modalId={modal.id}
               setModal={setModal}
               cryptoData={cryptoData}
               isAuthenticated={isAuthenticated}
@@ -85,6 +86,7 @@ const App = () => {
           path={"/favorites"}
           element={
             <FavTable
+              modalId={modal.id}
               setModal={setModal}
               cryptoData={cryptoData}
               isAuthenticated={isAuthenticated}

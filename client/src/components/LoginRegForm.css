@@ -48,6 +48,11 @@ form h2 {
   height: 75px;
   border-radius: 5px 5px 0 0;
   border-bottom: 1px solid black;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0) 50%,
+    rgba(0, 0, 0, 0.1) 100%
+  );
 }
 
 form button {
