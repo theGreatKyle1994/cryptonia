@@ -1,4 +1,5 @@
 import CryptoTable from "./CryptoTable";
+import { useNavigate } from "react-router-dom";
 import { filterTable, filterFavs } from "../utilities/tableSorting";
 import { useEffect, useState } from "react";
 
@@ -11,6 +12,8 @@ const FavTable = ({
   filter,
   updateFilter,
 }) => {
+  const navigate = useNavigate();
+
   const [filteredData, setFilteredData] = useState(
     filterTable(filter, filterFavs(favoriteList, cryptoData))
   );
@@ -18,6 +21,10 @@ const FavTable = ({
   useEffect(() => {
     setFilteredData(filterTable(filter, filterFavs(favoriteList, cryptoData)));
   }, [filter, cryptoData, favoriteList]);
+
+  useEffect(() => {
+    if (!isAuthenticated) navigate("/");
+  }, []);
 
   return (
     <CryptoTable
