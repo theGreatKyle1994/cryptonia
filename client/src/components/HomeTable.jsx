@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { filterTable } from "../utilities/tableSorting";
 
 const HomeTable = ({
+  setModal,
   cryptoData,
   favoriteList,
   isAuthenticated,
@@ -21,6 +22,7 @@ const HomeTable = ({
 
   return (
     <CryptoTable
+      setModal={setModal}
       cryptoData={filteredData}
       favoriteList={favoriteList}
       isAuthenticated={isAuthenticated}

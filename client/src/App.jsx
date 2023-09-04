@@ -5,6 +5,7 @@ import Header from "./components/Header";
 import HomeTable from "./components/HomeTable";
 import FavTable from "./components/FavTable";
 import LoginRegForm from "./components/LoginRegForm";
+import CryptoModal from "./components/CryptoModal";
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -12,6 +13,7 @@ const App = () => {
   const [currentFilter, setCurrentFilter] = useState("none");
   const [userID, setUserID] = useState("");
   const [cryptoData, setCryptoData] = useState([]);
+  const [modal, setModal] = useState({ isEnabled: false, id: "" });
   const currentPath = useLocation();
 
   const getCryptoData = async () => {
@@ -68,6 +70,7 @@ const App = () => {
           path={"/home"}
           element={
             <HomeTable
+              setModal={setModal}
               cryptoData={cryptoData}
               isAuthenticated={isAuthenticated}
               userID={userID}
@@ -82,6 +85,7 @@ const App = () => {
           path={"/favorites"}
           element={
             <FavTable
+              setModal={setModal}
               cryptoData={cryptoData}
               isAuthenticated={isAuthenticated}
               userID={userID}
@@ -102,6 +106,15 @@ const App = () => {
           }
         />
       </Routes>
+      {(currentPath.pathname == "/home" ||
+        currentPath.pathname == "/favorites") &&
+        modal.isEnabled && (
+          <CryptoModal
+            cryptoData={cryptoData}
+            cryptoId={modal.id}
+            setModal={setModal}
+          />
+        )}
     </>
   );
 };

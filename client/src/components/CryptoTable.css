@@ -41,6 +41,10 @@ tr:nth-of-type(even) {
   background-color: var(--secondary-color);
 }
 
+tbody tr {
+  cursor: pointer;
+}
+
 th,
 td {
   width: 20%;
@@ -54,10 +58,11 @@ th {
   background-color: var(--main-color);
   padding-right: 20px;
   user-select: none;
+  cursor: pointer;
 }
 
-th:not(:last-child) {
-  cursor: pointer;
+#actions-tab {
+  cursor: default;
 }
 
 th:hover:not(:last-child) {

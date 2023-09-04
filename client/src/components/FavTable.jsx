@@ -4,6 +4,7 @@ import { filterTable, filterFavs } from "../utilities/tableSorting";
 import { useEffect, useState } from "react";
 
 const FavTable = ({
+  setModal,
   cryptoData,
   favoriteList,
   isAuthenticated,
@@ -28,6 +29,7 @@ const FavTable = ({
 
   return (
     <CryptoTable
+      setModal={setModal}
       cryptoData={filteredData}
       favoriteList={favoriteList}
       isAuthenticated={isAuthenticated}

@@ -3,6 +3,7 @@ import { useState } from "react";
 import "./CryptoTable.css";
 
 const CryptoTable = ({
+  setModal,
   cryptoData,
   favoriteList,
   isAuthenticated,
@@ -13,15 +14,15 @@ const CryptoTable = ({
 }) => {
   const [symbols, setSymbols] = useState({});
 
-  const symbolHandler = (type) => {
-    const sym = symbols[type] == `\u2227` ? `	\u2228` : `\u2227`;
-    setSymbols(() => {
-      return { [type]: sym };
-    });
-    return symbols[type];
-  };
-
   const filterHandler = (newFilter) => {
+    const symbolHandler = (type) => {
+      const sym = symbols[type] == `\u2227` ? `	\u2228` : `\u2227`;
+      setSymbols(() => {
+        return { [type]: sym };
+      });
+      return symbols[type];
+    };
+
     const filterObj = {
       name() {
         return filter == "nameAsc" ? "nameDesc" : "nameAsc";
@@ -36,19 +37,26 @@ const CryptoTable = ({
         return filter == "changeAsc" ? "changeDesc" : "changeAsc";
       },
     };
+    
     updateFilter(filterObj[newFilter]());
     symbolHandler(newFilter);
   };
 
-  const adjustFavList = async (cryptoId, action) => {
-    await axios.put(
-      `http://localhost:8000/user/fav/${action == "remove" ? "remove" : ""}`,
-      {
-        id: userID,
-        fav: cryptoId,
-      }
-    );
-    updateFavs();
+  const favoriteHandler = (e, crypto) => {
+    e.stopPropagation();
+    const adjustFavList = async (cryptoId, action) => {
+      await axios.put(
+        `http://localhost:8000/user/fav/${action == "remove" ? "remove" : ""}`,
+        {
+          id: userID,
+          fav: cryptoId,
+        }
+      );
+      updateFavs();
+    };
+    favoriteList.includes(crypto.id)
+      ? adjustFavList(crypto.id, "remove")
+      : adjustFavList(crypto.id, "add");
   };
 
   return (
@@ -66,7 +74,7 @@ const CryptoTable = ({
             <th onClick={() => filterHandler("change")}>
               24hr Change {symbols.change}
             </th>
-            {isAuthenticated && <th>Actions</th>}
+            {isAuthenticated && <th id="actions-tab">Actions</th>}
           </tr>
         </thead>
       </table>
@@ -76,7 +84,10 @@ const CryptoTable = ({
             <tbody>
               {cryptoData &&
                 cryptoData.map((crypto) => (
-                  <tr key={Math.random()}>
+                  <tr
+                    key={Math.random()}
+                    onClick={() => setModal({ isEnabled: true, id: crypto.id })}
+                  >
                     <td>{crypto.name}</td>
                     <td>{crypto.symbol}</td>
                     <td>${Number(crypto.priceUsd).toFixed(4)}</td>
@@ -91,13 +102,7 @@ const CryptoTable = ({
                     </td>
                     {isAuthenticated && favoriteList && (
                       <td>
-                        <button
-                          onClick={() =>
-                            favoriteList.includes(crypto.id)
-                              ? adjustFavList(crypto.id, "remove")
-                              : adjustFavList(crypto.id, "add")
-                          }
-                        >
+                        <button onClick={(e) => favoriteHandler(e, crypto)}>
                           {favoriteList && favoriteList.includes(crypto.id)
                             ? "Unfavorite"
                             : "Favorite"}
@@ -110,11 +115,7 @@ const CryptoTable = ({
           </table>
         </div>
       ) : (
-        <h3>
-          {favoriteList.length !== 0
-            ? "Loading..."
-            : "Add favorites to this list"}
-        </h3>
+        <h3>{favoriteList && "Add favorites to this list"}</h3>
       )}
     </>
   );
