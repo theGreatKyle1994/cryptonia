@@ -34,7 +34,8 @@ input {
 
 label,
 input,
-.form-error {
+.form-error,
+.form-success {
   margin: 10px 30px;
 }
 
@@ -61,12 +62,22 @@ form button {
 }
 
 .form-error {
-  padding: 5px 10px;
-  border-radius: 5px;
   color: rgb(255, 81, 81);
   background-color: rgba(255, 0, 0, 0.336);
 }
 
-.form-error::before {
+.form-success {
+  color: rgb(96, 255, 81);
+  background-color: rgba(9, 255, 0, 0.336);
+}
+
+.form-error,
+.form-success {
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+.form-error::before,
+.form-success::before {
   content: "- ";
 }

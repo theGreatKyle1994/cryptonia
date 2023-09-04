@@ -28,6 +28,7 @@ module.exports.removeFavorite = (req, res) => {
 
 module.exports.register = async (req, res) => {
   const alreadyUser = await User.findOne({ username: req.body.username });
+
   if (!alreadyUser) {
     User.create(req.body)
       .then((newUser) => res.json(newUser))
@@ -47,16 +48,19 @@ module.exports.register = async (req, res) => {
 
 module.exports.login = async (req, res) => {
   const user = await User.findOne({ username: req.query.username });
+  
   if (!user)
     return res.json({
       error: {
         username: { message: "User not found." },
       },
     });
-  const correctPassword = await bcrypt.compare(
+  
+    const correctPassword = await bcrypt.compare(
     req.query.password,
     user.password
   );
+  
   if (!correctPassword)
     return res.json({
       error: {
@@ -65,4 +69,44 @@ module.exports.login = async (req, res) => {
     });
 
   return res.json(user._id);
+};
+
+module.exports.updateUser = async (req, res) => {
+  const user = await User.findOne({ username: req.body.username });
+  
+  if (!user)
+    return res.json({
+      error: {
+        username: { message: "Incorrect Username" },
+      },
+    });
+
+  if (req.body.usernameNew.length < 3)
+    return res.json({
+      error: {
+        usernameNew: { message: "New username must be at least 3 characters." },
+      },
+    });
+
+  const correctPassword = await bcrypt.compare(
+    req.body.password,
+    user.password
+  );
+
+  if (!correctPassword)
+    return res.json({
+      error: {
+        password: { message: "Incorrect password." },
+      },
+    });
+
+  await User.findOneAndUpdate(
+    { username: req.body.username },
+    { username: req.body.usernameNew },
+    { new: true }
+  );
+
+  return res.json({
+    usernameNew: { message: "Successfully updated username." },
+  });
 };

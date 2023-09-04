@@ -17,6 +17,10 @@
   border-top: 1px solid black;
 }
 
+#modal-container div {
+  font-weight: 800;
+}
+
 .modal-seperator {
   display: flex;
   justify-content: space-between;

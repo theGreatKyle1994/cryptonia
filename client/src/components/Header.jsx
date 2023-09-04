@@ -23,6 +23,9 @@ const Header = ({ isAuthenticated, currentPath, authenticate }) => {
             <Link to={"/favorites"}>
               <button type="submit">Favorites</button>
             </Link>
+            <Link to={"/profile"}>
+              <button type="submit">Profile</button>
+            </Link>
             <button onClick={logout}>Logout</button>
           </>
         )}
@@ -31,6 +34,9 @@ const Header = ({ isAuthenticated, currentPath, authenticate }) => {
             <Link to={"/home"}>
               <button type="submit">Home</button>
             </Link>
+            <Link to={"/profile"}>
+              <button type="submit">Profile</button>
+            </Link>
             <button onClick={logout}>Logout</button>
           </>
         )}
@@ -38,6 +44,14 @@ const Header = ({ isAuthenticated, currentPath, authenticate }) => {
           <Link to={"/home"}>
             <button type="submit">Home</button>
           </Link>
+        )}
+        {currentPath == "/profile" && (
+          <>
+            <Link to={"/home"}>
+              <button type="submit">Home</button>
+            </Link>
+            <button onClick={logout}>Logout</button>
+          </>
         )}
       </nav>
     </header>

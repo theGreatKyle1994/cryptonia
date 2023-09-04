@@ -6,6 +6,7 @@ import HomeTable from "./components/HomeTable";
 import FavTable from "./components/FavTable";
 import LoginRegForm from "./components/LoginRegForm";
 import CryptoModal from "./components/CryptoModal";
+import UpdateProfile from "./components/UpdateProfile";
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -40,6 +41,8 @@ const App = () => {
         return "Favorites";
       case "/login-reg":
         return "Login | Register";
+      case "/profile":
+        return "Profile";
     }
   };
 
@@ -105,6 +108,12 @@ const App = () => {
               setUserID={setUserID}
               authenticate={setIsAuthenticated}
             />
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <UpdateProfile userID={userID} isAuthenticated={isAuthenticated} />
           }
         />
       </Routes>

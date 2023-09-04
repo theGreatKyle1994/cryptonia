@@ -6,4 +6,5 @@ module.exports = (app) => {
   app.get("/user/:id", UserController.getFavorites);
   app.put("/user/fav", UserController.addFavorite);
   app.put("/user/fav/remove", UserController.removeFavorite);
+  app.put("/user/update/:id", UserController.updateUser);
 };
