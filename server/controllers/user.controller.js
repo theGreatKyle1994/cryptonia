@@ -48,19 +48,19 @@ module.exports.register = async (req, res) => {
 
 module.exports.login = async (req, res) => {
   const user = await User.findOne({ username: req.query.username });
-  
+
   if (!user)
     return res.json({
       error: {
         username: { message: "User not found." },
       },
     });
-  
-    const correctPassword = await bcrypt.compare(
+
+  const correctPassword = await bcrypt.compare(
     req.query.password,
     user.password
   );
-  
+
   if (!correctPassword)
     return res.json({
       error: {
@@ -73,7 +73,7 @@ module.exports.login = async (req, res) => {
 
 module.exports.updateUser = async (req, res) => {
   const user = await User.findOne({ username: req.body.username });
-  
+
   if (!user)
     return res.json({
       error: {
@@ -97,6 +97,14 @@ module.exports.updateUser = async (req, res) => {
     return res.json({
       error: {
         password: { message: "Incorrect password." },
+      },
+    });
+
+  const alreadyUser = await User.findOne({ username: req.body.usernameNew });
+  if (alreadyUser)
+    return res.json({
+      error: {
+        usernameNew: { message: "Username already taken." },
       },
     });
 
