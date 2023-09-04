@@ -1,11 +1,12 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { globalContext } from "../App";
 import axios from "axios";
 import "./LoginRegForm.css";
 
 const LoginRegForm = () => {
-  const { setIsAuthenticated, setUserID } = useContext(globalContext);
+  const { setIsAuthenticated, isAuthenticated, setUserID } =
+    useContext(globalContext);
   const navigate = useNavigate();
   const [errors, setErrors] = useState({
     loginUsername: undefined,
@@ -90,6 +91,10 @@ const LoginRegForm = () => {
       })
       .catch((err) => console.log(err));
   };
+
+  useEffect(() => {
+    if (isAuthenticated) navigate("/");
+  }, [isAuthenticated]);
 
   return (
     <div id="login-reg-container">

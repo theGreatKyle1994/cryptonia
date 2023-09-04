@@ -31,7 +31,6 @@ const App = () => {
       setIsAuthenticated(true);
       setUserID(id);
     }
-    console.log(id);
   };
 
   const getFavData = async () => {
