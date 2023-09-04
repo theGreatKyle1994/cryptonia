@@ -1,11 +1,15 @@
 import { Link, useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { globalContext } from "../App";
 import "./Header.css";
 
-const Header = ({ isAuthenticated, currentPath, authenticate }) => {
+const Header = () => {
+  const { isAuthenticated, currentPath, setIsAuthenticated } =
+    useContext(globalContext);
   const navigate = useNavigate();
 
   const logout = () => {
-    authenticate(false);
+    setIsAuthenticated(false);
     navigate("/home");
   };
 
@@ -13,12 +17,12 @@ const Header = ({ isAuthenticated, currentPath, authenticate }) => {
     <header>
       <h1>Cryptonia</h1>
       <nav>
-        {currentPath == "/home" && !isAuthenticated && (
+        {currentPath.pathname == "/home" && !isAuthenticated && (
           <Link to={"/login-reg"}>
             <button type="submit">Login | Register</button>
           </Link>
         )}
-        {currentPath == "/home" && isAuthenticated && (
+        {currentPath.pathname == "/home" && isAuthenticated && (
           <>
             <Link to={"/favorites"}>
               <button type="submit">Favorites</button>
@@ -29,7 +33,7 @@ const Header = ({ isAuthenticated, currentPath, authenticate }) => {
             <button onClick={logout}>Logout</button>
           </>
         )}
-        {currentPath == "/favorites" && isAuthenticated && (
+        {currentPath.pathname == "/favorites" && isAuthenticated && (
           <>
             <Link to={"/home"}>
               <button type="submit">Home</button>
@@ -40,12 +44,12 @@ const Header = ({ isAuthenticated, currentPath, authenticate }) => {
             <button onClick={logout}>Logout</button>
           </>
         )}
-        {currentPath == "/login-reg" && (
+        {currentPath.pathname == "/login-reg" && (
           <Link to={"/home"}>
             <button type="submit">Home</button>
           </Link>
         )}
-        {currentPath == "/profile" && (
+        {currentPath.pathname == "/profile" && (
           <>
             <Link to={"/home"}>
               <button type="submit">Home</button>

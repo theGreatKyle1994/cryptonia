@@ -1,39 +1,19 @@
 import CryptoTable from "./CryptoTable";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { filterTable } from "../utilities/tableSorting";
+import { globalContext } from "../App";
 
-const HomeTable = ({
-  modalId,
-  setModal,
-  cryptoData,
-  favoriteList,
-  isAuthenticated,
-  updateFavs,
-  userID,
-  filter,
-  updateFilter,
-}) => {
+const HomeTable = () => {
+  const { cryptoData, currentFilter } = useContext(globalContext);
   const [filteredData, setFilteredData] = useState(
-    filterTable(filter, cryptoData)
+    filterTable(currentFilter, cryptoData)
   );
 
   useEffect(() => {
-    setFilteredData(filterTable(filter, cryptoData));
-  }, [filter, cryptoData]);
+    setFilteredData(filterTable(currentFilter, cryptoData));
+  }, [currentFilter, cryptoData]);
 
-  return (
-    <CryptoTable
-      modalId={modalId}
-      setModal={setModal}
-      cryptoData={filteredData}
-      favoriteList={favoriteList}
-      isAuthenticated={isAuthenticated}
-      updateFavs={updateFavs}
-      userID={userID}
-      updateFilter={updateFilter}
-      filter={filter}
-    />
-  );
+  return <CryptoTable cryptoData={filteredData} />;
 };
 
 export default HomeTable;

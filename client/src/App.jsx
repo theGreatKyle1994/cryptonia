@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import axios from "axios";
 import Header from "./components/Header";
@@ -7,6 +7,7 @@ import FavTable from "./components/FavTable";
 import LoginRegForm from "./components/LoginRegForm";
 import CryptoModal from "./components/CryptoModal";
 import UpdateProfile from "./components/UpdateProfile";
+export const globalContext = createContext();
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -60,73 +61,36 @@ const App = () => {
   }, []);
 
   return (
-    <>
-      <Header
-        authenticate={setIsAuthenticated}
-        isAuthenticated={isAuthenticated}
-        currentPath={currentPath.pathname}
-      />
+    <globalContext.Provider
+      value={{
+        isAuthenticated,
+        setIsAuthenticated,
+        favoriteList,
+        getFavData,
+        currentFilter,
+        setCurrentFilter,
+        userID,
+        setUserID,
+        cryptoData,
+        setCryptoData,
+        modal,
+        setModal,
+        currentPath,
+      }}
+    >
+      <Header />
       <h2>{headerName(currentPath.pathname)}</h2>
       <Routes>
-        <Route path="/" element={<Navigate to={"/home"} />} />
-        <Route
-          path={"/home"}
-          element={
-            <HomeTable
-              modalId={modal.id}
-              setModal={setModal}
-              cryptoData={cryptoData}
-              isAuthenticated={isAuthenticated}
-              userID={userID}
-              favoriteList={favoriteList}
-              updateFavs={getFavData}
-              updateFilter={setCurrentFilter}
-              filter={currentFilter}
-            />
-          }
-        />
-        <Route
-          path={"/favorites"}
-          element={
-            <FavTable
-              modalId={modal.id}
-              setModal={setModal}
-              cryptoData={cryptoData}
-              isAuthenticated={isAuthenticated}
-              userID={userID}
-              favoriteList={favoriteList}
-              updateFavs={getFavData}
-              updateFilter={setCurrentFilter}
-              filter={currentFilter}
-            />
-          }
-        />
-        <Route
-          path="/login-reg"
-          element={
-            <LoginRegForm
-              setUserID={setUserID}
-              authenticate={setIsAuthenticated}
-            />
-          }
-        />
-        <Route
-          path="/profile"
-          element={
-            <UpdateProfile userID={userID} isAuthenticated={isAuthenticated} />
-          }
-        />
+        <Route path="/" element={<Navigate to="/home" />} />
+        <Route path="/home" element={<HomeTable />} />
+        <Route path="/favorites" element={<FavTable />} />
+        <Route path="/login-reg" element={<LoginRegForm />} />
+        <Route path="/profile" element={<UpdateProfile />} />
       </Routes>
       {(currentPath.pathname == "/home" ||
         currentPath.pathname == "/favorites") &&
-        modal.isEnabled && (
-          <CryptoModal
-            cryptoData={cryptoData}
-            cryptoId={modal.id}
-            setModal={setModal}
-          />
-        )}
-    </>
+        modal.isEnabled && <CryptoModal cryptoId={modal.id} />}
+    </globalContext.Provider>
   );
 };
 

@@ -1,8 +1,10 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { globalContext } from "../App";
+import { useState, useEffect, useContext } from "react";
 
-const UpdateProfile = ({ userID, isAuthenticated }) => {
+const UpdateProfile = () => {
+  const { userID, isAuthenticated } = useContext(globalContext);
   const navigate = useNavigate();
   const [errors, setErrors] = useState({
     updateUsername: undefined,

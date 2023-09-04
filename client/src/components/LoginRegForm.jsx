@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { globalContext } from "../App";
 import axios from "axios";
 import "./LoginRegForm.css";
 
-const LoginRegForm = ({ authenticate, setUserID }) => {
+const LoginRegForm = () => {
+  const { setIsAuthenticated, setUserID } = useContext(globalContext);
   const navigate = useNavigate();
   const [errors, setErrors] = useState({
     loginUsername: undefined,
@@ -30,7 +32,7 @@ const LoginRegForm = ({ authenticate, setUserID }) => {
 
   const authenticateUser = (id) => {
     setUserID(id);
-    authenticate(true);
+    setIsAuthenticated(true);
     navigate("/home");
   };
 
@@ -95,7 +97,7 @@ const LoginRegForm = ({ authenticate, setUserID }) => {
         {errors.loginUsername && (
           <div className="form-error">{errors.loginUsername.message}</div>
         )}
-        <div className='form-input-container'>
+        <div className="form-input-container">
           <label htmlFor="login-username">Username:</label>
           <input
             id="login-username"
@@ -108,7 +110,7 @@ const LoginRegForm = ({ authenticate, setUserID }) => {
         {errors.loginPassword && (
           <div className="form-error">{errors.loginPassword.message}</div>
         )}
-        <div className='form-input-container'>
+        <div className="form-input-container">
           <label htmlFor="login-password">Password:</label>
           <input
             id="login-password"
@@ -125,7 +127,7 @@ const LoginRegForm = ({ authenticate, setUserID }) => {
         {errors.regUsername && (
           <div className="form-error">{errors.regUsername.message}</div>
         )}
-        <div className='form-input-container'>
+        <div className="form-input-container">
           <label htmlFor="reg-username">Username:</label>
           <input
             id="reg-username"
@@ -138,7 +140,7 @@ const LoginRegForm = ({ authenticate, setUserID }) => {
         {errors.regPassword && (
           <div className="form-error">{errors.regPassword.message}</div>
         )}
-        <div className='form-input-container'>
+        <div className="form-input-container">
           <label htmlFor="reg-password">Password:</label>
           <input
             id="reg-password"
@@ -151,7 +153,7 @@ const LoginRegForm = ({ authenticate, setUserID }) => {
         {errors.regConfirmPassword && (
           <div className="form-error">{errors.regConfirmPassword.message}</div>
         )}
-        <div className='form-input-container'>
+        <div className="form-input-container">
           <label htmlFor="reg-confirm-password">Confirm Password:</label>
           <input
             id="reg-confirm-password"

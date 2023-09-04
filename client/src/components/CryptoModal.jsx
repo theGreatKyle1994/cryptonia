@@ -1,7 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { globalContext } from "../App";
 import "./CryptoModal.css";
 
-const CryptoModal = ({ cryptoData, cryptoId, setModal }) => {
+const CryptoModal = ({ cryptoId }) => {
+  const { cryptoData, setModal } = useContext(globalContext);
   const [crypto, setCrypto] = useState([]);
 
   useEffect(

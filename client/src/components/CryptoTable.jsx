@@ -1,18 +1,19 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState, useContext } from "react";
+import { globalContext } from "../App";
 import "./CryptoTable.css";
 
-const CryptoTable = ({
-  modalId,
-  setModal,
-  cryptoData,
-  favoriteList,
-  isAuthenticated,
-  updateFavs,
-  userID,
-  updateFilter,
-  filter,
-}) => {
+const CryptoTable = ({ cryptoData }) => {
+  const {
+    modal,
+    setModal,
+    favoriteList,
+    isAuthenticated,
+    getFavData,
+    userID,
+    setCurrentFilter,
+    currentFilter,
+  } = useContext(globalContext);
   const [symbols, setSymbols] = useState({});
 
   const filterHandler = (newFilter) => {
@@ -26,20 +27,20 @@ const CryptoTable = ({
 
     const filterObj = {
       name() {
-        return filter == "nameAsc" ? "nameDesc" : "nameAsc";
+        return currentFilter == "nameAsc" ? "nameDesc" : "nameAsc";
       },
       symbol() {
-        return filter == "symbolAsc" ? "symbolDesc" : "symbolAsc";
+        return currentFilter == "symbolAsc" ? "symbolDesc" : "symbolAsc";
       },
       price() {
-        return filter == "priceAsc" ? "priceDesc" : "priceAsc";
+        return currentFilter == "priceAsc" ? "priceDesc" : "priceAsc";
       },
       change() {
-        return filter == "changeAsc" ? "changeDesc" : "changeAsc";
+        return currentFilter == "changeAsc" ? "changeDesc" : "changeAsc";
       },
     };
 
-    updateFilter(filterObj[newFilter]());
+    setCurrentFilter(filterObj[newFilter]());
     symbolHandler(newFilter);
   };
 
@@ -53,7 +54,7 @@ const CryptoTable = ({
           fav: cryptoId,
         }
       );
-      updateFavs();
+      getFavData();
     };
     favoriteList.includes(crypto.id)
       ? adjustFavList(crypto.id, "remove")
@@ -61,6 +62,7 @@ const CryptoTable = ({
   };
 
   const selectionHandler = (crypto) => {
+    console.log(crypto.id)
     setModal({ isEnabled: true, id: crypto.id });
   };
 
@@ -92,7 +94,7 @@ const CryptoTable = ({
                   <tr
                     key={Math.random()}
                     onClick={() => selectionHandler(crypto)}
-                    id={modalId == crypto.id ? "row-selected" : ""}
+                    id={modal.id == crypto.id ? "row-selected" : ""}
                   >
                     <td>{crypto.name}</td>
                     <td>{crypto.symbol}</td>
