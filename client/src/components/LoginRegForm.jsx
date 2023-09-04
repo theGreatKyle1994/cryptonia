@@ -36,10 +36,10 @@ const LoginRegForm = () => {
     navigate("/home");
   };
 
-  const loginSubmitHandler = (e) => {
+  const loginSubmitHandler = async (e) => {
     e.preventDefault();
     const { loginUsername: username, loginPassword: password } = formInput;
-    axios
+    await axios
       .get("http://localhost:8000/user/login", {
         params: {
           username,
@@ -61,14 +61,14 @@ const LoginRegForm = () => {
       .catch((err) => console.log(err));
   };
 
-  const regSubmitHandler = (e) => {
+  const regSubmitHandler = async (e) => {
     e.preventDefault();
     const {
       regUsername: username,
       regPassword: password,
       regConfirmPassword: confirmPassword,
     } = formInput;
-    axios
+    await axios
       .post("http://localhost:8000/user/register", {
         username,
         password,
