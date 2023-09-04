@@ -70,7 +70,7 @@ const CryptoTable = ({
           </tr>
         </thead>
       </table>
-      {cryptoData.length !== 0 ? (
+      {cryptoData && cryptoData.length !== 0 ? (
         <div id="table-scroll-container">
           <table id="table-body">
             <tbody>

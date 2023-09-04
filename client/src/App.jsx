@@ -11,7 +11,15 @@ const App = () => {
   const [favoriteList, setFavoriteList] = useState([]);
   const [currentFilter, setCurrentFilter] = useState("none");
   const [userID, setUserID] = useState("");
+  const [cryptoData, setCryptoData] = useState([]);
   const currentPath = useLocation();
+
+  const getCryptoData = async () => {
+    await axios
+      .get("https://api.coincap.io/v2/assets")
+      .then((res) => setCryptoData(res.data.data))
+      .catch((err) => console.log(err));
+  };
 
   const getFavData = async () => {
     const res = await axios
@@ -40,6 +48,12 @@ const App = () => {
     }
   }, [userID]);
 
+  useEffect(() => {
+    getCryptoData();
+    const refreshCryptoData = setInterval(() => getCryptoData(), 5000);
+    return () => clearInterval(refreshCryptoData);
+  }, []);
+
   return (
     <>
       <Header
@@ -54,6 +68,7 @@ const App = () => {
           path={"/home"}
           element={
             <HomeTable
+              cryptoData={cryptoData}
               isAuthenticated={isAuthenticated}
               userID={userID}
               favoriteList={favoriteList}
@@ -67,6 +82,7 @@ const App = () => {
           path={"/favorites"}
           element={
             <FavTable
+              cryptoData={cryptoData}
               isAuthenticated={isAuthenticated}
               userID={userID}
               favoriteList={favoriteList}

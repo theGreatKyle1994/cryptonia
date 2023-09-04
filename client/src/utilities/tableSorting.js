@@ -1,4 +1,4 @@
-const filterTable = (filter, cryptoData) => {
+export const filterTable = (filter, cryptoData) => {
   const filterObj = {
     nameAsc() {
       return cryptoData.sort((a, b) => {
@@ -51,4 +51,6 @@ const filterTable = (filter, cryptoData) => {
   return filterObj[filter]();
 };
 
-export default filterTable;
+export const filterFavs = (favList, data) => {
+  return data.filter((crypto) => favList.includes(crypto.id));
+};

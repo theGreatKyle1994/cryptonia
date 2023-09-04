@@ -1,9 +1,9 @@
 import CryptoTable from "./CryptoTable";
-import filterTable from "../utilities/tableSorting";
-import axios from "axios";
 import { useEffect, useState } from "react";
+import { filterTable } from "../utilities/tableSorting";
 
 const HomeTable = ({
+  cryptoData,
   favoriteList,
   isAuthenticated,
   updateFavs,
@@ -11,24 +11,17 @@ const HomeTable = ({
   filter,
   updateFilter,
 }) => {
-  const [cryptoData, setCryptoData] = useState([]);
-
-  const getCryptoData = () => {
-    axios
-      .get("https://api.coincap.io/v2/assets")
-      .then((res) => setCryptoData(filterTable(filter, res.data.data)))
-      .catch((err) => console.log(err));
-  };
+  const [filteredData, setFilteredData] = useState(
+    filterTable(filter, cryptoData)
+  );
 
   useEffect(() => {
-    getCryptoData();
-    const refreshCryptoData = setInterval(() => getCryptoData(), 5000);
-    return () => clearInterval(refreshCryptoData);
-  }, [filter]);
+    setFilteredData(filterTable(filter, cryptoData));
+  }, [filter, cryptoData]);
 
   return (
     <CryptoTable
-      cryptoData={cryptoData}
+      cryptoData={filteredData}
       favoriteList={favoriteList}
       isAuthenticated={isAuthenticated}
       updateFavs={updateFavs}
