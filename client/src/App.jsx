@@ -25,6 +25,15 @@ const App = () => {
       .catch((err) => console.log(err));
   };
 
+  const checkSession = () => {
+    const id = sessionStorage.getItem("userId");
+    if (id) {
+      setIsAuthenticated(true);
+      setUserID(id);
+    }
+    console.log(id);
+  };
+
   const getFavData = async () => {
     const res = await axios
       .get(`http://localhost:8000/user/${userID}`)
@@ -59,6 +68,8 @@ const App = () => {
     const refreshCryptoData = setInterval(() => getCryptoData(), 5000);
     return () => clearInterval(refreshCryptoData);
   }, []);
+
+  useEffect(() => checkSession(), []);
 
   return (
     <globalContext.Provider

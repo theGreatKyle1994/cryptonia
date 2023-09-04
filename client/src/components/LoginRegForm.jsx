@@ -31,6 +31,7 @@ const LoginRegForm = () => {
   };
 
   const authenticateUser = (id) => {
+    sessionStorage.setItem("userId", id);
     setUserID(id);
     setIsAuthenticated(true);
     navigate("/home");
