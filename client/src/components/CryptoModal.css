@@ -46,3 +46,24 @@
 #close-btn:active {
   transform: scale(0.9);
 }
+
+@media (max-width: 1400px) {
+  .modal-seperator {
+    width: 30%;
+  }
+}
+
+@media (max-width: 1000px) {
+  .modal-seperator {
+    font-size: 1.1em;
+  }
+}
+
+@media (max-width: 550px) {
+  .modal-seperator {
+    width: 40%;
+  }
+  #modal-container {
+    height: 75px;
+  }
+}
