@@ -74,3 +74,52 @@ button:hover {
 button:active {
   transform: scale(0.98);
 }
+
+@media (max-width: 1400px) {
+  h2 {
+    width: 80%;
+  }
+}
+
+@media (max-width: 1000px) {
+  :root {
+    font-size: 14px;
+  }
+  h2 {
+    width: 95%;
+  }
+}
+
+@media (max-width: 700px) {
+  :root {
+    font-size: 12px;
+  }
+  button {
+    font-size: 0.5em;
+  }
+}
+
+@media (max-width: 550px) {
+  :root {
+    font-size: 10px;
+  }
+  button {
+    padding: 3px;
+  }
+  h2 {
+    text-align: center;
+    margin: 10px 0;
+  }
+}
+
+@media (max-width: 400px) {
+  :root {
+    font-size: 8px;
+  }
+}
+
+@media (max-width: 300px) {
+  :root {
+    font-size: 6px;
+  }
+}

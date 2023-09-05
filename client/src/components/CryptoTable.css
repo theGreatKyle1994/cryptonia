@@ -102,3 +102,65 @@ td:not(:last-child) {
 .change-24hr-neg {
   color: rgb(255, 72, 72);
 }
+
+@media (max-width: 1400px) {
+  #table-scroll-container {
+    width: 80%;
+  }
+  #table-header {
+    width: 80%;
+  }
+}
+
+@media (max-width: 1000px) {
+  #table-scroll-container {
+    width: 95%;
+  }
+  #table-header {
+    width: 95%;
+  }
+  td button {
+    margin-right: 5px;
+  }
+}
+
+@media (max-width: 700px) {
+  th {
+    height: 40px;
+    font-size: 1em;
+  }
+  #actions-tab {
+    padding-left: 20px;
+  }
+  td button {
+    margin: 0;
+  }
+  #table-scroll-container::-webkit-scrollbar {
+    width: 5px;
+  }
+}
+
+@media (max-width: 550px) {
+  th {
+    height: 20px;
+    font-size: 0.9em;
+  }
+  td,
+  th,
+  th:last-child {
+    padding: 3px;
+    margin: 0;
+  }
+  #actions-tab {
+    padding-right: 25px;
+  }
+  td button {
+    margin: 0;
+  }
+}
+
+@media (max-width: 300px) {
+  th {
+    padding-left: 10px;
+  }
+}
