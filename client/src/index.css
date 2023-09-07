@@ -4,8 +4,7 @@
   --main-color: #226fd4b4;
   --secondary-color: #2a91f180;
   --tertiary-color: #4d4aff46;
-  font-size: 18px;
-  overflow: hidden;
+  font-size: 0.75vw;
 }
 
 * {
@@ -18,7 +17,7 @@
 }
 
 #root {
-  width: 100%;
+  width: 100vw;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -26,31 +25,31 @@
 
 #background-image {
   height: 100vh;
-  width: 100%;
+  width: 100vw;
   background-image: url(https://img.freepik.com/free-vector/gradient-stock-market-concept_23-2149215737.jpg);
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  position: absolute;
+  position: fixed;
   z-index: -1;
   filter: blur(5px);
   transform: scale(1.05);
 }
 
 #background-radial {
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   background: radial-gradient(
     circle,
-    rgba(255, 255, 255, 0) 70%,
-    rgba(0, 0, 0, 0.2497373949579832) 100%
+    rgba(255, 255, 255, 0) 70vw,
+    rgba(0, 0, 0, 0.2497373949579832) 100vw
   );
 }
 
 h2 {
-  width: 60%;
+  width: 60vw;
   margin: 25px;
-  font-size: 2em;
+  font-size: 2rem;
 }
 
 h3 {
@@ -60,9 +59,9 @@ h3 {
 button {
   background-color: var(--main-color);
   padding: 7px 10px;
-  margin-right: 20px;
+  margin-right: 5px;
   border: 1px solid black;
-  font-size: 0.8em;
+  font-size: 0.8rem;
   font-weight: 800;
   cursor: pointer;
 }
@@ -75,51 +74,26 @@ button:active {
   transform: scale(0.98);
 }
 
-@media (max-width: 1400px) {
-  h2 {
-    width: 80%;
-  }
-}
-
-@media (max-width: 1000px) {
+@media screen and (max-width: 500px) {
   :root {
-    font-size: 14px;
+    font-size: 2.4vw;
   }
   h2 {
-    width: 95%;
-  }
-}
-
-@media (max-width: 700px) {
-  :root {
-    font-size: 12px;
-  }
-  button {
-    font-size: 0.5em;
-  }
-}
-
-@media (max-width: 550px) {
-  :root {
-    font-size: 10px;
-  }
-  button {
-    padding: 3px;
-  }
-  h2 {
+    width: 100vw;
     text-align: center;
     margin: 10px 0;
   }
-}
-
-@media (max-width: 400px) {
-  :root {
-    font-size: 8px;
+  button {
+    font-size: 0.9rem;
+    margin-right: 3px;
   }
 }
 
-@media (max-width: 300px) {
+@media screen and (min-width: 501px) and (max-width: 1000px) {
   :root {
-    font-size: 6px;
+    font-size: 1.5vw;
+  }
+  h2 {
+    width: 90vw;
   }
 }

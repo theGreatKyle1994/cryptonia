@@ -1,5 +1,5 @@
 #login-reg-container {
-  width: 60%;
+  width: 70vw;
   display: flex;
   justify-content: space-between;
 }
@@ -8,8 +8,7 @@
   border: 1px solid black;
   display: flex;
   flex-direction: column;
-  width: 550px;
-  height: 500px;
+  width: 30vw;
   background-color: var(--tertiary-color);
   backdrop-filter: blur(10px);
   border-radius: 5px;
@@ -23,8 +22,8 @@
 }
 
 input {
-  width: 250px;
-  font-size: 0.9em;
+  width: 50%;
+  font-size: 0.9rem;
   border-radius: 10px;
   padding: 3px 10px;
   text-shadow: none;
@@ -45,8 +44,9 @@ form h2 {
   background-color: var(--secondary-color);
   width: 100%;
   margin: 0 0 20px 0;
+  padding: 20px 0 20px 30px;
   padding-left: 30px;
-  height: 75px;
+  height: 5vh;
   border-radius: 5px 5px 0 0;
   border-bottom: 1px solid black;
   background: radial-gradient(
@@ -80,4 +80,76 @@ form button {
 .form-error::before,
 .form-success::before {
   content: "- ";
+}
+
+@media screen and (max-width: 500px) {
+  #login-reg-container {
+    width: 100vw;
+    flex-direction: column;
+    align-items: center;
+  }
+  .form-container {
+    width: 90vw;
+  }
+  .form-container:last-child {
+    margin: 20px 0;
+  }
+  .form-input-container {
+    flex-direction: column;
+  }
+  .form-error,
+  .form-success {
+    margin: 0 auto;
+    width: 90%;
+    font-size: 1.2rem;
+  }
+  input,
+  label {
+    width: 90%;
+    font-size: 1.5rem;
+    margin: 5px 0;
+  }
+}
+
+@media screen and (min-width: 501px) and (max-width: 1000px) {
+  #login-reg-container {
+    width: 100vw;
+    flex-direction: column;
+    align-items: center;
+  }
+  .form-container {
+    width: 70vw;
+  }
+  .form-container:last-child {
+    margin: 40px 0;
+  }
+  .form-input-container {
+    flex-direction: column;
+  }
+  .form-error,
+  .form-success {
+    margin: 5px auto;
+    width: 90%;
+    font-size: 1.2rem;
+  }
+  input,
+  label {
+    width: 90%;
+    font-size: 1.5rem;
+    margin: 5px 0;
+  }
+}
+
+@media screen and (min-width: 1001px) and (max-width: 1600px) {
+  input,
+  label {
+    font-size: 1.3rem;
+    margin: 5px 10px;
+  }
+  .form-error,
+  .form-success {
+    margin: 5px auto;
+    width: 95%;
+    font-size: 1.2rem;
+  }
 }
