@@ -1,6 +1,6 @@
 {
   "script": {
-    "build": "cd client && npm install && vite build && npm run build-serv",
+    "start": "cd client && npm install && vite build && npm run build-serv",
     "build-serv": "cd ../server && npm install && nodemon server.js" 
   }
 }
