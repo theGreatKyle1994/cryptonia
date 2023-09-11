@@ -1,12 +1,4 @@
 {
-  "scripts": {
-    "start": "node server.js",
-    "server": "nodemon server",
-    "heroku-postbuild": "npm run install-client",
-    "install-client": "cd client && npm install && npm run build",
-    "client": "npm start --prefix client",
-    "preview": "vite preview"
-  },
   "dependencies": {
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
