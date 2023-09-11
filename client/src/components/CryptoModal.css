@@ -1,0 +1,62 @@
+#modal-container {
+  font-size: 0.8rem;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  bottom: 0;
+  width: 100vw;
+  height: 12vh;
+  padding: 20px 0;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0) 80%,
+    rgba(0, 0, 0, 0.25) 100%
+  );
+  background-color: var(--tertiary-color);
+  border-top: 1px solid black;
+}
+
+#modal-container div {
+  font-weight: 800;
+}
+
+.modal-seperator {
+  display: flex;
+  justify-content: space-between;
+  width: 20vw
+}
+
+#close-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 20px 20px 0 0;
+  font-size: 1.25rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+#close-btn:hover {
+  color: lightgray;
+  transform: scale(1.1);
+}
+
+#close-btn:active {
+  transform: scale(0.9);
+}
+
+@media screen and (max-width: 500px) {
+  .modal-seperator {
+    width: 50vw;
+    font-size: 0.9rem;
+  }
+}
+
+@media screen and (min-width: 501px) and (max-width: 1000px) {
+  .modal-seperator {
+    width: 40vw;
+    font-size: 1rem;
+  }
+}

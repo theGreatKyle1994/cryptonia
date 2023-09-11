@@ -1,0 +1,124 @@
+table {
+  text-align: center;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#table-header-row {
+  background: radial-gradient(
+    circle,
+    rgba(255, 253, 253, 0) 35%,
+    rgba(0, 0, 0, 0.8547794117647058) 85%
+  );
+}
+
+#table-scroll-container {
+  width: 60vw;
+  max-height: 60vh;
+  overflow-y: auto;
+  border-right: 1px solid black;
+  border-left: 1px solid black;
+  border-bottom: 1px solid black;
+  box-shadow: 0px 0px 100px var(--secondary-color);
+  backdrop-filter: blur(20px);
+}
+
+#table-scroll-container::-webkit-scrollbar {
+  width: 10px;
+  border-left: 1px solid black;
+}
+
+#table-scroll-container::-webkit-scrollbar-thumb {
+  background-color: var(--main-color);
+}
+
+#table-header {
+  width: 60vw;
+  border: 1px solid black;
+}
+
+#row-selected {
+  background-color: rgba(255, 255, 255, 0.5);
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+}
+
+#row-selected td {
+  font-style: italic;
+}
+
+#row-selected td:not(:last-child) {
+  text-shadow: none;
+  color: black;
+}
+
+tr:nth-of-type(even) {
+  background-color: var(--secondary-color);
+}
+
+tbody tr {
+  cursor: pointer;
+}
+
+th,
+td {
+  width: 20vw;
+  padding: 7px;
+}
+
+td button {
+  margin: 0;
+}
+
+th {
+  height: 5vh;
+  font-size: 1.2rem;
+  text-align: center;
+  background-color: var(--main-color);
+  user-select: none;
+  cursor: pointer;
+}
+
+th:last-child {
+  padding-right: 25px;
+}
+
+#actions-tab {
+  cursor: default;
+}
+
+th:hover:not(:last-child) {
+  color: lightgray;
+}
+
+td:not(:last-child) {
+  border-right: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.change-24hr-pos {
+  color: rgb(0, 255, 0);
+}
+.change-24hr-pos::before {
+  content: "+";
+}
+
+.change-24hr-neg {
+  color: rgb(255, 72, 72);
+}
+
+@media screen and (max-width: 500px) {
+  #table-scroll-container,
+  #table-header {
+    width: 90vw;
+  }
+  td button {
+    padding: 3px;
+  }
+}
+
+@media screen and (min-width: 501px) and (max-width: 1000px) {
+  #table-scroll-container,
+  #table-header {
+    width: 90vw;
+  }
+}
