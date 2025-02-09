@@ -1,7 +1,7 @@
 {
   "name": "cryptonia-server",
   "type": "commonjs",
-  "scrips": {
+  "scripts": {
     "dev": "nodemon server.js",
     "start": "env NODE_ENV=production && pm2 start server.js",
     "restart": "env NODE_ENV=production && pm2 restart server.js",
