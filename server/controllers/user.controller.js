@@ -1,5 +1,6 @@
 const User = require("../models/user.model");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 module.exports.getFavorites = (req, res) => {
   User.findById({ _id: req.params.id })
@@ -47,28 +48,28 @@ module.exports.register = async (req, res) => {
 };
 
 module.exports.login = async (req, res) => {
-  const user = await User.findOne({ username: req.query.username });
-
+  const user = await User.findOne({ username: req.body.username });
   if (!user)
-    return res.json({
+    return res.status(401).json({
       error: {
         username: { message: "User not found." },
       },
     });
-
-  const correctPassword = await bcrypt.compare(
-    req.query.password,
-    user.password
-  );
-
-  if (!correctPassword)
-    return res.json({
-      error: {
-        password: { message: "Incorrect password." },
-      },
-    });
-
-  return res.json(user._id);
+  else {
+    const correctPassword = await bcrypt.compare(
+      req.body.password,
+      user.password
+    );
+    if (!correctPassword) {
+      return res.status(401).json({
+        error: {
+          password: { message: "Incorrect password." },
+        },
+      });
+    } else {
+      return res.status(200).json(user._id);
+    }
+  }
 };
 
 module.exports.updateUser = async (req, res) => {

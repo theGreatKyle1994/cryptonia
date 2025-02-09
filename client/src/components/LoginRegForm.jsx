@@ -42,25 +42,20 @@ const LoginRegForm = () => {
     e.preventDefault();
     const { loginUsername: username, loginPassword: password } = formInput;
     await axios
-      .get("http://localhost:8000/api/user/login", {
-        params: {
-          username,
-          password,
-        },
+      .post(`${import.meta.env.VITE_BACKEND_URL}/api/user/login`, {
+        username,
+        password,
       })
-      .then((res) => {
-        if (!res.data.error) {
-          authenticateUser(res.data);
-        } else {
-          const { username, password } = res.data.error;
-          setErrors((prevErrors) => ({
-            ...prevErrors,
-            loginUsername: username,
-            loginPassword: password,
-          }));
-        }
-      })
-      .catch((err) => console.log(err));
+      .then((res) => authenticateUser(res.data))
+      .catch((err) => {
+        console.log(err.response.data.error);
+        const { username, password } = err.response.data.error;
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          loginUsername: username,
+          loginPassword: password,
+        }));
+      });
   };
 
   const regSubmitHandler = async (e) => {
