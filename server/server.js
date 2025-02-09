@@ -1,9 +1,21 @@
 const express = require("express");
 const cors = require("cors");
+const dotenv = require("dotenv");
+const cookieParser = require("cookie-parser");
 const app = express();
-const port = process.env.PORT || 8000;
 
-app.use(express.json(), express.urlencoded({ extended: true }), cors());
+const port = process.env.PORT || 8000;
+dotenv.config();
+
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  }),
+  express.json(),
+  cookieParser(),
+  express.urlencoded({ extended: true })
+);
 
 require("./config/mongoose.config");
 require("./routes/user.routes")(app);

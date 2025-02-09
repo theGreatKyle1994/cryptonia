@@ -1,6 +1,7 @@
 const User = require("../models/user.model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const secret = process.env.SECRET_KEY;
 
 module.exports.getFavorites = (req, res) => {
   User.findById({ _id: req.params.id })
@@ -60,14 +61,23 @@ module.exports.login = async (req, res) => {
       req.body.password,
       user.password
     );
-    if (!correctPassword) {
+    if (!correctPassword)
       return res.status(401).json({
         error: {
           password: { message: "Incorrect password." },
         },
       });
-    } else {
-      return res.status(200).json(user._id);
+    else {
+      const userToken = jwt.sign({ userId: user._id }, secret, {
+        expiresIn: "1h",
+      });
+      return res
+        .status(200)
+        .cookie("userToken", userToken, {
+          httpOnly: true,
+          maxAge: 1000 * 60 * 60,
+        })
+        .json(user._id);
     }
   }
 };

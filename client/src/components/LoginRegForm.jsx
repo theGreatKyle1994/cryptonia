@@ -42,13 +42,16 @@ const LoginRegForm = () => {
     e.preventDefault();
     const { loginUsername: username, loginPassword: password } = formInput;
     await axios
-      .post(`${import.meta.env.VITE_BACKEND_URL}/api/user/login`, {
-        username,
-        password,
-      })
+      .post(
+        `${import.meta.env.VITE_BACKEND_URL}/api/user/login`,
+        {
+          username,
+          password,
+        },
+        { withCredentials: true }
+      )
       .then((res) => authenticateUser(res.data))
       .catch((err) => {
-        console.log(err.response.data.error);
         const { username, password } = err.response.data.error;
         setErrors((prevErrors) => ({
           ...prevErrors,
