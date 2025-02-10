@@ -9,8 +9,8 @@ const CryptoTable = ({ cryptoData }) => {
     setModal,
     favoriteList,
     isAuthenticated,
+    setIsAuthenticated,
     getFavData,
-    userID,
     setCurrentFilter,
     currentFilter,
   } = useContext(globalContext);
@@ -24,7 +24,6 @@ const CryptoTable = ({ cryptoData }) => {
       });
       return symbols[type];
     };
-
     const filterObj = {
       name() {
         return currentFilter == "nameAsc" ? "nameDesc" : "nameAsc";
@@ -39,7 +38,6 @@ const CryptoTable = ({ cryptoData }) => {
         return currentFilter == "changeAsc" ? "changeDesc" : "changeAsc";
       },
     };
-
     setCurrentFilter(filterObj[newFilter]());
     symbolHandler(newFilter);
   };
@@ -49,7 +47,6 @@ const CryptoTable = ({ cryptoData }) => {
     const adjustFavList = async (cryptoId, action) => {
       switch (action) {
         case "remove":
-          console.log("remove");
           await axios
             .put(
               `${import.meta.env.VITE_BACKEND_URL}/api/user/fav`,
@@ -58,7 +55,7 @@ const CryptoTable = ({ cryptoData }) => {
                 withCredentials: true,
               }
             )
-            .catch((err) => console.log(err));
+            .catch(() => setIsAuthenticated(false));
           break;
         case "add":
           await axios
@@ -69,7 +66,7 @@ const CryptoTable = ({ cryptoData }) => {
               },
               { withCredentials: true }
             )
-            .catch((err) => console.log(err));
+            .catch(() => setIsAuthenticated(false));
           break;
       }
       getFavData();
@@ -79,10 +76,8 @@ const CryptoTable = ({ cryptoData }) => {
       : adjustFavList(crypto.id, "add");
   };
 
-  const selectionHandler = (crypto) => {
-    console.log(crypto.id);
+  const selectionHandler = (crypto) =>
     setModal({ isEnabled: true, id: crypto.id });
-  };
 
   return (
     <>

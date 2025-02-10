@@ -10,7 +10,6 @@ const Header = () => {
 
   const logout = () => {
     setIsAuthenticated(false);
-    sessionStorage.clear();
     navigate("/home");
   };
 

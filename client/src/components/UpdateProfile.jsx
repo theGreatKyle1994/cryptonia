@@ -4,7 +4,7 @@ import { globalContext } from "../App";
 import { useState, useEffect, useContext } from "react";
 
 const UpdateProfile = () => {
-  const { userID, isAuthenticated } = useContext(globalContext);
+  const { isAuthenticated } = useContext(globalContext);
   const navigate = useNavigate();
   const [errors, setErrors] = useState({
     updateUsername: undefined,
@@ -64,7 +64,7 @@ const UpdateProfile = () => {
 
   useEffect(() => {
     if (!isAuthenticated) navigate("/");
-  }, [isAuthenticated]);
+  }, []);
 
   return (
     <form onSubmit={changeSubmitHandler} className="form-container">

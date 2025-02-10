@@ -13,7 +13,6 @@ const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [favoriteList, setFavoriteList] = useState([]);
   const [currentFilter, setCurrentFilter] = useState("none");
-  const [userID, setUserID] = useState("");
   const [cryptoData, setCryptoData] = useState([]);
   const [modal, setModal] = useState({ isEnabled: false, id: "" });
   const currentPath = useLocation();
@@ -22,15 +21,7 @@ const App = () => {
     await axios
       .get("https://api.coincap.io/v2/assets")
       .then((res) => setCryptoData(res.data.data))
-      .catch((err) => console.log(err));
-  };
-
-  const checkSession = () => {
-    const id = sessionStorage.getItem("userId");
-    if (id) {
-      setIsAuthenticated(true);
-      setUserID(id);
-    }
+      .catch(() => setIsAuthenticated(false));
   };
 
   const getFavData = async () => {
@@ -39,7 +30,7 @@ const App = () => {
         withCredentials: true,
       })
       .then((res) => setFavoriteList(res.data))
-      .catch((err) => console.log(err));
+      .catch(() => setIsAuthenticated(false));
   };
 
   const headerName = (path) => {
@@ -56,16 +47,14 @@ const App = () => {
   };
 
   useEffect(() => {
-    if (isAuthenticated) (async () => getFavData())();
-  }, [userID]);
-
-  useEffect(() => {
     getCryptoData();
     const refreshCryptoData = setInterval(() => getCryptoData(), 5000);
     return () => clearInterval(refreshCryptoData);
   }, []);
 
-  useEffect(() => checkSession(), []);
+  useEffect(() => {
+    if (isAuthenticated) (async () => getFavData())();
+  }, []);
 
   return (
     <globalContext.Provider
@@ -76,8 +65,6 @@ const App = () => {
         getFavData,
         currentFilter,
         setCurrentFilter,
-        userID,
-        setUserID,
         cryptoData,
         setCryptoData,
         modal,

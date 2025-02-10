@@ -1,12 +1,11 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { globalContext } from "../App";
 import axios from "axios";
 import "./LoginRegForm.css";
 
 const LoginRegForm = () => {
-  const { setIsAuthenticated, isAuthenticated, setUserID } =
-    useContext(globalContext);
+  const { setIsAuthenticated } = useContext(globalContext);
   const navigate = useNavigate();
   const [errors, setErrors] = useState({
     loginUsername: undefined,
@@ -31,13 +30,6 @@ const LoginRegForm = () => {
     }));
   };
 
-  const authenticateUser = (id) => {
-    sessionStorage.setItem("userId", id);
-    setUserID(id);
-    setIsAuthenticated(true);
-    navigate("/home");
-  };
-
   const loginSubmitHandler = async (e) => {
     e.preventDefault();
     const { loginUsername: username, loginPassword: password } = formInput;
@@ -50,7 +42,10 @@ const LoginRegForm = () => {
         },
         { withCredentials: true }
       )
-      .then((res) => authenticateUser(res.data))
+      .then(() => {
+        setIsAuthenticated(true);
+        navigate("/home");
+      })
       .catch((err) => {
         const { username, password } = err.response.data.error.errors;
         setErrors((prevErrors) => ({
@@ -78,7 +73,10 @@ const LoginRegForm = () => {
         },
         { withCredentials: true }
       )
-      .then((res) => authenticateUser(res.data))
+      .then(() => {
+        setIsAuthenticated(true);
+        navigate("/home");
+      })
       .catch((err) => {
         const { username, password, confirmPassword } =
           err.response.data.error.errors;
@@ -90,10 +88,6 @@ const LoginRegForm = () => {
         }));
       });
   };
-
-  useEffect(() => {
-    if (isAuthenticated) navigate("/");
-  }, [isAuthenticated]);
 
   return (
     <div id="login-reg-container">
