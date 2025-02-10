@@ -42,9 +42,9 @@ module.exports.register = async (req, res) => {
             httpOnly: true,
             maxAge: 1000 * 60 * 60,
           })
-          .json(newUser._id);
+          .end();
       })
-      .catch(() => res.status(400).end());
+      .catch((err) => res.status(400).json({ error: err }));
   } else {
     return res.status(400).json({
       error: {
