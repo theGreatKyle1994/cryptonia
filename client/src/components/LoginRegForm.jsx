@@ -52,7 +52,7 @@ const LoginRegForm = () => {
       )
       .then((res) => authenticateUser(res.data))
       .catch((err) => {
-        const { username, password } = err.response.data.error;
+        const { username, password } = err.response.data.error.errors;
         setErrors((prevErrors) => ({
           ...prevErrors,
           loginUsername: username,
@@ -69,25 +69,26 @@ const LoginRegForm = () => {
       regConfirmPassword: confirmPassword,
     } = formInput;
     await axios
-      .post("http://localhost:8000/api/user/register", {
-        username,
-        password,
-        confirmPassword,
-      })
-      .then((res) => {
-        if (!res.data.error) {
-          authenticateUser(res.data._id);
-        } else {
-          const { username, password, confirmPassword } = res.data.error.errors;
-          setErrors((prevErrors) => ({
-            ...prevErrors,
-            regUsername: username,
-            regPassword: password,
-            regConfirmPassword: confirmPassword,
-          }));
-        }
-      })
-      .catch((err) => console.log(err));
+      .post(
+        `${import.meta.env.VITE_BACKEND_URL}/api/user/register`,
+        {
+          username,
+          password,
+          confirmPassword,
+        },
+        { withCredentials: true }
+      )
+      .then((res) => authenticateUser(res.data))
+      .catch((err) => {
+        const { username, password, confirmPassword } =
+          err.response.data.error.errors;
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          regUsername: username,
+          regPassword: password,
+          regConfirmPassword: confirmPassword,
+        }));
+      });
   };
 
   useEffect(() => {

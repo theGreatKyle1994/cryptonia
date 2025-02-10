@@ -30,15 +30,25 @@ module.exports.removeFavorite = (req, res) => {
 
 module.exports.register = async (req, res) => {
   const alreadyUser = await User.findOne({ username: req.body.username });
-
   if (!alreadyUser) {
     User.create(req.body)
-      .then((newUser) => res.json(newUser))
+      .then((newUser) => {
+        const userToken = jwt.sign({ userId: newUser._id }, secret, {
+          expiresIn: "1h",
+        });
+        res
+          .status(201)
+          .cookie("userToken", userToken, {
+            httpOnly: true,
+            maxAge: 1000 * 60 * 60,
+          })
+          .json(newUser._id);
+      })
       .catch((err) =>
-        res.json({ message: "Something went wrong", error: err })
+        res.status(400).json({ message: "Something went wrong", error: err })
       );
   } else {
-    return res.json({
+    return res.status(400).json({
       error: {
         errors: {
           username: { message: "User already registered." },
@@ -51,9 +61,11 @@ module.exports.register = async (req, res) => {
 module.exports.login = async (req, res) => {
   const user = await User.findOne({ username: req.body.username });
   if (!user)
-    return res.status(401).json({
+    return res.status(400).json({
       error: {
-        username: { message: "User not found." },
+        errors: {
+          username: { message: "User not found." },
+        },
       },
     });
   else {
@@ -64,7 +76,9 @@ module.exports.login = async (req, res) => {
     if (!correctPassword)
       return res.status(401).json({
         error: {
-          password: { message: "Incorrect password." },
+          errors: {
+            password: { message: "Incorrect password." },
+          },
         },
       });
     else {
