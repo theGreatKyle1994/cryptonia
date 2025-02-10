@@ -4,29 +4,28 @@ const jwt = require("jsonwebtoken");
 const secret = process.env.SECRET_KEY;
 
 module.exports.getFavorites = async (req, res) => {
-  await User.findById({ _id: req.params.id })
+  await User.findById({ _id: req.body.userId })
     .then((user) => res.status(200).json(user.favorites))
     .catch((err) => res.status(401).json({ error: err }));
 };
 
 module.exports.addFavorite = async (req, res) => {
-  console.log(req.body);
   await User.findByIdAndUpdate(
     { _id: req.body.userId },
     { $addToSet: { favorites: req.body.fav } },
     { new: true, upsert: true }
   )
-    .then((res) => res.status(201).end())
+    .then(() => res.status(201).end())
     .catch((err) => res.status(401).json({ error: err }));
 };
 
-module.exports.removeFavorite = (req, res) => {
-  User.findByIdAndUpdate(
-    { _id: req.body.id },
+module.exports.removeFavorite = async (req, res) => {
+  await User.findByIdAndUpdate(
+    { _id: req.body.userId },
     { $pull: { favorites: req.body.fav } }
   )
-    .then((res) => res.json("Sucess"))
-    .catch((err) => res.json({ error: err }));
+    .then(() => res.status(200).end())
+    .catch((err) => res.status(401).json({ error: err }));
 };
 
 module.exports.register = async (req, res) => {

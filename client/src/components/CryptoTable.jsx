@@ -48,9 +48,19 @@ const CryptoTable = ({ cryptoData }) => {
     e.stopPropagation();
     const adjustFavList = async (cryptoId, action) => {
       switch (action) {
-        case "remove": {
-        }
-        case "add": {
+        case "remove":
+          console.log("remove");
+          await axios
+            .put(
+              `${import.meta.env.VITE_BACKEND_URL}/api/user/fav`,
+              { fav: cryptoId },
+              {
+                withCredentials: true,
+              }
+            )
+            .catch((err) => console.log(err));
+          break;
+        case "add":
           await axios
             .post(
               `${import.meta.env.VITE_BACKEND_URL}/api/user/fav`,
@@ -60,7 +70,7 @@ const CryptoTable = ({ cryptoData }) => {
               { withCredentials: true }
             )
             .catch((err) => console.log(err));
-        }
+          break;
       }
       getFavData();
     };
