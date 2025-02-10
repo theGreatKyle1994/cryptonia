@@ -7,5 +7,5 @@ module.exports = (app) => {
   app.get("/api/user/fav", authenticate, UserController.getFavorites);
   app.post("/api/user/fav", authenticate, UserController.addFavorite);
   app.put("/api/user/fav", authenticate, UserController.removeFavorite);
-  app.put("/api/user/update/:id", UserController.updateUser);
+  app.put("/api/user/update", authenticate, UserController.updateUser);
 };

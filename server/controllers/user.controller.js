@@ -6,7 +6,7 @@ const secret = process.env.SECRET_KEY;
 module.exports.getFavorites = async (req, res) => {
   await User.findById({ _id: req.body.userId })
     .then((user) => res.status(200).json(user.favorites))
-    .catch((err) => res.status(401).json({ error: err }));
+    .catch(() => res.status(401).end());
 };
 
 module.exports.addFavorite = async (req, res) => {
@@ -16,7 +16,7 @@ module.exports.addFavorite = async (req, res) => {
     { new: true, upsert: true }
   )
     .then(() => res.status(201).end())
-    .catch((err) => res.status(401).json({ error: err }));
+    .catch(() => res.status(401).end());
 };
 
 module.exports.removeFavorite = async (req, res) => {
@@ -25,7 +25,7 @@ module.exports.removeFavorite = async (req, res) => {
     { $pull: { favorites: req.body.fav } }
   )
     .then(() => res.status(200).end())
-    .catch((err) => res.status(401).json({ error: err }));
+    .catch(() => res.status(401).end());
 };
 
 module.exports.register = async (req, res) => {
@@ -44,9 +44,7 @@ module.exports.register = async (req, res) => {
           })
           .json(newUser._id);
       })
-      .catch((err) =>
-        res.status(400).json({ message: "Something went wrong", error: err })
-      );
+      .catch(() => res.status(400).end());
   } else {
     return res.status(400).json({
       error: {
@@ -97,49 +95,60 @@ module.exports.login = async (req, res) => {
 };
 
 module.exports.updateUser = async (req, res) => {
-  const user = await User.findOne({ username: req.body.username });
-
-  if (!user)
-    return res.json({
-      error: {
-        username: { message: "Incorrect Username" },
-      },
-    });
-
-  if (req.body.usernameNew.length < 3)
-    return res.json({
-      error: {
-        usernameNew: { message: "New username must be at least 3 characters." },
-      },
-    });
-
-  const correctPassword = await bcrypt.compare(
-    req.body.password,
-    user.password
-  );
-
-  if (!correctPassword)
-    return res.json({
-      error: {
-        password: { message: "Incorrect password." },
-      },
-    });
-
-  const alreadyUser = await User.findOne({ username: req.body.usernameNew });
-  if (alreadyUser)
-    return res.json({
-      error: {
-        usernameNew: { message: "Username already taken." },
-      },
-    });
-
-  await User.findOneAndUpdate(
-    { username: req.body.username },
-    { username: req.body.usernameNew },
-    { new: true }
-  );
-
-  return res.json({
-    usernameNew: { message: "Successfully updated username." },
+  await User.findOne({ username: req.body.username }).then(async (user) => {
+    if (user) {
+      if (req.body.usernameNew.length < 3) {
+        return res.status(400).json({
+          error: {
+            usernameNew: {
+              message: "New username must be at least 3 characters.",
+            },
+          },
+        });
+      } else {
+        await User.findOne({
+          username: req.body.usernameNew,
+        }).then(async (prevUser) => {
+          if (prevUser) {
+            res.status(401).json({
+              error: {
+                usernameNew: { message: "Username already taken." },
+              },
+            });
+          } else {
+            await bcrypt
+              .compare(req.body.password, user.password)
+              .then(async (correctPassword) => {
+                if (!correctPassword) {
+                  res.status(401).json({
+                    error: {
+                      password: { message: "Incorrect password." },
+                    },
+                  });
+                } else {
+                  await User.findOneAndUpdate(
+                    { username: req.body.username },
+                    { username: req.body.usernameNew },
+                    { new: true }
+                  )
+                    .then(() => {
+                      res.status(200).json({
+                        usernameNew:
+                          "You have successfully changed your username.",
+                      });
+                    })
+                    .catch(() => res.status(500).end());
+                }
+              });
+          }
+        });
+      }
+    } else {
+      return res.status(401).json({
+        error: {
+          username: { message: "Incorrect Username" },
+        },
+      });
+    }
   });
 };

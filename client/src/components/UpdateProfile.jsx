@@ -24,43 +24,37 @@ const UpdateProfile = () => {
     e.preventDefault();
     const { updateUsername, updateNewUsername, updatePassword } = formInput;
     await axios
-      .put(`http://localhost:8000/api/user/update/${userID}`, {
-        username: updateUsername,
-        usernameNew: updateNewUsername,
-        password: updatePassword,
-      })
+      .put(
+        `${import.meta.env.VITE_BACKEND_URL}/api/user/update`,
+        {
+          username: updateUsername,
+          usernameNew: updateNewUsername,
+          password: updatePassword,
+        },
+        { withCredentials: true }
+      )
       .then((res) => {
-        if (res.data.error) {
-          const { username, usernameNew, password } = res.data.error;
-          setErrors((prevErrors) => ({
-            ...prevErrors,
-            updateUsername: username,
-            updateNewUsername: usernameNew,
-            updatePassword: password,
-          }));
-          setSuccessMsg((prevSuccessMsgs) => ({
-            ...prevSuccessMsgs,
-            updateNewUsername: undefined,
-          }));
-        } else {
-          setSuccessMsg((prevSuccessMsgs) => ({
-            ...prevSuccessMsgs,
-            updateNewUsername: res.data.usernameNew,
-          }));
-          setErrors((prevErrors) => ({
-            ...prevErrors,
-            updateUsername: undefined,
-            updateNewUsername: undefined,
-            updatePassword: undefined,
-          }));
-          setFormInput({
-            updateUsername: "",
-            updateNewUsername: "",
-            updatePassword: "",
-          });
-        }
+        console.log(res);
+        setSuccessMsg((prevSuccessMsgs) => ({
+          ...prevSuccessMsgs,
+          updateNewUsername: res.data.usernameNew,
+        }));
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          updateUsername: undefined,
+          updateNewUsername: undefined,
+          updatePassword: undefined,
+        }));
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        const { username, usernameNew, password } = err.response.data.error;
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          updateUsername: username,
+          updateNewUsername: usernameNew,
+          updatePassword: password,
+        }));
+      });
   };
 
   const inputHandler = (e) => {
@@ -76,9 +70,7 @@ const UpdateProfile = () => {
     <form onSubmit={changeSubmitHandler} className="form-container">
       <h2>Update Username</h2>
       {successMsg.updateNewUsername && (
-        <div className="form-success">
-          {successMsg.updateNewUsername.message}
-        </div>
+        <div className="form-success">{successMsg.updateNewUsername}</div>
       )}
       {errors.updateUsername && (
         <div className="form-error">{errors.updateUsername.message}</div>
@@ -110,7 +102,7 @@ const UpdateProfile = () => {
         <div className="form-error">{errors.updatePassword.message}</div>
       )}
       <div className="form-input-container">
-        <label htmlFor="login-password">Re-Type Password:</label>
+        <label htmlFor="login-password">Current Password:</label>
         <input
           id="login-password"
           name="updatePassword"
