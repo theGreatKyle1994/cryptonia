@@ -44,7 +44,7 @@ const LoginRegForm = () => {
       )
       .then(() => {
         setIsAuthenticated(true);
-        navigate("/home");
+        navigate("/");
       })
       .catch((err) => {
         const { username, password } = err.response.data.error.errors;
@@ -75,7 +75,7 @@ const LoginRegForm = () => {
       )
       .then(() => {
         setIsAuthenticated(true);
-        navigate("/home");
+        navigate("/");
       })
       .catch((err) => {
         const { username, password, confirmPassword } =

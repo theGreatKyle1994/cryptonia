@@ -4,7 +4,7 @@ import { globalContext } from "../App";
 import { useState, useEffect, useContext } from "react";
 
 const UpdateProfile = () => {
-  const { isAuthenticated } = useContext(globalContext);
+  const { isAuthenticated, setIsAuthenticated } = useContext(globalContext);
   const navigate = useNavigate();
   const [errors, setErrors] = useState({
     updateUsername: undefined,
@@ -34,7 +34,6 @@ const UpdateProfile = () => {
         { withCredentials: true }
       )
       .then((res) => {
-        console.log(res);
         setSuccessMsg((prevSuccessMsgs) => ({
           ...prevSuccessMsgs,
           updateNewUsername: res.data.usernameNew,
@@ -47,13 +46,15 @@ const UpdateProfile = () => {
         }));
       })
       .catch((err) => {
-        const { username, usernameNew, password } = err.response.data.error;
-        setErrors((prevErrors) => ({
-          ...prevErrors,
-          updateUsername: username,
-          updateNewUsername: usernameNew,
-          updatePassword: password,
-        }));
+        if (err.response.data.error) {
+          const { username, usernameNew, password } = err.response.data.error;
+          setErrors((prevErrors) => ({
+            ...prevErrors,
+            updateUsername: username,
+            updateNewUsername: usernameNew,
+            updatePassword: password,
+          }));
+        } else setIsAuthenticated(false);
       });
   };
 
@@ -64,7 +65,7 @@ const UpdateProfile = () => {
 
   useEffect(() => {
     if (!isAuthenticated) navigate("/");
-  }, []);
+  }, [isAuthenticated]);
 
   return (
     <form onSubmit={changeSubmitHandler} className="form-container">
