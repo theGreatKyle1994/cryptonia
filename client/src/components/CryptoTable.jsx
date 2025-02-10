@@ -47,13 +47,21 @@ const CryptoTable = ({ cryptoData }) => {
   const favoriteHandler = (e, crypto) => {
     e.stopPropagation();
     const adjustFavList = async (cryptoId, action) => {
-      await axios.put(
-        `http://localhost:8000/api/user/fav/${action == "remove" ? "remove" : ""}`,
-        {
-          id: userID,
-          fav: cryptoId,
+      switch (action) {
+        case "remove": {
         }
-      );
+        case "add": {
+          await axios
+            .post(
+              `${import.meta.env.VITE_BACKEND_URL}/api/user/fav`,
+              {
+                fav: cryptoId,
+              },
+              { withCredentials: true }
+            )
+            .catch((err) => console.log(err));
+        }
+      }
       getFavData();
     };
     favoriteList.includes(crypto.id)
@@ -62,7 +70,7 @@ const CryptoTable = ({ cryptoData }) => {
   };
 
   const selectionHandler = (crypto) => {
-    console.log(crypto.id)
+    console.log(crypto.id);
     setModal({ isEnabled: true, id: crypto.id });
   };
 

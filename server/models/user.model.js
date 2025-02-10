@@ -12,7 +12,7 @@ const UserSchema = new mongoose.Schema(
     password: {
       type: String,
       required: [true, "Password is required."],
-      minLength: [3, "Password requires at least 8 characters."],
+      minLength: [3, "Password requires at least 3 characters."],
       trim: true,
     },
     favorites: {

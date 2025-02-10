@@ -56,10 +56,7 @@ const App = () => {
   };
 
   useEffect(() => {
-    if (isAuthenticated) {
-      const getData = async () => getFavData();
-      getData();
-    }
+    if (isAuthenticated) (async () => getFavData())();
   }, [userID]);
 
   useEffect(() => {

@@ -9,14 +9,15 @@ module.exports.getFavorites = async (req, res) => {
     .catch((err) => res.status(401).json({ error: err }));
 };
 
-module.exports.addFavorite = (req, res) => {
-  User.findByIdAndUpdate(
-    { _id: req.body.id },
+module.exports.addFavorite = async (req, res) => {
+  console.log(req.body);
+  await User.findByIdAndUpdate(
+    { _id: req.body.userId },
     { $addToSet: { favorites: req.body.fav } },
     { new: true, upsert: true }
   )
-    .then((res) => res.json("Success"))
-    .catch((err) => res.json({ error: err }));
+    .then((res) => res.status(201).end())
+    .catch((err) => res.status(401).json({ error: err }));
 };
 
 module.exports.removeFavorite = (req, res) => {
@@ -31,7 +32,7 @@ module.exports.removeFavorite = (req, res) => {
 module.exports.register = async (req, res) => {
   const alreadyUser = await User.findOne({ username: req.body.username });
   if (!alreadyUser) {
-    User.create(req.body)
+    await User.create(req.body)
       .then((newUser) => {
         const userToken = jwt.sign({ userId: newUser._id }, secret, {
           expiresIn: "1h",
@@ -59,41 +60,41 @@ module.exports.register = async (req, res) => {
 };
 
 module.exports.login = async (req, res) => {
-  const user = await User.findOne({ username: req.body.username });
-  if (!user)
-    return res.status(400).json({
-      error: {
-        errors: {
-          username: { message: "User not found." },
-        },
-      },
-    });
-  else {
-    const correctPassword = await bcrypt.compare(
-      req.body.password,
-      user.password
-    );
-    if (!correctPassword)
-      return res.status(401).json({
+  await User.findOne({ username: req.body.username })
+    .then(async (user) => {
+      await bcrypt
+        .compare(req.body.password, user.password)
+        .then((correctPassword) => {
+          if (correctPassword) {
+            const userToken = jwt.sign({ userId: user._id }, secret, {
+              expiresIn: "1h",
+            });
+            return res
+              .status(200)
+              .cookie("userToken", userToken, {
+                httpOnly: true,
+                maxAge: 1000 * 60 * 60,
+              })
+              .json(user._id);
+          } else
+            return res.status(401).json({
+              error: {
+                errors: {
+                  password: { message: "Incorrect password." },
+                },
+              },
+            });
+        });
+    })
+    .catch(() =>
+      res.status(400).json({
         error: {
           errors: {
-            password: { message: "Incorrect password." },
+            username: { message: "User not found." },
           },
         },
-      });
-    else {
-      const userToken = jwt.sign({ userId: user._id }, secret, {
-        expiresIn: "1h",
-      });
-      return res
-        .status(200)
-        .cookie("userToken", userToken, {
-          httpOnly: true,
-          maxAge: 1000 * 60 * 60,
-        })
-        .json(user._id);
-    }
-  }
+      })
+    );
 };
 
 module.exports.updateUser = async (req, res) => {
