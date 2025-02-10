@@ -34,12 +34,12 @@ const App = () => {
   };
 
   const getFavData = async () => {
-    const res = await axios
-      .get(`http://localhost:8000/api/user/${userID}`)
+    await axios
+      .get(`${import.meta.env.VITE_BACKEND_URL}/api/user/${userID}`, {
+        withCredentials: true,
+      })
+      .then((res) => setFavoriteList(res.data))
       .catch((err) => console.log(err));
-    if (res) {
-      setFavoriteList(res.data);
-    }
   };
 
   const headerName = (path) => {

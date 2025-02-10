@@ -3,10 +3,10 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const secret = process.env.SECRET_KEY;
 
-module.exports.getFavorites = (req, res) => {
-  User.findById({ _id: req.params.id })
-    .then((user) => res.json(user.favorites))
-    .catch((err) => res.json({ error: err }));
+module.exports.getFavorites = async (req, res) => {
+  await User.findById({ _id: req.params.id })
+    .then((user) => res.status(200).json(user.favorites))
+    .catch((err) => res.status(401).json({ error: err }));
 };
 
 module.exports.addFavorite = (req, res) => {
