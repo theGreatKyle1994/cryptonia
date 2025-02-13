@@ -4,7 +4,8 @@ import { globalContext } from "../App";
 import { useState, useEffect, useContext } from "react";
 
 const UpdateProfile = () => {
-  const { isAuthenticated, setIsAuthenticated } = useContext(globalContext);
+  const { isAuthenticated, setIsAuthenticated, setUserData } =
+    useContext(globalContext);
   const navigate = useNavigate();
   const [errors, setErrors] = useState({
     updateUsername: undefined,
@@ -44,8 +45,14 @@ const UpdateProfile = () => {
           updateNewUsername: undefined,
           updatePassword: undefined,
         }));
+        setUserData({ username: res.data.username });
+        sessionStorage.setItem(
+          "userData",
+          JSON.stringify({ username: res.data.username })
+        );
       })
       .catch((err) => {
+        console.log(err);
         if (err.response.data.error) {
           const { username, usernameNew, password } = err.response.data.error;
           setErrors((prevErrors) => ({

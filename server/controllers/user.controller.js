@@ -38,7 +38,7 @@ module.exports.register = async (req, res) => {
               httpOnly: true,
               maxAge: 1000 * 60 * 60,
             })
-            .end();
+            .json({ username: newUser.username });
         })
         .catch((err) => res.status(400).json({ error: err }));
     } else {
@@ -69,7 +69,7 @@ module.exports.login = async (req, res) => {
                 httpOnly: true,
                 maxAge: 1000 * 60 * 60,
               })
-              .json(user._id);
+              .json({ username: user.username });
           } else
             return res.status(401).json({
               error: {
@@ -127,10 +127,10 @@ module.exports.updateUser = async (req, res) => {
                     { username: req.body.username },
                     { username: req.body.usernameNew },
                     { new: true }
-                  ).then(() => {
+                  ).then((user) => {
                     res.status(200).json({
-                      usernameNew:
-                        "You have successfully changed your username.",
+                      usernameNew: `You have successfully changed your username to: ${req.body.usernameNew}.`,
+                      username: user.username,
                     });
                   });
                 }

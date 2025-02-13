@@ -42,7 +42,11 @@ const LoginRegForm = () => {
         },
         { withCredentials: true }
       )
-      .then(() => {
+      .then((res) => {
+        sessionStorage.setItem(
+          "userData",
+          JSON.stringify({ username: res.data.username })
+        );
         setIsAuthenticated(true);
         navigate("/");
       })
@@ -73,7 +77,11 @@ const LoginRegForm = () => {
         },
         { withCredentials: true }
       )
-      .then(() => {
+      .then((res) => {
+        sessionStorage.setItem(
+          "userData",
+          JSON.stringify({ username: res.data.username })
+        );
         setIsAuthenticated(true);
         navigate("/");
       })

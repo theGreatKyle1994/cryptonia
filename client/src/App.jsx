@@ -14,6 +14,7 @@ const App = () => {
   const [favoriteList, setFavoriteList] = useState([]);
   const [currentFilter, setCurrentFilter] = useState("none");
   const [cryptoData, setCryptoData] = useState([]);
+  const [userData, setUserData] = useState({});
   const [modal, setModal] = useState({ isEnabled: false, id: "" });
   const currentPath = useLocation();
 
@@ -31,6 +32,14 @@ const App = () => {
       })
       .then((res) => setFavoriteList(res.data))
       .catch(() => setIsAuthenticated(false));
+  };
+
+  const checkAccount = () => {
+    const data = JSON.parse(sessionStorage.getItem("userData"));
+    if (data) {
+      setUserData(data);
+      setIsAuthenticated(true);
+    }
   };
 
   const headerName = (path) => {
@@ -54,7 +63,8 @@ const App = () => {
 
   useEffect(() => {
     (async () => getFavData())();
-  }, []);
+    checkAccount();
+  }, [isAuthenticated]);
 
   return (
     <globalContext.Provider
@@ -66,6 +76,8 @@ const App = () => {
         currentFilter,
         setCurrentFilter,
         cryptoData,
+        userData,
+        setUserData,
         setCryptoData,
         modal,
         setModal,

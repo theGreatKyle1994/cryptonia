@@ -4,11 +4,12 @@ import { globalContext } from "../App";
 import "./Header.css";
 
 const Header = () => {
-  const { isAuthenticated, currentPath, setIsAuthenticated } =
+  const { isAuthenticated, currentPath, setIsAuthenticated, userData } =
     useContext(globalContext);
   const navigate = useNavigate();
 
   const logout = () => {
+    sessionStorage.clear();
     setIsAuthenticated(false);
     navigate("/home");
   };
@@ -17,6 +18,9 @@ const Header = () => {
     <header>
       <h1>Cryptonia</h1>
       <nav>
+        {isAuthenticated && (
+          <span id="welcome-user">Signed-In: {userData.username}</span>
+        )}
         {currentPath.pathname == "/home" && !isAuthenticated && (
           <Link to={"/login-reg"}>
             <button type="submit">Login | Register</button>

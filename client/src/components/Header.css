@@ -13,3 +13,13 @@ h1 {
   margin-left: 20px;
   font-size: 3rem;
 }
+
+nav {
+  margin-right: 20px;
+}
+
+#welcome-user {
+  vertical-align: middle;
+  font-size: 1.25rem;
+  padding-right: 10px;
+}
