@@ -53,7 +53,7 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    if (isAuthenticated) (async () => getFavData())();
+    (async () => getFavData())();
   }, []);
 
   return (
