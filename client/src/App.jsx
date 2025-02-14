@@ -13,7 +13,7 @@ const App = () => {
   const [favoriteList, setFavoriteList] = useState([]);
   const [currentFilter, setCurrentFilter] = useState("none");
   const [cryptoData, setCryptoData] = useState([]);
-  const [userData, setUserData] = useState({});
+  const [userData, setUserData] = useState(undefined);
   const [modal, setModal] = useState({ isEnabled: false, id: "" });
   const currentPath = useLocation();
 
@@ -25,7 +25,7 @@ const App = () => {
   };
 
   const getFavData = async () => {
-    if (Boolean(Object.keys(userData).length)) {
+    if (userData) {
       await axios
         .get(`${import.meta.env.VITE_BACKEND_URL}/api/user/fav`, {
           withCredentials: true,
@@ -47,6 +47,8 @@ const App = () => {
         return "Profile";
     }
   };
+
+  const checkAuth = () => (sessionStorage.getItem("userData") ? true : false);
 
   useEffect(() => {
     getCryptoData();
@@ -80,9 +82,15 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Navigate to="/home" />} />
         <Route path="/home" element={<HomeTable />} />
-        <Route path="/favorites" element={<FavTable />} />
+        <Route
+          path="/favorites"
+          element={checkAuth() ? <FavTable /> : <Navigate to="/" />}
+        />
         <Route path="/login-reg" element={<LoginRegForm />} />
-        <Route path="/profile" element={<UpdateProfile />} />
+        <Route
+          path="/profile"
+          element={checkAuth() ? <UpdateProfile /> : <Navigate to="/" />}
+        />
       </Routes>
       {(currentPath.pathname == "/home" ||
         currentPath.pathname == "/favorites") &&

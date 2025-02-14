@@ -89,7 +89,7 @@ const CryptoTable = ({ cryptoData }) => {
             <th onClick={() => filterHandler("change")}>
               24hr Change {symbols.change}
             </th>
-            {userData.username && <th id="actions-tab">Actions</th>}
+            {userData && <th id="actions-tab">Actions</th>}
           </tr>
         </thead>
       </table>
@@ -116,7 +116,7 @@ const CryptoTable = ({ cryptoData }) => {
                     >
                       {Number(crypto.changePercent24Hr).toFixed(2)}
                     </td>
-                    {userData.username && favoriteList && (
+                    {userData && favoriteList && (
                       <td>
                         <button onClick={(e) => favoriteHandler(e, crypto)}>
                           {favoriteList && favoriteList.includes(crypto.id)

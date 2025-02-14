@@ -9,7 +9,7 @@ const Header = () => {
 
   const logout = () => {
     sessionStorage.clear();
-    setUserData({});
+    setUserData(undefined);
     navigate("/home");
   };
 
@@ -17,15 +17,15 @@ const Header = () => {
     <header>
       <h1>Cryptonia</h1>
       <nav>
-        {userData.username && (
+        {userData && (
           <span id="welcome-user">Signed-In: {userData.username}</span>
         )}
-        {currentPath.pathname == "/home" && !userData.username && (
+        {currentPath.pathname == "/home" && !userData && (
           <Link to={"/login-reg"}>
             <button type="submit">Login | Register</button>
           </Link>
         )}
-        {currentPath.pathname == "/home" && userData.username && (
+        {currentPath.pathname == "/home" && userData && (
           <>
             <Link to={"/favorites"}>
               <button type="submit">Favorites</button>
@@ -36,7 +36,7 @@ const Header = () => {
             <button onClick={logout}>Logout</button>
           </>
         )}
-        {currentPath.pathname == "/favorites" && userData.username && (
+        {currentPath.pathname == "/favorites" && userData && (
           <>
             <Link to={"/home"}>
               <button type="submit">Home</button>

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { globalContext } from "../App";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 
 const UpdateProfile = () => {
   const { setUserData } = useContext(globalContext);
@@ -59,7 +59,7 @@ const UpdateProfile = () => {
             updateNewUsername: usernameNew,
             updatePassword: password,
           }));
-        } else setUserData({});
+        } else setUserData(undefined);
       });
   };
 
@@ -67,6 +67,13 @@ const UpdateProfile = () => {
     const { name, value } = e.target;
     setFormInput((prevFormInput) => ({ ...prevFormInput, [name]: value }));
   };
+
+  useEffect(() => {
+    if (!sessionStorage.getItem("userData")) {
+      setUserData(undefined);
+      navigate("/");
+    }
+  }, []);
 
   return (
     <form onSubmit={changeSubmitHandler} className="form-container">

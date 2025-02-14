@@ -4,8 +4,7 @@ import { useEffect, useState, useContext } from "react";
 import { globalContext } from "../App";
 
 const FavTable = () => {
-  const { cryptoData, favoriteList, currentFilter } =
-    useContext(globalContext);
+  const { cryptoData, favoriteList, currentFilter } = useContext(globalContext);
   const [filteredData, setFilteredData] = useState(
     filterTable(currentFilter, filterFavs(favoriteList, cryptoData))
   );
