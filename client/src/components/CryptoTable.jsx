@@ -148,10 +148,10 @@ const CryptoTable = ({ cryptoData }) => {
         </div>
       ) : (
         <h3>
-          {!favoriteList.length
-            ? "Add favorites to this list"
-            : location.pathname == "/home"
+          {location.pathname == "/home"
             ? "Loading Crypto Data..."
+            : !favoriteList.length
+            ? "Add favorites to this list"
             : "Loading Favorites..."}
         </h3>
       )}
