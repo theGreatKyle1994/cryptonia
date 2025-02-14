@@ -146,7 +146,11 @@ const CryptoTable = ({ cryptoData }) => {
           </table>
         </div>
       ) : (
-        <h3>{favoriteList && "Add favorites to this list"}</h3>
+        <h3>
+          {!favoriteList.length
+            ? "Add favorites to this list"
+            : "Loading Favorites..."}
+        </h3>
       )}
     </>
   );
