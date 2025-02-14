@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useState, useContext } from "react";
 import { globalContext } from "../App";
 import "./CryptoTable.css";
@@ -17,6 +17,7 @@ const CryptoTable = ({ cryptoData }) => {
   } = useContext(globalContext);
   const [symbols, setSymbols] = useState({});
   const navigate = useNavigate();
+  const location = useLocation();
 
   const filterHandler = (newFilter) => {
     const symbolHandler = (type) => {
@@ -149,6 +150,8 @@ const CryptoTable = ({ cryptoData }) => {
         <h3>
           {!favoriteList.length
             ? "Add favorites to this list"
+            : location.pathname == "/home"
+            ? "Loading Crypto Data..."
             : "Loading Favorites..."}
         </h3>
       )}
