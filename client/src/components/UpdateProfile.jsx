@@ -70,10 +70,6 @@ const UpdateProfile = () => {
     setFormInput((prevFormInput) => ({ ...prevFormInput, [name]: value }));
   };
 
-  useEffect(() => {
-    if (!isAuthenticated) navigate("/");
-  }, [isAuthenticated]);
-
   return (
     <form onSubmit={changeSubmitHandler} className="form-container">
       <h2>Update Username</h2>

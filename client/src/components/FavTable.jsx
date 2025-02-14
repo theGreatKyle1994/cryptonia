@@ -5,7 +5,7 @@ import { useEffect, useState, useContext } from "react";
 import { globalContext } from "../App";
 
 const FavTable = () => {
-  const { cryptoData, favoriteList, isAuthenticated, currentFilter } =
+  const { cryptoData, favoriteList, userData, currentFilter } =
     useContext(globalContext);
   const navigate = useNavigate();
   const [filteredData, setFilteredData] = useState(
@@ -17,10 +17,6 @@ const FavTable = () => {
       filterTable(currentFilter, filterFavs(favoriteList, cryptoData))
     );
   }, [currentFilter, cryptoData, favoriteList]);
-
-  useEffect(() => {
-    if (!isAuthenticated) navigate("/");
-  }, []);
 
   return <CryptoTable cryptoData={filteredData} />;
 };

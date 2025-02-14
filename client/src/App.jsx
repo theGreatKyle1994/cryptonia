@@ -26,12 +26,14 @@ const App = () => {
   };
 
   const getFavData = async () => {
-    await axios
-      .get(`${import.meta.env.VITE_BACKEND_URL}/api/user/fav`, {
-        withCredentials: true,
-      })
-      .then((res) => setFavoriteList(res.data))
-      .catch(() => setIsAuthenticated(false));
+    if (isAuthenticated) {
+      await axios
+        .get(`${import.meta.env.VITE_BACKEND_URL}/api/user/fav`, {
+          withCredentials: true,
+        })
+        .then((res) => setFavoriteList(res.data))
+        .catch(() => setIsAuthenticated(false));
+    }
   };
 
   const checkAccount = () => {
