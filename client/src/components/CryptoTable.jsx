@@ -91,7 +91,7 @@ const CryptoTable = ({ cryptoData }) => {
     setModal({ isEnabled: true, id: crypto.id });
 
   return (
-    <>
+    <div id="table-container">
       <table id="table-header">
         <thead>
           <tr id="table-header-row">
@@ -147,7 +147,7 @@ const CryptoTable = ({ cryptoData }) => {
           </table>
         </div>
       ) : (
-        <h3>
+        <h3 id="await-data-header">
           {location.pathname == "/home"
             ? "Loading Crypto Data..."
             : !favoriteList.length
@@ -155,7 +155,7 @@ const CryptoTable = ({ cryptoData }) => {
             : "Loading Favorites..."}
         </h3>
       )}
-    </>
+    </div>
   );
 };
 
