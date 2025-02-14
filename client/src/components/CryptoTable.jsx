@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { useState, useContext } from "react";
 import { globalContext } from "../App";
 import "./CryptoTable.css";
@@ -10,10 +11,12 @@ const CryptoTable = ({ cryptoData }) => {
     favoriteList,
     getFavData,
     userData,
+    setUserData,
     setCurrentFilter,
     currentFilter,
   } = useContext(globalContext);
   const [symbols, setSymbols] = useState({});
+  const navigate = useNavigate();
 
   const filterHandler = (newFilter) => {
     const symbolHandler = (type) => {
@@ -46,22 +49,34 @@ const CryptoTable = ({ cryptoData }) => {
     const adjustFavList = async (cryptoId, action) => {
       switch (action) {
         case "remove":
-          await axios.put(
-            `${import.meta.env.VITE_BACKEND_URL}/api/user/fav`,
-            { fav: cryptoId },
-            {
-              withCredentials: true,
-            }
-          );
+          await axios
+            .put(
+              `${import.meta.env.VITE_BACKEND_URL}/api/user/fav`,
+              { fav: cryptoId },
+              {
+                withCredentials: true,
+              }
+            )
+            .catch(() => {
+              sessionStorage.clear();
+              setUserData(undefined);
+              navigate("/login-reg");
+            });
           break;
         case "add":
-          await axios.post(
-            `${import.meta.env.VITE_BACKEND_URL}/api/user/fav`,
-            {
-              fav: cryptoId,
-            },
-            { withCredentials: true }
-          );
+          await axios
+            .post(
+              `${import.meta.env.VITE_BACKEND_URL}/api/user/fav`,
+              {
+                fav: cryptoId,
+              },
+              { withCredentials: true }
+            )
+            .catch(() => {
+              sessionStorage.clear();
+              setUserData(undefined);
+              navigate("/login-reg");
+            });
           break;
       }
       getFavData();

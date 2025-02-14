@@ -31,7 +31,7 @@ const App = () => {
           withCredentials: true,
         })
         .then((res) => setFavoriteList(res.data))
-        .catch(() => setUserData({}));
+        .catch(() => setUserData(undefined));
     }
   };
 
