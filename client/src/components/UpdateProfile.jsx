@@ -1,11 +1,10 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { globalContext } from "../App";
-import { useState, useEffect, useContext } from "react";
+import { useState, useContext } from "react";
 
 const UpdateProfile = () => {
-  const { isAuthenticated, setIsAuthenticated, setUserData } =
-    useContext(globalContext);
+  const { setUserData } = useContext(globalContext);
   const navigate = useNavigate();
   const [errors, setErrors] = useState({
     updateUsername: undefined,
@@ -52,7 +51,6 @@ const UpdateProfile = () => {
         );
       })
       .catch((err) => {
-        console.log(err);
         if (err.response.data.error) {
           const { username, usernameNew, password } = err.response.data.error;
           setErrors((prevErrors) => ({
@@ -61,7 +59,7 @@ const UpdateProfile = () => {
             updateNewUsername: usernameNew,
             updatePassword: password,
           }));
-        } else setIsAuthenticated(false);
+        } else setUserData({});
       });
   };
 
