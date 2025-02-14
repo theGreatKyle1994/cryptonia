@@ -5,7 +5,7 @@ import axios from "axios";
 import "./LoginRegForm.css";
 
 const LoginRegForm = () => {
-  const { setIsAuthenticated } = useContext(globalContext);
+  const { setUserData } = useContext(globalContext);
   const navigate = useNavigate();
   const [errors, setErrors] = useState({
     loginUsername: undefined,
@@ -47,7 +47,7 @@ const LoginRegForm = () => {
           "userData",
           JSON.stringify({ username: res.data.username })
         );
-        setIsAuthenticated(true);
+        setUserData({ username: res.data.username });
         navigate("/");
       })
       .catch((err) => {
@@ -82,7 +82,7 @@ const LoginRegForm = () => {
           "userData",
           JSON.stringify({ username: res.data.username })
         );
-        setIsAuthenticated(true);
+        setUserData({ username: res.data.username });
         navigate("/");
       })
       .catch((err) => {

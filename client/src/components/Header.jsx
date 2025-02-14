@@ -4,13 +4,12 @@ import { globalContext } from "../App";
 import "./Header.css";
 
 const Header = () => {
-  const { isAuthenticated, currentPath, setIsAuthenticated, userData } =
-    useContext(globalContext);
+  const { currentPath, userData, setUserData } = useContext(globalContext);
   const navigate = useNavigate();
 
   const logout = () => {
     sessionStorage.clear();
-    setIsAuthenticated(false);
+    setUserData({});
     navigate("/home");
   };
 
@@ -18,15 +17,15 @@ const Header = () => {
     <header>
       <h1>Cryptonia</h1>
       <nav>
-        {isAuthenticated && (
+        {userData.username && (
           <span id="welcome-user">Signed-In: {userData.username}</span>
         )}
-        {currentPath.pathname == "/home" && !isAuthenticated && (
+        {currentPath.pathname == "/home" && !userData.username && (
           <Link to={"/login-reg"}>
             <button type="submit">Login | Register</button>
           </Link>
         )}
-        {currentPath.pathname == "/home" && isAuthenticated && (
+        {currentPath.pathname == "/home" && userData.username && (
           <>
             <Link to={"/favorites"}>
               <button type="submit">Favorites</button>
@@ -37,7 +36,7 @@ const Header = () => {
             <button onClick={logout}>Logout</button>
           </>
         )}
-        {currentPath.pathname == "/favorites" && isAuthenticated && (
+        {currentPath.pathname == "/favorites" && userData.username && (
           <>
             <Link to={"/home"}>
               <button type="submit">Home</button>

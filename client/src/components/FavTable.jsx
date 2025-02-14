@@ -1,13 +1,11 @@
 import CryptoTable from "./CryptoTable";
-import { useNavigate } from "react-router-dom";
 import { filterTable, filterFavs } from "../utilities/tableSorting";
 import { useEffect, useState, useContext } from "react";
 import { globalContext } from "../App";
 
 const FavTable = () => {
-  const { cryptoData, favoriteList, userData, currentFilter } =
+  const { cryptoData, favoriteList, currentFilter } =
     useContext(globalContext);
-  const navigate = useNavigate();
   const [filteredData, setFilteredData] = useState(
     filterTable(currentFilter, filterFavs(favoriteList, cryptoData))
   );

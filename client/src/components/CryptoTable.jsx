@@ -8,9 +8,8 @@ const CryptoTable = ({ cryptoData }) => {
     modal,
     setModal,
     favoriteList,
-    isAuthenticated,
-    setIsAuthenticated,
     getFavData,
+    userData,
     setCurrentFilter,
     currentFilter,
   } = useContext(globalContext);
@@ -47,26 +46,22 @@ const CryptoTable = ({ cryptoData }) => {
     const adjustFavList = async (cryptoId, action) => {
       switch (action) {
         case "remove":
-          await axios
-            .put(
-              `${import.meta.env.VITE_BACKEND_URL}/api/user/fav`,
-              { fav: cryptoId },
-              {
-                withCredentials: true,
-              }
-            )
-            .catch(() => setIsAuthenticated(false));
+          await axios.put(
+            `${import.meta.env.VITE_BACKEND_URL}/api/user/fav`,
+            { fav: cryptoId },
+            {
+              withCredentials: true,
+            }
+          );
           break;
         case "add":
-          await axios
-            .post(
-              `${import.meta.env.VITE_BACKEND_URL}/api/user/fav`,
-              {
-                fav: cryptoId,
-              },
-              { withCredentials: true }
-            )
-            .catch(() => setIsAuthenticated(false));
+          await axios.post(
+            `${import.meta.env.VITE_BACKEND_URL}/api/user/fav`,
+            {
+              fav: cryptoId,
+            },
+            { withCredentials: true }
+          );
           break;
       }
       getFavData();
@@ -94,7 +89,7 @@ const CryptoTable = ({ cryptoData }) => {
             <th onClick={() => filterHandler("change")}>
               24hr Change {symbols.change}
             </th>
-            {isAuthenticated && <th id="actions-tab">Actions</th>}
+            {userData.username && <th id="actions-tab">Actions</th>}
           </tr>
         </thead>
       </table>
@@ -121,7 +116,7 @@ const CryptoTable = ({ cryptoData }) => {
                     >
                       {Number(crypto.changePercent24Hr).toFixed(2)}
                     </td>
-                    {isAuthenticated && favoriteList && (
+                    {userData.username && favoriteList && (
                       <td>
                         <button onClick={(e) => favoriteHandler(e, crypto)}>
                           {favoriteList && favoriteList.includes(crypto.id)
