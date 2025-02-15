@@ -86,7 +86,8 @@ const App = () => {
           path="/favorites"
           element={checkAuth() ? <FavTable /> : <Navigate to="/" />}
         />
-        <Route path="/login-reg" element={<LoginRegForm />} />
+        <Route path="/login" element={<LoginRegForm />} />
+        <Route path="/register" element={<LoginRegForm />} />
         <Route
           path="/profile"
           element={checkAuth() ? <UpdateProfile /> : <Navigate to="/" />}

@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { globalContext } from "../App";
 import "./Header.css";
 
@@ -22,8 +22,8 @@ const Header = () => {
         )}
         <div>
           {currentPath.pathname == "/home" && !userData && (
-            <Link to={"/login-reg"}>
-              <button type="submit">Login | Register</button>
+            <Link to={"/login"}>
+              <button type="submit">Login</button>
             </Link>
           )}
           {currentPath.pathname == "/home" && userData && (
@@ -48,7 +48,12 @@ const Header = () => {
               <button onClick={logout}>Logout</button>
             </>
           )}
-          {currentPath.pathname == "/login-reg" && (
+          {currentPath.pathname == "/login" && (
+            <Link to={"/home"}>
+              <button type="submit">Home</button>
+            </Link>
+          )}
+          {currentPath.pathname == "/register" && (
             <Link to={"/home"}>
               <button type="submit">Home</button>
             </Link>
