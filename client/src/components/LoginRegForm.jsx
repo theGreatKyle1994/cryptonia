@@ -45,7 +45,7 @@ const LoginRegForm = () => {
         setter: setUserData,
         callback: (res) => ({ username: res.username }),
       },
-      navigate: { callback: navigate, location: "/" },
+      navigate: { navigator: navigate, location: "/" },
       error: {
         setter: setFormData,
         callback: (err) => ({

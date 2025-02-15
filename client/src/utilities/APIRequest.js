@@ -7,7 +7,7 @@ export default async function APIRequest({
   withCredentials = false,
   session = { name: "", callback: () => {} },
   state = { setter: () => {}, callback: () => {} },
-  navigate = { callback: () => {}, location: "" },
+  navigate = { navigator: () => {}, location: "" },
   error = { setter: () => {}, callback: () => {} },
 } = {}) {
   await axios({
@@ -24,7 +24,7 @@ export default async function APIRequest({
           JSON.stringify(session.callback(res.data))
         );
       if (state) state.setter(state.callback(res.data));
-      if (navigate) navigate.callback(navigate.location);
+      if (navigate) navigate.navigator(navigate.location);
     })
     .catch((err) => {
       console.log(err);
