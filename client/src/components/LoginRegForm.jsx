@@ -1,6 +1,7 @@
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { globalContext } from "../App";
+import APIRequest from "../utilities/APIRequest";
 import axios from "axios";
 import "./LoginRegForm.css";
 
@@ -33,31 +34,19 @@ const LoginRegForm = () => {
   const loginSubmitHandler = async (e) => {
     e.preventDefault();
     const { loginUsername: username, loginPassword: password } = formInput;
-    await axios
-      .post(
-        `${import.meta.env.VITE_BACKEND_URL}/api/user/login`,
-        {
-          username,
-          password,
-        },
-        { withCredentials: true }
-      )
-      .then((res) => {
-        sessionStorage.setItem(
-          "userData",
-          JSON.stringify({ username: res.data.username })
-        );
-        setUserData({ username: res.data.username });
-        navigate("/");
-      })
-      .catch((err) => {
-        const { username, password } = err.response.data.error.errors;
-        setErrors((prevErrors) => ({
-          ...prevErrors,
-          loginUsername: username,
-          loginPassword: password,
-        }));
-      });
+    await APIRequest({
+      method: "post",
+      route: "/api/user/login",
+      data: { username, password },
+      withCredentials: true,
+      session: ["userData", (res) => ({ username: res.username })],
+      state: [setUserData, (res) => ({ username: res.username })],
+      navigate: [navigate, "/"],
+      error: [
+        setErrors,
+        (err) => ({ loginUsername: err.username, loginPassword: err.password }),
+      ],
+    });
   };
 
   const regSubmitHandler = async (e) => {
