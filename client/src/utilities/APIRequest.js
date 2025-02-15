@@ -29,9 +29,12 @@ export default async function APIRequest({
     .catch((err) => {
       console.log(err);
       if (error)
-        error.setter((prevErrors) => ({
-          ...prevErrors,
-          ...error.callback(err.response.data.error.errors),
+        error.setter((prevData) => ({
+          ...prevData,
+          errors: {
+            ...prevData.errors,
+            ...error.callback(err.response.data.error.errors),
+          },
         }));
     });
 }

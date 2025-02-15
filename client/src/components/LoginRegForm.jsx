@@ -7,32 +7,34 @@ import "./LoginRegForm.css";
 const LoginRegForm = () => {
   const { setUserData } = useContext(globalContext);
   const navigate = useNavigate();
-  const [errors, setErrors] = useState({
-    loginUsername: undefined,
-    loginPassword: undefined,
-    regUsername: undefined,
-    regPassword: undefined,
-    regConfirmPassword: undefined,
-  });
-  const [formInput, setFormInput] = useState({
-    loginUsername: "",
-    loginPassword: "",
-    regUsername: "",
-    regPassword: "",
-    regConfirmPassword: "",
+  const [formData, setFormData] = useState({
+    input: {
+      loginUsername: "",
+      loginPassword: "",
+      regUsername: "",
+      regPassword: "",
+      regConfirmPassword: "",
+    },
+    errors: {
+      loginUsername: undefined,
+      loginPassword: undefined,
+      regUsername: undefined,
+      regPassword: undefined,
+      regConfirmPassword: undefined,
+    },
   });
 
   const inputHandler = (e) => {
     const { name, value } = e.target;
-    setFormInput((prevFormInput) => ({
-      ...prevFormInput,
-      [name]: value,
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      input: { ...prevFormData.input, [name]: value },
     }));
   };
 
   const loginSubmitHandler = async (e) => {
     e.preventDefault();
-    const { loginUsername: username, loginPassword: password } = formInput;
+    const { loginUsername: username, loginPassword: password } = formData.input;
     await APIRequest({
       method: "post",
       route: "/api/user/login",
@@ -48,7 +50,7 @@ const LoginRegForm = () => {
       },
       navigate: { callback: navigate, location: "/" },
       error: {
-        setter: setErrors,
+        setter: setFormData,
         callback: (err) => ({
           loginUsername: err.username,
           loginPassword: err.password,
@@ -63,7 +65,7 @@ const LoginRegForm = () => {
       regUsername: username,
       regPassword: password,
       regConfirmPassword: confirmPassword,
-    } = formInput;
+    } = formData.input;
     await APIRequest({
       method: "post",
       route: "/api/user/register",
@@ -79,7 +81,7 @@ const LoginRegForm = () => {
       },
       navigate: { callback: navigate, location: "/" },
       error: {
-        setter: setErrors,
+        setter: setFormData,
         callback: (err) => ({
           regUsername: err.username,
           regPassword: err.password,
@@ -93,8 +95,10 @@ const LoginRegForm = () => {
     <div id="login-reg-container">
       <form onSubmit={loginSubmitHandler} className="form-container">
         <h2>Login</h2>
-        {errors.loginUsername && (
-          <div className="form-error">{errors.loginUsername.message}</div>
+        {formData.errors.loginUsername && (
+          <div className="form-error">
+            {formData.errors.loginUsername.message}
+          </div>
         )}
         <div className="form-input-container">
           <label htmlFor="login-username">Username:</label>
@@ -103,11 +107,13 @@ const LoginRegForm = () => {
             name="loginUsername"
             type="text"
             onChange={inputHandler}
-            value={formInput.loginUsername}
+            value={formData.input.loginUsername}
           />
         </div>
-        {errors.loginPassword && (
-          <div className="form-error">{errors.loginPassword.message}</div>
+        {formData.errors.loginPassword && (
+          <div className="form-error">
+            {formData.errors.loginPassword.message}
+          </div>
         )}
         <div className="form-input-container">
           <label htmlFor="login-password">Password:</label>
@@ -116,15 +122,17 @@ const LoginRegForm = () => {
             name="loginPassword"
             type="password"
             onChange={inputHandler}
-            value={formInput.loginPassword}
+            value={formData.input.loginPassword}
           />
         </div>
         <button>Login</button>
       </form>
       <form onSubmit={regSubmitHandler} className="form-container">
         <h2>Register</h2>
-        {errors.regUsername && (
-          <div className="form-error">{errors.regUsername.message}</div>
+        {formData.errors.regUsername && (
+          <div className="form-error">
+            {formData.errors.regUsername.message}
+          </div>
         )}
         <div className="form-input-container">
           <label htmlFor="reg-username">Username:</label>
@@ -133,11 +141,13 @@ const LoginRegForm = () => {
             name="regUsername"
             type="text"
             onChange={inputHandler}
-            value={formInput.regUsername}
+            value={formData.input.regUsername}
           />
         </div>
-        {errors.regPassword && (
-          <div className="form-error">{errors.regPassword.message}</div>
+        {formData.errors.regPassword && (
+          <div className="form-error">
+            {formData.errors.regPassword.message}
+          </div>
         )}
         <div className="form-input-container">
           <label htmlFor="reg-password">Password:</label>
@@ -146,11 +156,13 @@ const LoginRegForm = () => {
             name="regPassword"
             type="password"
             onChange={inputHandler}
-            value={formInput.regPassword}
+            value={formData.input.regPassword}
           />
         </div>
-        {errors.regConfirmPassword && (
-          <div className="form-error">{errors.regConfirmPassword.message}</div>
+        {formData.errors.regConfirmPassword && (
+          <div className="form-error">
+            {formData.errors.regConfirmPassword.message}
+          </div>
         )}
         <div className="form-input-container">
           <label htmlFor="reg-confirm-password">Confirm Password:</label>
@@ -159,7 +171,7 @@ const LoginRegForm = () => {
             name="regConfirmPassword"
             type="password"
             onChange={inputHandler}
-            value={formInput.regConfirmPassword}
+            value={formData.input.regConfirmPassword}
           />
         </div>
         <button>Register</button>
