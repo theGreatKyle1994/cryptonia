@@ -2,7 +2,8 @@
   border: 1px solid black;
   display: flex;
   flex-direction: column;
-  width: 70vw;
+  width: 80%;
+  max-width: 700px;
   background-color: var(--tertiary-color);
   backdrop-filter: blur(10px);
   border-radius: 5px;

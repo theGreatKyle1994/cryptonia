@@ -32,7 +32,9 @@ const LoginRegForm = () => {
     const { username, password, confirmPassword } = formData;
     await APIRequest({
       method: "post",
-      route: "/api/user/register",
+      route: `/api/user/${
+        location.pathname == "/login" ? "login" : "register"
+      }`,
       data: { username, password, confirmPassword },
       withCredentials: true,
       session: {
@@ -47,9 +49,9 @@ const LoginRegForm = () => {
       error: {
         setter: setFormData,
         callback: (err) => ({
-          username: err.username,
-          password: err.password,
-          confirmPassword: err.confirmPassword,
+          username: err.username?.message,
+          password: err.password?.message,
+          confirmPassword: err.confirmPassword?.message,
         }),
       },
     });
@@ -69,6 +71,7 @@ const LoginRegForm = () => {
           type="text"
           onChange={inputHandler}
           value={formData.username}
+          autoComplete="username"
         />
       </div>
       {formData.errors.password && (
@@ -82,6 +85,7 @@ const LoginRegForm = () => {
           type="password"
           onChange={inputHandler}
           value={formData.password}
+          autoComplete="current-password"
         />
       </div>
       {formData.errors.confirmPassword && location.pathname == "/register" && (
@@ -96,6 +100,7 @@ const LoginRegForm = () => {
             type="password"
             onChange={inputHandler}
             value={formData.confirmPassword}
+            autoComplete="off"
           />
         </div>
       )}
@@ -107,7 +112,15 @@ const LoginRegForm = () => {
               : "Already have an account?"
           }`}
         </span>
-        <Link to={`${location.pathname == "/login" ? "/register" : "/login"}`}>
+        <Link
+          onClick={() =>
+            setFormData((prevData) => ({
+              ...prevData,
+              errors: { username: "", password: "", confirmPassword: "" },
+            }))
+          }
+          to={`${location.pathname == "/login" ? "/register" : "/login"}`}
+        >
           {`${location.pathname == "/login" ? "Register" : "Login"}`}
         </Link>
         <button>
