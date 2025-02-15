@@ -2,7 +2,6 @@ import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { globalContext } from "../App";
 import APIRequest from "../utilities/APIRequest";
-import axios from "axios";
 import "./LoginRegForm.css";
 
 const LoginRegForm = () => {
@@ -39,13 +38,22 @@ const LoginRegForm = () => {
       route: "/api/user/login",
       data: { username, password },
       withCredentials: true,
-      session: ["userData", (res) => ({ username: res.username })],
-      state: [setUserData, (res) => ({ username: res.username })],
-      navigate: [navigate, "/"],
-      error: [
-        setErrors,
-        (err) => ({ loginUsername: err.username, loginPassword: err.password }),
-      ],
+      session: {
+        name: "userData",
+        callback: (res) => ({ username: res.username }),
+      },
+      state: {
+        setter: setUserData,
+        callback: (res) => ({ username: res.username }),
+      },
+      navigate: { callback: navigate, location: "/" },
+      error: {
+        setter: setErrors,
+        callback: (err) => ({
+          loginUsername: err.username,
+          loginPassword: err.password,
+        }),
+      },
     });
   };
 
@@ -56,34 +64,29 @@ const LoginRegForm = () => {
       regPassword: password,
       regConfirmPassword: confirmPassword,
     } = formInput;
-    await axios
-      .post(
-        `${import.meta.env.VITE_BACKEND_URL}/api/user/register`,
-        {
-          username,
-          password,
-          confirmPassword,
-        },
-        { withCredentials: true }
-      )
-      .then((res) => {
-        sessionStorage.setItem(
-          "userData",
-          JSON.stringify({ username: res.data.username })
-        );
-        setUserData({ username: res.data.username });
-        navigate("/");
-      })
-      .catch((err) => {
-        const { username, password, confirmPassword } =
-          err.response.data.error.errors;
-        setErrors((prevErrors) => ({
-          ...prevErrors,
-          regUsername: username,
-          regPassword: password,
-          regConfirmPassword: confirmPassword,
-        }));
-      });
+    await APIRequest({
+      method: "post",
+      route: "/api/user/register",
+      data: { username, password, confirmPassword },
+      withCredentials: true,
+      session: {
+        name: "userData",
+        callback: (res) => ({ username: res.username }),
+      },
+      state: {
+        setter: setUserData,
+        callback: (res) => ({ username: res.username }),
+      },
+      navigate: { callback: navigate, location: "/" },
+      error: {
+        setter: setErrors,
+        callback: (err) => ({
+          regUsername: err.username,
+          regPassword: err.password,
+          regConfirmPassword: err.confirmPassword,
+        }),
+      },
+    });
   };
 
   return (

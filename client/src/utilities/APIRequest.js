@@ -1,39 +1,37 @@
 import axios from "axios";
 
-export default async function APIRequest(
-  config = {
-    method: "get",
-    route: "/",
-    data: {},
-    withCredentials: false,
-    session: [],
-    state: [],
-    navigate: [],
-    error: [],
-  }
-) {
+export default async function APIRequest({
+  method = "get",
+  route = "/",
+  data = {},
+  withCredentials = false,
+  session = { name: "", callback: () => {} },
+  state = { setter: () => {}, callback: () => {} },
+  navigate = { callback: () => {}, location: "" },
+  error = { setter: () => {}, callback: () => {} },
+} = {}) {
   await axios({
-    method: config.method,
-    url: `${import.meta.env.VITE_BACKEND_URL}${config.route}`,
-    data: config.data,
-    withCredentials: config.withCredentials,
+    method: method,
+    url: `${import.meta.env.VITE_BACKEND_URL}${route}`,
+    data: data,
+    withCredentials: withCredentials,
   })
     .then((res) => {
       console.log(res);
-      if (config.session)
+      if (session)
         sessionStorage.setItem(
-          config.session[0],
-          JSON.stringify(config.session[1](res.data))
+          session.name,
+          JSON.stringify(session.callback(res.data))
         );
-      if (config.state) config.state[0](config.state[1](res.data));
-      if (config.navigate) config.navigate[0](config.navigate[1]);
+      if (state) state.setter(state.callback(res.data));
+      if (navigate) navigate.callback(navigate.location);
     })
     .catch((err) => {
       console.log(err);
-      if (config.error)
-        config.error[0]((prevErrors) => ({
+      if (error)
+        error.setter((prevErrors) => ({
           ...prevErrors,
-          ...config.error[1](err.response.data.error.errors),
+          ...error.callback(err.response.data.error.errors),
         }));
     });
 }
