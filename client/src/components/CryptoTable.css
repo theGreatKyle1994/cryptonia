@@ -2,6 +2,10 @@
   width: 60vw;
 }
 
+h3 {
+  margin-top: 20px;
+}
+
 table {
   text-align: center;
   border-collapse: collapse;
@@ -109,6 +113,9 @@ td:not(:last-child) {
 }
 
 @media screen and (max-width: 500px) {
+  #table-scroll-container {
+    max-height: 60vh;
+  }
   td button {
     padding: 3px;
   }
@@ -117,7 +124,10 @@ td:not(:last-child) {
   }
 }
 
-@media screen and (min-width: 501px) and (max-width: 1000px) {
+@media screen and (min-width: 501px) and (max-width: 1500px) {
+  #table-scroll-container {
+    max-height: 60vh;
+  }
   #table-container {
     width: 85vw;
   }

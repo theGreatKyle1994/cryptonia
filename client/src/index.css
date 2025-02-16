@@ -4,7 +4,7 @@
   --main-color: #226fd4b4;
   --secondary-color: #2a91f180;
   --tertiary-color: #4d4aff46;
-  font-size: 0.75vw;
+  font-size: 1.15em;
 }
 
 * {
@@ -46,20 +46,9 @@
   );
 }
 
-h2 {
-  width: 60vw;
-  margin: 25px;
-  font-size: 2rem;
-}
-
-h3 {
-  margin-top: 20px;
-}
-
 button {
   background-color: var(--main-color);
   padding: 7px 10px;
-  margin-right: 5px;
   border: 1px solid black;
   font-size: 0.8rem;
   font-weight: 800;
@@ -74,14 +63,9 @@ button:active {
   transform: scale(0.98);
 }
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 650px) {
   :root {
-    font-size: 2.4vw;
-  }
-  h2 {
-    width: 100vw;
-    text-align: center;
-    margin: 10px 0;
+    font-size: 0.6rem;
   }
   button {
     font-size: 0.9rem;
@@ -89,11 +73,8 @@ button:active {
   }
 }
 
-@media screen and (min-width: 501px) and (max-width: 1000px) {
+@media screen and (min-width: 651px) and (max-width: 1500px) {
   :root {
-    font-size: 1.5vw;
-  }
-  h2 {
-    width: 90vw;
+    font-size: 0.9rem;
   }
 }

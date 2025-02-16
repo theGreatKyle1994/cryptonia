@@ -1,48 +1,37 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { globalContext } from "../App";
-import { useState, useContext, useEffect } from "react";
+import { useState, useEffect } from "react";
 
-const UpdateProfile = () => {
-  const { setUserData } = useContext(globalContext);
+const UpdateProfile = ({ setUserData }) => {
   const navigate = useNavigate();
-  const [errors, setErrors] = useState({
-    updateUsername: undefined,
-    updateNewUsername: undefined,
-    updatePassword: undefined,
-  });
-  const [successMsg, setSuccessMsg] = useState({
-    updateNewUsername: undefined,
-  });
-  const [formInput, setFormInput] = useState({
-    updateUsername: "",
-    updateNewUsername: "",
-    updatePassword: "",
+  const [formData, setFormData] = useState({
+    username: "",
+    newUsername: "",
+    password: "",
+    errors: {
+      username: "",
+      newUsername: "",
+      password: "",
+    },
+    success: {
+      newUsername: "",
+    },
   });
 
   const changeSubmitHandler = async (e) => {
     e.preventDefault();
-    const { updateUsername, updateNewUsername, updatePassword } = formInput;
+    const { username, newUsername, password } = formData;
     await axios
       .put(
         `${import.meta.env.VITE_BACKEND_URL}/api/user/update`,
-        {
-          username: updateUsername,
-          usernameNew: updateNewUsername,
-          password: updatePassword,
-        },
+        { username, newUsername, password },
         { withCredentials: true }
       )
       .then((res) => {
-        setSuccessMsg((prevSuccessMsgs) => ({
-          ...prevSuccessMsgs,
-          updateNewUsername: res.data.usernameNew,
-        }));
-        setErrors((prevErrors) => ({
-          ...prevErrors,
-          updateUsername: undefined,
-          updateNewUsername: undefined,
-          updatePassword: undefined,
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          errors: { username: "", newUsername: "", password: "" },
+          success: { newUsername: res.data.newUsername },
         }));
         setUserData({ username: res.data.username });
         sessionStorage.setItem(
@@ -51,13 +40,15 @@ const UpdateProfile = () => {
         );
       })
       .catch((err) => {
-        if (err.response.data.error) {
-          const { username, usernameNew, password } = err.response.data.error;
-          setErrors((prevErrors) => ({
-            ...prevErrors,
-            updateUsername: username,
-            updateNewUsername: usernameNew,
-            updatePassword: password,
+        if (err.response.data?.error) {
+          const { username, newUsername, password } = err.response.data.error;
+          setFormData((prevFormData) => ({
+            ...prevFormData,
+            errors: {
+              username: username?.message,
+              newUsername: newUsername?.message,
+              password: password?.message,
+            },
           }));
         } else setUserData(undefined);
       });
@@ -65,7 +56,7 @@ const UpdateProfile = () => {
 
   const inputHandler = (e) => {
     const { name, value } = e.target;
-    setFormInput((prevFormInput) => ({ ...prevFormInput, [name]: value }));
+    setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
   };
 
   useEffect(() => {
@@ -76,51 +67,53 @@ const UpdateProfile = () => {
   }, []);
 
   return (
-    <form onSubmit={changeSubmitHandler} className="form-container">
+    <form onSubmit={changeSubmitHandler} id="form-container">
       <h2>Update Username</h2>
-      {successMsg.updateNewUsername && (
-        <div className="form-success">{successMsg.updateNewUsername}</div>
+      {formData.success.newUsername && (
+        <div className="form-success">{formData.success.newUsername}</div>
       )}
-      {errors.updateUsername && (
-        <div className="form-error">{errors.updateUsername.message}</div>
+      {formData.errors.username && (
+        <div className="form-error">{formData.errors.username}</div>
       )}
       <div className="form-input-container">
         <label htmlFor="login-username">Current Username:</label>
         <input
           id="login-username"
-          name="updateUsername"
+          name="username"
           type="text"
           onChange={inputHandler}
-          value={formInput.updateUsername}
+          value={formData.username}
         />
       </div>
-      {errors.updateNewUsername && (
-        <div className="form-error">{errors.updateNewUsername.message}</div>
+      {formData.errors.newUsername && (
+        <div className="form-error">{formData.errors.newUsername}</div>
       )}
       <div className="form-input-container">
         <label htmlFor="login-username-new">New Username:</label>
         <input
           id="login-username-new"
-          name="updateNewUsername"
+          name="newUsername"
           type="text"
           onChange={inputHandler}
-          value={formInput.updateNewUsername}
+          value={formData.newUsername}
         />
       </div>
-      {errors.updatePassword && (
-        <div className="form-error">{errors.updatePassword.message}</div>
+      {formData.errors.password && (
+        <div className="form-error">{formData.errors.password}</div>
       )}
       <div className="form-input-container">
         <label htmlFor="login-password">Current Password:</label>
         <input
           id="login-password"
-          name="updatePassword"
+          name="password"
           type="password"
           onChange={inputHandler}
-          value={formInput.updatePassword}
+          value={formData.password}
         />
       </div>
-      <button>Change Username</button>
+      <div id="button-container">
+        <button>Change Username</button>
+      </div>
     </form>
   );
 };

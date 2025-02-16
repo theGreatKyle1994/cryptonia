@@ -1,20 +1,19 @@
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useState, useContext } from "react";
-import { globalContext } from "../App";
+import { useState } from "react";
 import "./CryptoTable.css";
 
-const CryptoTable = ({ cryptoData }) => {
-  const {
-    modal,
-    setModal,
-    favoriteList,
-    getFavData,
-    userData,
-    setUserData,
-    setCurrentFilter,
-    currentFilter,
-  } = useContext(globalContext);
+const CryptoTable = ({
+  cryptoData,
+  favoriteList,
+  currentFilter,
+  setCurrentFilter,
+  modal,
+  setModal,
+  getFavData,
+  userData,
+  setUserData,
+}) => {
   const [symbols, setSymbols] = useState({});
   const navigate = useNavigate();
   const location = useLocation();
@@ -45,50 +44,19 @@ const CryptoTable = ({ cryptoData }) => {
     symbolHandler(newFilter);
   };
 
-  const favoriteHandler = (e, crypto) => {
+  const favoriteHandler = async (e, crypto) => {
     e.stopPropagation();
-    const adjustFavList = async (cryptoId, action) => {
-      switch (action) {
-        case "remove":
-          await axios
-            .put(
-              `${import.meta.env.VITE_BACKEND_URL}/api/user/fav`,
-              { fav: cryptoId },
-              {
-                withCredentials: true,
-              }
-            )
-            .catch(() => {
-              sessionStorage.clear();
-              setUserData(undefined);
-              navigate("/login-reg");
-            });
-          break;
-        case "add":
-          await axios
-            .post(
-              `${import.meta.env.VITE_BACKEND_URL}/api/user/fav`,
-              {
-                fav: cryptoId,
-              },
-              { withCredentials: true }
-            )
-            .catch(() => {
-              sessionStorage.clear();
-              setUserData(undefined);
-              navigate("/login-reg");
-            });
-          break;
-      }
-      getFavData();
-    };
-    favoriteList.includes(crypto.id)
-      ? adjustFavList(crypto.id, "remove")
-      : adjustFavList(crypto.id, "add");
+    await axios[`${favoriteList.includes(crypto.id) ? "put" : "post"}`](
+      `${import.meta.env.VITE_BACKEND_URL}/api/user/fav`,
+      { fav: crypto.id },
+      { withCredentials: true }
+    ).catch(() => {
+      sessionStorage.clear();
+      setUserData(undefined);
+      navigate("/login");
+    });
+    getFavData();
   };
-
-  const selectionHandler = (crypto) =>
-    setModal({ isEnabled: true, id: crypto.id });
 
   return (
     <div id="table-container">
@@ -117,7 +85,7 @@ const CryptoTable = ({ cryptoData }) => {
                 cryptoData.map((crypto) => (
                   <tr
                     key={Math.random()}
-                    onClick={() => selectionHandler(crypto)}
+                    onClick={() => setModal({ id: crypto.id })}
                     id={modal.id == crypto.id ? "row-selected" : ""}
                   >
                     <td>{crypto.name}</td>

@@ -1,14 +1,9 @@
-#login-reg-container {
-  width: 70vw;
-  display: flex;
-  justify-content: space-between;
-}
-
-.form-container {
+#form-container {
   border: 1px solid black;
   display: flex;
   flex-direction: column;
-  width: 30vw;
+  width: 80%;
+  max-width: 700px;
   background-color: var(--tertiary-color);
   backdrop-filter: blur(10px);
   border-radius: 5px;
@@ -19,6 +14,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 0 10px;
 }
 
 input {
@@ -44,9 +40,8 @@ form h2 {
   background-color: var(--secondary-color);
   width: 100%;
   margin: 0 0 20px 0;
-  padding: 20px 0 20px 30px;
-  padding-left: 30px;
-  height: 5vh;
+  padding: 20px 0 20px 20px;
+  height: 75px;
   border-radius: 5px 5px 0 0;
   border-bottom: 1px solid black;
   background: radial-gradient(
@@ -54,11 +49,6 @@ form h2 {
     rgba(255, 255, 255, 0) 50%,
     rgba(0, 0, 0, 0.1) 100%
   );
-}
-
-form button {
-  align-self: flex-end;
-  margin: 20px;
 }
 
 .form-error {
@@ -82,20 +72,29 @@ form button {
   content: "- ";
 }
 
+#button-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: right;
+}
+
+#button-container span {
+  padding-right: 5px;
+}
+
+#button-container button {
+  align-self: flex-end;
+  margin: 20px 20px 20px 10px;
+}
+
 @media screen and (max-width: 500px) {
-  #login-reg-container {
-    width: 100vw;
-    flex-direction: column;
-    align-items: center;
-  }
-  .form-container {
-    width: 90vw;
-  }
-  .form-container:last-child {
-    margin: 20px 0;
+  form h2 {
+    height: 25px;
   }
   .form-input-container {
     flex-direction: column;
+    padding: 0;
   }
   .form-error,
   .form-success {
@@ -112,19 +111,12 @@ form button {
 }
 
 @media screen and (min-width: 501px) and (max-width: 1000px) {
-  #login-reg-container {
-    width: 100vw;
-    flex-direction: column;
-    align-items: center;
-  }
-  .form-container {
-    width: 70vw;
-  }
-  .form-container:last-child {
-    margin: 40px 0;
+  form h2 {
+    height: 50px;
   }
   .form-input-container {
     flex-direction: column;
+    padding: 0;
   }
   .form-error,
   .form-success {

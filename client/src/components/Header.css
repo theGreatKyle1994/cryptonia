@@ -1,17 +1,22 @@
 header {
-  width: 100vw;
-  height: 7vh;
+  width: 100%;
   background-color: var(--tertiary-color);
   display: flex;
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid black;
-  padding: 25px 0;
 }
 
 h1 {
   margin-left: 20px;
   font-size: 3rem;
+  padding: 10px 0;
+}
+
+h2 {
+  width: 60vw;
+  margin: 25px;
+  font-size: 2rem;
 }
 
 nav {
@@ -20,22 +25,34 @@ nav {
   margin-right: 20px;
 }
 
+nav button {
+  margin-right: 5px;
+}
+
 #welcome-user {
   vertical-align: middle;
   font-size: 1.25rem;
   padding-right: 10px;
 }
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 650px) {
   nav {
     display: flex;
     flex-direction: column;
     padding-bottom: 5px;
+  }
+  h2 {
+    width: 100vw;
+    text-align: center;
+    margin: 10px 0;
   }
   #welcome-user {
     padding: 5px 0;
   }
 }
 
-@media screen and (min-width: 501px) and (max-width: 1000px) {
+@media screen and (min-width: 651px) and (max-width: 1500px) {
+  h2 {
+    width: 85%;
+  }
 }
