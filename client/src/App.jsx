@@ -7,7 +7,7 @@ import UpdateProfile from "./components/UpdateProfile";
 
 const App = () => {
   const [userData, setUserData] = useState(undefined);
-  const checkAuth = () => (sessionStorage.getItem("userData") ? true : false);
+  const checkAuth = () => sessionStorage.getItem("userData");
 
   return (
     <>
