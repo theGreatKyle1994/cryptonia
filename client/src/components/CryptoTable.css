@@ -120,7 +120,7 @@ td:not(:last-child) {
   }
 }
 
-@media screen and (min-width: 501px) and (max-width: 1000px) {
+@media screen and (min-width: 501px) and (max-width: 1500px) {
   #table-scroll-container {
     max-height: 60vh;
   }
