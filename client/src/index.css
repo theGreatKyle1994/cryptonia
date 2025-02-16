@@ -4,7 +4,7 @@
   --main-color: #226fd4b4;
   --secondary-color: #2a91f180;
   --tertiary-color: #4d4aff46;
-  font-size: 0.75vw;
+  font-size: 1.15em;
 }
 
 * {
@@ -73,9 +73,9 @@ button:active {
   transform: scale(0.98);
 }
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 650px) {
   :root {
-    font-size: 2.4vw;
+    font-size: 0.60rem;
   }
   h2 {
     width: 100vw;
@@ -88,11 +88,11 @@ button:active {
   }
 }
 
-@media screen and (min-width: 501px) and (max-width: 1000px) {
+@media screen and (min-width: 651px) and (max-width: 1000px) {
   :root {
-    font-size: 1.5vw;
+    font-size: 0.9rem;
   }
   h2 {
-    width: 90vw;
+    width: 85%;
   }
 }

@@ -39,9 +39,8 @@ form h2 {
   background-color: var(--secondary-color);
   width: 100%;
   margin: 0 0 20px 0;
-  padding: 20px 0 20px 30px;
-  padding-left: 30px;
-  height: 5vh;
+  padding: 20px 0 20px 20px;
+  height: 75px;
   border-radius: 5px 5px 0 0;
   border-bottom: 1px solid black;
   background: radial-gradient(
@@ -89,6 +88,9 @@ form h2 {
 }
 
 @media screen and (max-width: 500px) {
+  form h2 {
+    height: 25px;
+  }
   .form-input-container {
     flex-direction: column;
   }
@@ -107,6 +109,9 @@ form h2 {
 }
 
 @media screen and (min-width: 501px) and (max-width: 1000px) {
+  form h2 {
+    height: 50px;
+  }
   .form-input-container {
     flex-direction: column;
   }

@@ -1,17 +1,16 @@
 header {
-  width: 100vw;
-  height: 7vh;
+  width: 100%;
   background-color: var(--tertiary-color);
   display: flex;
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid black;
-  padding: 25px 0;
 }
 
 h1 {
   margin-left: 20px;
   font-size: 3rem;
+  padding: 10px 0;
 }
 
 nav {
@@ -26,7 +25,7 @@ nav {
   padding-right: 10px;
 }
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 650px) {
   nav {
     display: flex;
     flex-direction: column;
@@ -35,7 +34,4 @@ nav {
   #welcome-user {
     padding: 5px 0;
   }
-}
-
-@media screen and (min-width: 501px) and (max-width: 1000px) {
 }
