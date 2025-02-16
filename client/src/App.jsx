@@ -41,8 +41,10 @@ const App = () => {
         return "Home";
       case "/favorites":
         return "Favorites";
-      case "/login-reg":
-        return "Login | Register";
+      case "/login":
+        return "Sign-In";
+      case "/register":
+        return "Create an Account";
       case "/profile":
         return "Profile";
     }

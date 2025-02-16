@@ -76,7 +76,7 @@ const UpdateProfile = () => {
   }, []);
 
   return (
-    <form onSubmit={changeSubmitHandler} className="form-container">
+    <form onSubmit={changeSubmitHandler} id="form-container">
       <h2>Update Username</h2>
       {successMsg.updateNewUsername && (
         <div className="form-success">{successMsg.updateNewUsername}</div>
