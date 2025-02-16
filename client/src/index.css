@@ -46,16 +46,6 @@
   );
 }
 
-h2 {
-  width: 60vw;
-  margin: 25px;
-  font-size: 2rem;
-}
-
-h3 {
-  margin-top: 20px;
-}
-
 button {
   background-color: var(--main-color);
   padding: 7px 10px;
@@ -75,12 +65,7 @@ button:active {
 
 @media screen and (max-width: 650px) {
   :root {
-    font-size: 0.60rem;
-  }
-  h2 {
-    width: 100vw;
-    text-align: center;
-    margin: 10px 0;
+    font-size: 0.6rem;
   }
   button {
     font-size: 0.9rem;
@@ -91,8 +76,5 @@ button:active {
 @media screen and (min-width: 651px) and (max-width: 1500px) {
   :root {
     font-size: 0.9rem;
-  }
-  h2 {
-    width: 85%;
   }
 }

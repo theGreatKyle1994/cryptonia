@@ -13,6 +13,12 @@ h1 {
   padding: 10px 0;
 }
 
+h2 {
+  width: 60vw;
+  margin: 25px;
+  font-size: 2rem;
+}
+
 nav {
   display: flex;
   align-items: center;
@@ -35,7 +41,18 @@ nav button {
     flex-direction: column;
     padding-bottom: 5px;
   }
+  h2 {
+    width: 100vw;
+    text-align: center;
+    margin: 10px 0;
+  }
   #welcome-user {
     padding: 5px 0;
+  }
+}
+
+@media screen and (min-width: 651px) and (max-width: 1500px) {
+  h2 {
+    width: 85%;
   }
 }

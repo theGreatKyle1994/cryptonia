@@ -2,6 +2,10 @@
   width: 60vw;
 }
 
+h3 {
+  margin-top: 20px;
+}
+
 table {
   text-align: center;
   border-collapse: collapse;
