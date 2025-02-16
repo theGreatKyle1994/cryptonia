@@ -2,8 +2,7 @@ import { createContext, useEffect, useState } from "react";
 import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import axios from "axios";
 import Header from "./components/Header";
-import HomeTable from "./components/HomeTable";
-import FavTable from "./components/FavTable";
+import Table from "./components/Table";
 import LoginRegForm from "./components/LoginRegForm";
 import CryptoModal from "./components/CryptoModal";
 import UpdateProfile from "./components/UpdateProfile";
@@ -83,10 +82,10 @@ const App = () => {
       <h2>{headerName(currentPath.pathname)}</h2>
       <Routes>
         <Route path="/" element={<Navigate to="/home" />} />
-        <Route path="/home" element={<HomeTable />} />
+        <Route path="/home" element={<Table />} />
         <Route
           path="/favorites"
-          element={checkAuth() ? <FavTable /> : <Navigate to="/" />}
+          element={checkAuth() ? <Table /> : <Navigate to="/" />}
         />
         <Route path="/login" element={<LoginRegForm />} />
         <Route path="/register" element={<LoginRegForm />} />
