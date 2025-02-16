@@ -45,46 +45,18 @@ const CryptoTable = ({ cryptoData }) => {
     symbolHandler(newFilter);
   };
 
-  const favoriteHandler = (e, crypto) => {
+  const favoriteHandler = async (e, crypto) => {
     e.stopPropagation();
-    const adjustFavList = async (cryptoId, action) => {
-      switch (action) {
-        case "remove":
-          await axios
-            .put(
-              `${import.meta.env.VITE_BACKEND_URL}/api/user/fav`,
-              { fav: cryptoId },
-              {
-                withCredentials: true,
-              }
-            )
-            .catch(() => {
-              sessionStorage.clear();
-              setUserData(undefined);
-              navigate("/login-reg");
-            });
-          break;
-        case "add":
-          await axios
-            .post(
-              `${import.meta.env.VITE_BACKEND_URL}/api/user/fav`,
-              {
-                fav: cryptoId,
-              },
-              { withCredentials: true }
-            )
-            .catch(() => {
-              sessionStorage.clear();
-              setUserData(undefined);
-              navigate("/login-reg");
-            });
-          break;
-      }
-      getFavData();
-    };
-    favoriteList.includes(crypto.id)
-      ? adjustFavList(crypto.id, "remove")
-      : adjustFavList(crypto.id, "add");
+    await axios[`${favoriteList.includes(crypto.id) ? "put" : "post"}`](
+      `${import.meta.env.VITE_BACKEND_URL}/api/user/fav`,
+      { fav: crypto.id },
+      { withCredentials: true }
+    ).catch(() => {
+      sessionStorage.clear();
+      setUserData(undefined);
+      navigate("/login");
+    });
+    getFavData();
   };
 
   const selectionHandler = (crypto) =>
