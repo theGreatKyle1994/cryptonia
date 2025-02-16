@@ -74,6 +74,8 @@ const Table = ({ userData, setUserData }) => {
         modal={modal}
         setModal={setModal}
         getFavData={getFavData}
+        userData={userData}
+        setUserData={setUserData}
       />
       <CryptoModal modal={modal} cryptoData={cryptoData} setModal={setModal} />
     </>

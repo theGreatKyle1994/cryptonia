@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useState, useContext } from "react";
-import { globalContext } from "../App";
+import { useState } from "react";
 import "./CryptoTable.css";
 
 const CryptoTable = ({
@@ -12,8 +11,9 @@ const CryptoTable = ({
   modal,
   setModal,
   getFavData,
+  userData,
+  setUserData,
 }) => {
-  const { userData, setUserData } = useContext(globalContext);
   const [symbols, setSymbols] = useState({});
   const navigate = useNavigate();
   const location = useLocation();

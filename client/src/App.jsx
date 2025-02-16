@@ -1,19 +1,17 @@
-import { createContext, useState } from "react";
+import { useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Header from "./components/Header";
 import Table from "./components/Table";
 import LoginRegForm from "./components/LoginRegForm";
 import UpdateProfile from "./components/UpdateProfile";
-export const globalContext = createContext();
 
 const App = () => {
   const [userData, setUserData] = useState(undefined);
-
   const checkAuth = () => (sessionStorage.getItem("userData") ? true : false);
 
   return (
-    <globalContext.Provider value={{ userData, setUserData }}>
-      <Header />
+    <>
+      <Header userData={userData} setUserData={setUserData} />
       <Routes>
         <Route path="/" element={<Navigate to="/home" />} />
         <Route
@@ -30,14 +28,26 @@ const App = () => {
             )
           }
         />
-        <Route path="/login" element={<LoginRegForm />} />
-        <Route path="/register" element={<LoginRegForm />} />
+        <Route
+          path="/login"
+          element={<LoginRegForm setUserData={setUserData} />}
+        />
+        <Route
+          path="/register"
+          element={<LoginRegForm setUserData={setUserData} />}
+        />
         <Route
           path="/profile"
-          element={checkAuth() ? <UpdateProfile /> : <Navigate to="/" />}
+          element={
+            checkAuth() ? (
+              <UpdateProfile setUserData={setUserData} />
+            ) : (
+              <Navigate to="/" />
+            )
+          }
         />
       </Routes>
-    </globalContext.Provider>
+    </>
   );
 };
 

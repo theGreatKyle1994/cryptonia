@@ -1,10 +1,7 @@
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { useContext } from "react";
-import { globalContext } from "../App";
 import "./Header.css";
 
-const Header = () => {
-  const { userData, setUserData } = useContext(globalContext);
+const Header = ({ userData, setUserData }) => {
   const navigate = useNavigate();
   const location = useLocation();
 

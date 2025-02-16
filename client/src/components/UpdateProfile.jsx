@@ -1,10 +1,8 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { globalContext } from "../App";
-import { useState, useContext, useEffect } from "react";
+import { useState, useEffect } from "react";
 
-const UpdateProfile = () => {
-  const { setUserData } = useContext(globalContext);
+const UpdateProfile = ({ setUserData }) => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",

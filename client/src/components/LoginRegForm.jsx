@@ -1,11 +1,9 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import axios from "axios";
-import { globalContext } from "../App";
 import "./LoginRegForm.css";
 
-const LoginRegForm = () => {
-  const { setUserData } = useContext(globalContext);
+const LoginRegForm = ({ setUserData }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [formData, setFormData] = useState({
