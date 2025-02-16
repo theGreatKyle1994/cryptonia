@@ -94,22 +94,22 @@ module.exports.login = async (req, res) => {
 module.exports.updateUser = async (req, res) => {
   await User.findOne({ username: req.body.username }).then(async (user) => {
     if (user) {
-      if (req.body.usernameNew.length < 3) {
+      if (req.body.newUsername.length < 3) {
         return res.status(400).json({
           error: {
-            usernameNew: {
+            newUsername: {
               message: "New username must be at least 3 characters.",
             },
           },
         });
       } else {
         await User.findOne({
-          username: req.body.usernameNew,
+          username: req.body.newUsername,
         }).then(async (prevUser) => {
           if (prevUser) {
             res.status(401).json({
               error: {
-                usernameNew: { message: "Username already taken." },
+                newUsername: { message: "Username already taken." },
               },
             });
           } else {
@@ -125,11 +125,11 @@ module.exports.updateUser = async (req, res) => {
                 } else {
                   await User.findOneAndUpdate(
                     { username: req.body.username },
-                    { username: req.body.usernameNew },
+                    { username: req.body.newUsername },
                     { new: true }
                   ).then((user) => {
                     res.status(200).json({
-                      usernameNew: `You have successfully changed your username to: ${req.body.usernameNew}.`,
+                      newUsername: `You have successfully changed your username to: ${req.body.newUsername}.`,
                       username: user.username,
                     });
                   });
