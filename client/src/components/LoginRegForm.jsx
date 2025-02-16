@@ -75,7 +75,6 @@ const LoginRegForm = () => {
           type="text"
           onChange={inputHandler}
           value={formData.username}
-          autoComplete="username"
         />
       </div>
       {formData.errors.password && (
@@ -89,7 +88,6 @@ const LoginRegForm = () => {
           type="password"
           onChange={inputHandler}
           value={formData.password}
-          autoComplete="current-password"
         />
       </div>
       {formData.errors.confirmPassword && location.pathname == "/register" && (
@@ -104,7 +102,6 @@ const LoginRegForm = () => {
             type="password"
             onChange={inputHandler}
             value={formData.confirmPassword}
-            autoComplete="off"
           />
         </div>
       )}
