@@ -9,7 +9,6 @@ const LoginRegForm = ({ setUserData }) => {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
-    username: "",
     errors: {
       username: "",
       password: "",
