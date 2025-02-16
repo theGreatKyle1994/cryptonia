@@ -1,11 +1,12 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useContext } from "react";
 import { globalContext } from "../App";
 import "./Header.css";
 
 const Header = () => {
-  const { currentPath, userData, setUserData } = useContext(globalContext);
+  const { userData, setUserData } = useContext(globalContext);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const logout = () => {
     sessionStorage.clear();
@@ -21,12 +22,12 @@ const Header = () => {
           <span id="welcome-user">Signed-In: {userData.username}</span>
         )}
         <div>
-          {currentPath.pathname == "/home" && !userData && (
+          {location.pathname == "/home" && !userData && (
             <Link to={"/login"}>
               <button type="submit">Login</button>
             </Link>
           )}
-          {currentPath.pathname == "/home" && userData && (
+          {location.pathname == "/home" && userData && (
             <>
               <Link to={"/favorites"}>
                 <button type="submit">Favorites</button>
@@ -37,7 +38,7 @@ const Header = () => {
               <button onClick={logout}>Logout</button>
             </>
           )}
-          {currentPath.pathname == "/favorites" && userData && (
+          {location.pathname == "/favorites" && userData && (
             <>
               <Link to={"/home"}>
                 <button type="submit">Home</button>
@@ -48,17 +49,17 @@ const Header = () => {
               <button onClick={logout}>Logout</button>
             </>
           )}
-          {currentPath.pathname == "/login" && (
+          {location.pathname == "/login" && (
             <Link to={"/home"}>
               <button type="submit">Home</button>
             </Link>
           )}
-          {currentPath.pathname == "/register" && (
+          {location.pathname == "/register" && (
             <Link to={"/home"}>
               <button type="submit">Home</button>
             </Link>
           )}
-          {currentPath.pathname == "/profile" && (
+          {location.pathname == "/profile" && (
             <>
               <Link to={"/home"}>
                 <button type="submit">Home</button>

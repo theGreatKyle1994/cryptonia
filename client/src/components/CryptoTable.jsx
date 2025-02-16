@@ -4,17 +4,16 @@ import { useState, useContext } from "react";
 import { globalContext } from "../App";
 import "./CryptoTable.css";
 
-const CryptoTable = ({ cryptoData }) => {
-  const {
-    modal,
-    setModal,
-    favoriteList,
-    getFavData,
-    userData,
-    setUserData,
-    setCurrentFilter,
-    currentFilter,
-  } = useContext(globalContext);
+const CryptoTable = ({
+  cryptoData,
+  favoriteList,
+  currentFilter,
+  setCurrentFilter,
+  modal,
+  setModal,
+  getFavData,
+}) => {
+  const { userData, setUserData } = useContext(globalContext);
   const [symbols, setSymbols] = useState({});
   const navigate = useNavigate();
   const location = useLocation();
@@ -59,9 +58,6 @@ const CryptoTable = ({ cryptoData }) => {
     getFavData();
   };
 
-  const selectionHandler = (crypto) =>
-    setModal({ isEnabled: true, id: crypto.id });
-
   return (
     <div id="table-container">
       <table id="table-header">
@@ -89,7 +85,7 @@ const CryptoTable = ({ cryptoData }) => {
                 cryptoData.map((crypto) => (
                   <tr
                     key={Math.random()}
-                    onClick={() => selectionHandler(crypto)}
+                    onClick={() => setModal({ id: crypto.id })}
                     id={modal.id == crypto.id ? "row-selected" : ""}
                   >
                     <td>{crypto.name}</td>
