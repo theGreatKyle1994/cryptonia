@@ -15,11 +15,7 @@ const useAPI = (setUserData) => {
       confirmPassword: "",
       newUsername: "",
     },
-    success: {
-      login: "",
-      register: "",
-      newUsername: "",
-    },
+    successMsg: "",
     isBtnDisabled: false,
   });
 
@@ -50,11 +46,7 @@ const useAPI = (setUserData) => {
       .then((res) => {
         setFormData((prevFormData) => ({
           ...prevFormData,
-          success: {
-            login: res.data.success?.login?.message,
-            register: res.data.success?.register?.message,
-            newUsername: res.data.success?.newUsername?.message,
-          },
+          successMsg: res.data.successMsg,
           isBtnDisabled: true,
         }));
         resetFormErrors();
@@ -68,7 +60,7 @@ const useAPI = (setUserData) => {
       .catch((err) => {
         if (err.response.data?.error) {
           const { username, password, confirmPassword, newUsername } =
-            err.response.data.error.errors;
+            err.response.data?.error.errors;
           setFormData((prevData) => ({
             ...prevData,
             errors: {

@@ -27,14 +27,9 @@ const Form = ({ setUserData }) => {
   return (
     <form onSubmit={submitHandler} id="form-container">
       <h2>{routeData.header}</h2>
-      {...Object.values(formData.success).map((val) => {
-        if (val)
-          return (
-            <div key={val} className="form-success">
-              {val}
-            </div>
-          );
-      })}
+      {formData.successMsg && (
+        <div className="form-success">{formData.successMsg}</div>
+      )}
       {formData.errors.username && (
         <div className="form-error">{formData.errors.username}</div>
       )}

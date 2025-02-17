@@ -39,11 +39,7 @@ module.exports.register = async (req, res) => {
               maxAge: 1000 * 60 * 60,
             })
             .json({
-              success: {
-                register: {
-                  message: "Account successfully created.",
-                },
-              },
+              successMsg: "Account successfully created.",
               username: newUser.username,
             });
         })
@@ -77,11 +73,7 @@ module.exports.login = async (req, res) => {
                 maxAge: 1000 * 60 * 60,
               })
               .json({
-                success: {
-                  login: {
-                    message: "You have successfully logged in.",
-                  },
-                },
+                successMsg: "You have successfully logged in.",
                 username: user.username,
               });
           } else
@@ -149,12 +141,8 @@ module.exports.updateUser = async (req, res) => {
                     { new: true }
                   ).then((user) => {
                     res.status(200).json({
-                      success: {
-                        newUsername: {
-                          message: `You have successfully changed your username to: ${req.body.newUsername}.`,
-                        },
-                        username: user.username,
-                      },
+                      successMsg: `You have successfully changed your username to: ${req.body.newUsername}.`,
+                      username: user.username,
                     });
                   });
                 }
