@@ -1,9 +1,10 @@
 import axios from "axios";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const useAPI = (setUserData) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -19,7 +20,20 @@ const useAPI = (setUserData) => {
       register: "",
       newUsername: "",
     },
+    isBtnDisabled: false,
   });
+
+  const resetFormErrors = () => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      errors: {
+        username: "",
+        password: "",
+        confirmPassword: "",
+        newUsername: "",
+      },
+    }));
+  };
 
   const request = ({
     method = "get",
@@ -36,23 +50,19 @@ const useAPI = (setUserData) => {
       .then((res) => {
         setFormData((prevFormData) => ({
           ...prevFormData,
-          errors: {
-            username: "",
-            password: "",
-            confirmPassword: "",
-            newUsername: "",
-          },
           success: {
             login: res.data.success?.login?.message,
             register: res.data.success?.register?.message,
             newUsername: res.data.success?.newUsername?.message,
           },
+          isBtnDisabled: true,
         }));
+        resetFormErrors();
+        setUserData({ username: res.data.username });
         sessionStorage.setItem(
           "userData",
           JSON.stringify({ username: res.data.username })
         );
-        setUserData({ username: res.data.username });
         setTimeout(() => navigate("/"), 3000);
       })
       .catch((err) => {
@@ -68,10 +78,13 @@ const useAPI = (setUserData) => {
               confirmPassword: confirmPassword?.message,
               newUsername: newUsername?.message,
             },
+            isBtnDisabled: false,
           }));
         } else setUserData(undefined);
       });
   };
+
+  useEffect(() => resetFormErrors(), [location.pathname]);
 
   return [formData, setFormData, request];
 };

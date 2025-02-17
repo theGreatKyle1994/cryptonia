@@ -55,6 +55,20 @@ button {
   cursor: pointer;
 }
 
+button:disabled {
+  color: rgb(200, 200, 200);
+  background-color: rgb(100, 100, 100);
+  border-color: var(--main-color);
+  text-shadow: none;
+  box-shadow: inset 3px 3px 7px rgb(50, 50, 50);
+}
+
+button:disabled:hover,
+button:disabled:active {
+  transform: none;
+  cursor: not-allowed;
+}
+
 button:hover {
   transform: scale(1.05);
 }

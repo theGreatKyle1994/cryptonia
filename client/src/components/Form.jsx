@@ -49,13 +49,6 @@ const Form = ({ setUserData }) => {
     }
   };
 
-  const resetErrors = () => {
-    setFormData((prevData) => ({
-      ...prevData,
-      errors: { username: "", password: "", confirmPassword: "" },
-    }));
-  };
-
   const inputHandler = (e) => {
     const { name, value } = e.target;
     setFormData((prevFormData) => ({
@@ -81,15 +74,14 @@ const Form = ({ setUserData }) => {
   return (
     <form onSubmit={submitHandler} id="form-container">
       <h2>{routeData.header}</h2>
-      {formData.success.login && (
-        <div className="form-success">{formData.success.login}</div>
-      )}
-      {formData.success.register && (
-        <div className="form-success">{formData.success.register}</div>
-      )}
-      {formData.success.newUsername && (
-        <div className="form-success">{formData.success.newUsername}</div>
-      )}
+      {...Object.values(formData.success).map((val) => {
+        if (val)
+          return (
+            <div key={val} className="form-success">
+              {val}
+            </div>
+          );
+      })}
       {formData.errors.username && (
         <div className="form-error">{formData.errors.username}</div>
       )}
@@ -152,10 +144,8 @@ const Form = ({ setUserData }) => {
       )}
       <div id="button-container">
         <span>{routeData.subText}</span>
-        <Link onClick={resetErrors} to={routeData.routeTo}>
-          {routeData.btnMsg}
-        </Link>
-        <button>{routeData.btnText}</button>
+        <Link to={routeData.routeTo}>{routeData.btnMsg}</Link>
+        <button disabled={formData.isBtnDisabled}>{routeData.btnText}</button>
       </div>
     </form>
   );
