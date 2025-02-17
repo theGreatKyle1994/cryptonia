@@ -18,7 +18,9 @@ const Form = ({ setUserData }) => {
     switch (path) {
       case "/login":
         return {
+          method: "post",
           route: "/login",
+          apiRoute: "/api/user/login",
           routeTo: "/register",
           header: "Login",
           btnText: "Sign in",
@@ -26,11 +28,23 @@ const Form = ({ setUserData }) => {
         };
       case "/register":
         return {
+          method: "post",
           route: "/register",
+          apiRoute: "/api/user/register",
           routeTo: "/login",
           header: "Register",
           btnText: "Create Account",
           btnMsg: "Already have an account?",
+        };
+      case "/profile":
+        return {
+          method: "put",
+          route: "/profile",
+          apiRoute: "/api/user/update",
+          routeTo: "/",
+          header: "Update Username",
+          btnText: "Change Username",
+          btnMsg: "",
         };
     }
   };
@@ -53,8 +67,8 @@ const Form = ({ setUserData }) => {
   const submitHandler = async (e) => {
     e.preventDefault();
     APICall({
-      method: "post",
-      route: `/api/user${routeData.route}`,
+      method: routeData.method,
+      route: routeData.apiRoute,
       withCredentials: true,
     });
   };
@@ -67,11 +81,22 @@ const Form = ({ setUserData }) => {
   return (
     <form onSubmit={submitHandler} id="form-container">
       <h2>{routeData.header}</h2>
+      {formData.success.login && (
+        <div className="form-success">{formData.success.login}</div>
+      )}
+      {formData.success.register && (
+        <div className="form-success">{formData.success.register}</div>
+      )}
+      {formData.success.newUsername && (
+        <div className="form-success">{formData.success.newUsername}</div>
+      )}
       {formData.errors.username && (
         <div className="form-error">{formData.errors.username}</div>
       )}
       <div className="form-input-container">
-        <label htmlFor="username">Username:</label>
+        <label htmlFor="username">
+          {routeData.route == "/profile" ? "Current Username:" : "Username"}
+        </label>
         <input
           id="username"
           name="username"
@@ -80,11 +105,28 @@ const Form = ({ setUserData }) => {
           value={formData.username}
         />
       </div>
+      {formData.errors.newUsername && routeData.route == "/profile" && (
+        <div className="form-error">{formData.errors.newUsername}</div>
+      )}
+      {routeData.route == "/profile" && (
+        <div className="form-input-container">
+          <label htmlFor="username-new">New Username:</label>
+          <input
+            id="username-new"
+            name="newUsername"
+            type="text"
+            onChange={inputHandler}
+            value={formData.newUsername}
+          />
+        </div>
+      )}
       {formData.errors.password && (
         <div className="form-error">{formData.errors.password}</div>
       )}
       <div className="form-input-container">
-        <label htmlFor="password">Password:</label>
+        <label htmlFor="password">
+          {routeData.route == "/profile" ? "Current Password" : "Password"}
+        </label>
         <input
           id="password"
           name="password"
@@ -110,7 +152,7 @@ const Form = ({ setUserData }) => {
       )}
       <div id="button-container">
         <span>{routeData.subText}</span>
-        <Link onClick={() => resetErrors()} to={routeData.routeTo}>
+        <Link onClick={resetErrors} to={routeData.routeTo}>
           {routeData.btnMsg}
         </Link>
         <button>{routeData.btnText}</button>

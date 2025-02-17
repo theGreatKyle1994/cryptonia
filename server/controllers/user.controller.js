@@ -38,7 +38,14 @@ module.exports.register = async (req, res) => {
               httpOnly: true,
               maxAge: 1000 * 60 * 60,
             })
-            .json({ username: newUser.username });
+            .json({
+              success: {
+                register: {
+                  message: "Account successfully created.",
+                },
+              },
+              username: newUser.username,
+            });
         })
         .catch((err) => res.status(400).json({ error: err }));
     } else {
@@ -69,7 +76,14 @@ module.exports.login = async (req, res) => {
                 httpOnly: true,
                 maxAge: 1000 * 60 * 60,
               })
-              .json({ username: user.username });
+              .json({
+                success: {
+                  login: {
+                    message: "You have successfully logged in.",
+                  },
+                },
+                username: user.username,
+              });
           } else
             return res.status(401).json({
               error: {
@@ -97,8 +111,10 @@ module.exports.updateUser = async (req, res) => {
       if (req.body.newUsername.length < 3) {
         return res.status(400).json({
           error: {
-            newUsername: {
-              message: "New username must be at least 3 characters.",
+            errors: {
+              newUsername: {
+                message: "New username must be at least 3 characters.",
+              },
             },
           },
         });
@@ -109,7 +125,9 @@ module.exports.updateUser = async (req, res) => {
           if (prevUser) {
             res.status(401).json({
               error: {
-                newUsername: { message: "Username already taken." },
+                errors: {
+                  newUsername: { message: "Username already taken." },
+                },
               },
             });
           } else {
@@ -119,7 +137,9 @@ module.exports.updateUser = async (req, res) => {
                 if (!correctPassword) {
                   res.status(401).json({
                     error: {
-                      password: { message: "Incorrect password." },
+                      errors: {
+                        password: { message: "Incorrect password." },
+                      },
                     },
                   });
                 } else {
@@ -129,8 +149,12 @@ module.exports.updateUser = async (req, res) => {
                     { new: true }
                   ).then((user) => {
                     res.status(200).json({
-                      newUsername: `You have successfully changed your username to: ${req.body.newUsername}.`,
-                      username: user.username,
+                      success: {
+                        newUsername: {
+                          message: `You have successfully changed your username to: ${req.body.newUsername}.`,
+                        },
+                        username: user.username,
+                      },
                     });
                   });
                 }
@@ -141,7 +165,9 @@ module.exports.updateUser = async (req, res) => {
     } else {
       return res.status(401).json({
         error: {
-          username: { message: "Incorrect Username" },
+          errors: {
+            username: { message: "Incorrect Username" },
+          },
         },
       });
     }

@@ -3,7 +3,6 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import Header from "./components/Header";
 import Table from "./components/Table";
 import Form from "./components/Form";
-import UpdateProfile from "./components/UpdateProfile";
 
 const App = () => {
   const [userData, setUserData] = useState(undefined);
@@ -34,7 +33,7 @@ const App = () => {
           path="/profile"
           element={
             checkAuth() ? (
-              <UpdateProfile setUserData={setUserData} />
+              <Form setUserData={setUserData} />
             ) : (
               <Navigate to="/" />
             )
