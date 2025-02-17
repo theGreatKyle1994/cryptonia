@@ -7,7 +7,7 @@ const Header = ({ userData, setUserData }) => {
 
   const logout = () => {
     setUserData({ username: "" });
-    navigate("/home");
+    navigate("/");
   };
 
   const headerName = (path) => {
