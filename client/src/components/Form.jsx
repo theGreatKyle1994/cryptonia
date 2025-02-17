@@ -1,20 +1,10 @@
-import { useState } from "react";
-import { useNavigate, useLocation, Link } from "react-router-dom";
-import axios from "axios";
+import { useLocation, Link } from "react-router-dom";
+import useAPI from "../hooks/useAPI";
 import "./Form.css";
 
 const Form = ({ setUserData }) => {
-  const navigate = useNavigate();
   const location = useLocation();
-  const [formData, setFormData] = useState({
-    username: "",
-    password: "",
-    errors: {
-      username: "",
-      password: "",
-      confirmPassword: "",
-    },
-  });
+  const [formData, setFormData, APICall] = useAPI(setUserData);
 
   const inputHandler = (e) => {
     const { name, value } = e.target;
@@ -26,36 +16,13 @@ const Form = ({ setUserData }) => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    const { username, password, confirmPassword } = formData;
-    await axios
-      .post(
-        `${import.meta.env.VITE_BACKEND_URL}/api/user/${
-          location.pathname == "/login" ? "login" : "register"
-        }`,
-        { username, password, confirmPassword },
-        { withCredentials: true }
-      )
-      .then((res) => {
-        sessionStorage.setItem(
-          "userData",
-          JSON.stringify({ username: res.data.username })
-        );
-        setUserData({ username: res.data.username });
-        navigate("/");
-      })
-      .catch((err) => {
-        const { username, password, confirmPassword } =
-          err.response.data.error.errors;
-        setFormData((prevData) => ({
-          ...prevData,
-          errors: {
-            ...prevData.errors,
-            username: username?.message,
-            password: password?.message,
-            confirmPassword: confirmPassword?.message,
-          },
-        }));
-      });
+    APICall({
+      method: "post",
+      route: `/api/user/${
+        location.pathname == "/login" ? "login" : "register"
+      }`,
+      withCredentials: true,
+    });
   };
 
   return (
