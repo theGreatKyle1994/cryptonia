@@ -1,53 +1,11 @@
-import { useLocation, Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import useRouteHandler from "../hooks/useRouteHandler";
 import useAPI from "../hooks/useAPI";
 import "./Form.css";
 
 const Form = ({ setUserData }) => {
-  const location = useLocation();
-  const [routeData, setRouteData] = useState({
-    route: "",
-    routeTo: "",
-    header: "",
-    btnText: "",
-    btnMsg: "",
-  });
   const [formData, setFormData, APICall] = useAPI(setUserData);
-
-  const checkRoute = (path) => {
-    switch (path) {
-      case "/login":
-        return {
-          method: "post",
-          route: "/login",
-          apiRoute: "/api/user/login",
-          routeTo: "/register",
-          header: "Login",
-          btnText: "Sign in",
-          btnMsg: "Need an account?",
-        };
-      case "/register":
-        return {
-          method: "post",
-          route: "/register",
-          apiRoute: "/api/user/register",
-          routeTo: "/login",
-          header: "Register",
-          btnText: "Create Account",
-          btnMsg: "Already have an account?",
-        };
-      case "/profile":
-        return {
-          method: "put",
-          route: "/profile",
-          apiRoute: "/api/user/update",
-          routeTo: "/",
-          header: "Update Username",
-          btnText: "Change Username",
-          btnMsg: "",
-        };
-    }
-  };
+  const routeData = useRouteHandler();
 
   const inputHandler = (e) => {
     const { name, value } = e.target;
@@ -65,11 +23,6 @@ const Form = ({ setUserData }) => {
       withCredentials: true,
     });
   };
-
-  useEffect(
-    () => setRouteData(checkRoute(location.pathname)),
-    [location.pathname]
-  );
 
   return (
     <form onSubmit={submitHandler} id="form-container">
