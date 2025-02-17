@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Header from "./components/Header";
 import Table from "./components/Table";
-import LoginRegForm from "./components/LoginRegForm";
+import Form from "./components/Form";
 import UpdateProfile from "./components/UpdateProfile";
 
 const App = () => {
@@ -28,14 +28,8 @@ const App = () => {
             )
           }
         />
-        <Route
-          path="/login"
-          element={<LoginRegForm setUserData={setUserData} />}
-        />
-        <Route
-          path="/register"
-          element={<LoginRegForm setUserData={setUserData} />}
-        />
+        <Route path="/login" element={<Form setUserData={setUserData} />} />
+        <Route path="/register" element={<Form setUserData={setUserData} />} />
         <Route
           path="/profile"
           element={

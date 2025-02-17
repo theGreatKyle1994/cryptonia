@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import axios from "axios";
-import "./LoginRegForm.css";
+import "./Form.css";
 
-const LoginRegForm = ({ setUserData }) => {
+const Form = ({ setUserData }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [formData, setFormData] = useState({
@@ -129,4 +129,4 @@ const LoginRegForm = ({ setUserData }) => {
   );
 };
 
-export default LoginRegForm;
+export default Form;
