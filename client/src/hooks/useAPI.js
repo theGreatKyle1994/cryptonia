@@ -19,7 +19,7 @@ const useAPI = (setUserData) => {
     isBtnDisabled: false,
   });
 
-  const resetFormErrors = () => {
+  const resetFormErrors = (additive = {}) => {
     setFormData((prevFormData) => ({
       ...prevFormData,
       errors: {
@@ -28,6 +28,7 @@ const useAPI = (setUserData) => {
         confirmPassword: "",
         newUsername: "",
       },
+      ...additive,
     }));
   };
 
@@ -44,12 +45,10 @@ const useAPI = (setUserData) => {
       data: { username, newUsername, password, confirmPassword },
     })
       .then((res) => {
-        setFormData((prevFormData) => ({
-          ...prevFormData,
+        resetFormErrors({
           successMsg: res.data.successMsg,
           isBtnDisabled: true,
-        }));
-        resetFormErrors();
+        });
         setUserData({ username: res.data.username });
         sessionStorage.setItem(
           "userData",
