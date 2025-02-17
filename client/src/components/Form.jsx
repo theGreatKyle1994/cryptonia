@@ -5,7 +5,13 @@ import "./Form.css";
 
 const Form = ({ setUserData }) => {
   const location = useLocation();
-  const [routeData, setRouteData] = useState({});
+  const [routeData, setRouteData] = useState({
+    route: "",
+    routeTo: "",
+    header: "",
+    btnText: "",
+    btnMsg: "",
+  });
   const [formData, setFormData, APICall] = useAPI(setUserData);
 
   const checkRoute = (path) => {
