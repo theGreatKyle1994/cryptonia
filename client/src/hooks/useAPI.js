@@ -50,10 +50,6 @@ const useAPI = (setUserData) => {
           isBtnDisabled: true,
         });
         setUserData({ username: res.data.username });
-        sessionStorage.setItem(
-          "userData",
-          JSON.stringify({ username: res.data.username })
-        );
         setTimeout(() => navigate("/"), 3000);
       })
       .catch((err) => {

@@ -1,12 +1,17 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Header from "./components/Header";
 import Table from "./components/Table";
 import Form from "./components/Form";
 
 const App = () => {
-  const [userData, setUserData] = useState(undefined);
+  const [userData, setUserData] = useState({ username: "" });
   const checkAuth = () => sessionStorage.getItem("userData");
+
+  useEffect(
+    () => sessionStorage.setItem("userData", JSON.stringify(userData)),
+    [userData]
+  );
 
   return (
     <>

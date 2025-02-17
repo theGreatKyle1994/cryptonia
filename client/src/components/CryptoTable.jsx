@@ -52,7 +52,7 @@ const CryptoTable = ({
       { withCredentials: true }
     ).catch(() => {
       sessionStorage.clear();
-      setUserData(undefined);
+      setUserData({ username: "" });
       navigate("/login");
     });
     getFavData();
@@ -73,7 +73,7 @@ const CryptoTable = ({
             <th onClick={() => filterHandler("change")}>
               24hr Change {symbols.change}
             </th>
-            {userData && <th id="actions-tab">Actions</th>}
+            {userData.username && <th id="actions-tab">Actions</th>}
           </tr>
         </thead>
       </table>
@@ -100,7 +100,7 @@ const CryptoTable = ({
                     >
                       {Number(crypto.changePercent24Hr).toFixed(2)}
                     </td>
-                    {userData && favoriteList && (
+                    {userData.username && favoriteList && (
                       <td>
                         <button onClick={(e) => favoriteHandler(e, crypto)}>
                           {favoriteList && favoriteList.includes(crypto.id)

@@ -28,13 +28,13 @@ const Table = ({ userData, setUserData }) => {
   };
 
   const getFavData = async () => {
-    if (userData) {
+    if (userData.username) {
       await axios
         .get(`${import.meta.env.VITE_BACKEND_URL}/api/user/fav`, {
           withCredentials: true,
         })
         .then((res) => setFavoriteList(res.data))
-        .catch(() => setUserData(undefined));
+        .catch(() => setUserData({ username: "" }));
     }
   };
 
