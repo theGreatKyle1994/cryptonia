@@ -18,7 +18,7 @@ const Header = ({ userData, setUserData }) => {
       case "/favorites":
         return "Favorites";
       case "/login":
-        return "Sign-In";
+        return "Sign In";
       case "/register":
         return "Create an Account";
       case "/profile":

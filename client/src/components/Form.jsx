@@ -1,10 +1,40 @@
 import { useLocation, Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 import useAPI from "../hooks/useAPI";
 import "./Form.css";
 
 const Form = ({ setUserData }) => {
   const location = useLocation();
+  const [routeData, setRouteData] = useState({});
   const [formData, setFormData, APICall] = useAPI(setUserData);
+
+  const checkRoute = (path) => {
+    switch (path) {
+      case "/login":
+        return {
+          route: "/login",
+          routeTo: "/register",
+          header: "Login",
+          btnText: "Sign in",
+          btnMsg: "Need an account?",
+        };
+      case "/register":
+        return {
+          route: "/register",
+          routeTo: "/login",
+          header: "Register",
+          btnText: "Create Account",
+          btnMsg: "Already have an account?",
+        };
+    }
+  };
+
+  const resetErrors = () => {
+    setFormData((prevData) => ({
+      ...prevData,
+      errors: { username: "", password: "", confirmPassword: "" },
+    }));
+  };
 
   const inputHandler = (e) => {
     const { name, value } = e.target;
@@ -18,16 +48,19 @@ const Form = ({ setUserData }) => {
     e.preventDefault();
     APICall({
       method: "post",
-      route: `/api/user/${
-        location.pathname == "/login" ? "login" : "register"
-      }`,
+      route: `/api/user${routeData.route}`,
       withCredentials: true,
     });
   };
 
+  useEffect(
+    () => setRouteData(checkRoute(location.pathname)),
+    [location.pathname]
+  );
+
   return (
     <form onSubmit={submitHandler} id="form-container">
-      <h2>{`${location.pathname == "/login" ? "Login" : "Register"}`}</h2>
+      <h2>{routeData.header}</h2>
       {formData.errors.username && (
         <div className="form-error">{formData.errors.username}</div>
       )}
@@ -54,10 +87,10 @@ const Form = ({ setUserData }) => {
           value={formData.password}
         />
       </div>
-      {formData.errors.confirmPassword && location.pathname == "/register" && (
+      {formData.errors.confirmPassword && routeData.route == "/register" && (
         <div className="form-error">{formData.errors.confirmPassword}</div>
       )}
-      {location.pathname == "/register" && (
+      {routeData.route == "/register" && (
         <div className="form-input-container">
           <label htmlFor="confirm-password">Confirm Password:</label>
           <input
@@ -70,27 +103,11 @@ const Form = ({ setUserData }) => {
         </div>
       )}
       <div id="button-container">
-        <span>
-          {`${
-            location.pathname == "/login"
-              ? "Need an account?"
-              : "Already have an account?"
-          }`}
-        </span>
-        <Link
-          onClick={() =>
-            setFormData((prevData) => ({
-              ...prevData,
-              errors: { username: "", password: "", confirmPassword: "" },
-            }))
-          }
-          to={`${location.pathname == "/login" ? "/register" : "/login"}`}
-        >
-          {`${location.pathname == "/login" ? "Register" : "Login"}`}
+        <span>{routeData.subText}</span>
+        <Link onClick={() => resetErrors()} to={routeData.routeTo}>
+          {routeData.btnMsg}
         </Link>
-        <button>
-          {`${location.pathname == "/login" ? "Login" : "Register"}`}
-        </button>
+        <button>{routeData.btnText}</button>
       </div>
     </form>
   );
