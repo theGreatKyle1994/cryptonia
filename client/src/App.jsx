@@ -6,7 +6,7 @@ import Form from "./components/Form";
 
 const App = () => {
   const [userData, setUserData] = useState({ username: "" });
-  const checkAuth = () => sessionStorage.getItem("userData");
+  const checkAuth = () => sessionStorage.getItem("userData").username;
 
   useEffect(
     () => sessionStorage.setItem("userData", JSON.stringify(userData)),
