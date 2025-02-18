@@ -50,7 +50,7 @@ const useAPI = (setUserData) => {
           isBtnDisabled: true,
         });
         setUserData({ username: res.data.username, isAuthenticated: true });
-        setTimeout(() => navigate("/"), 3000);
+        setTimeout(() => navigate("/"), 1500);
       })
       .catch((err) => {
         if (err.response.data?.error) {
