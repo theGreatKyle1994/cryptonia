@@ -60,7 +60,7 @@ const Table = ({ userData, setUserData }) => {
   }, []);
 
   useEffect(() => {
-    (async () => getFavData())();
+    (async () => await getFavData())();
   }, [userData.isAuthenticated]);
 
   return (
