@@ -28,13 +28,13 @@ const Table = ({ userData, setUserData }) => {
   };
 
   const getFavData = async () => {
-    if (userData.username) {
+    if (userData.isAuthenticated) {
       await axios
         .get(`${import.meta.env.VITE_BACKEND_URL}/api/user/fav`, {
           withCredentials: true,
         })
         .then((res) => setFavoriteList(res.data))
-        .catch(() => setUserData({ username: "" }));
+        .catch(() => setUserData({ username: "", isAuthenticated: false }));
     }
   };
 
@@ -56,13 +56,12 @@ const Table = ({ userData, setUserData }) => {
   useEffect(() => {
     getCryptoData();
     const refreshCryptoData = setInterval(() => getCryptoData(), 5000);
-    setUserData(JSON.parse(sessionStorage.getItem("userData")));
     return () => clearInterval(refreshCryptoData);
   }, []);
 
   useEffect(() => {
     (async () => getFavData())();
-  }, [JSON.stringify(userData)]);
+  }, [userData.isAuthenticated]);
 
   return (
     <>

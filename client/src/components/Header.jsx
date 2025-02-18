@@ -4,7 +4,7 @@ import "./Header.css";
 const Header = ({ userData, setUserData }) => {
   const location = useLocation();
 
-  const logout = () => setUserData({ username: "" });
+  const logout = () => setUserData({ username: "", isAuthenticated: false });
 
   const headerName = (path) => {
     switch (path) {
@@ -26,34 +26,37 @@ const Header = ({ userData, setUserData }) => {
       <header>
         <h1>Cryptonia</h1>
         <nav>
-          {userData.username && (
+          {userData.isAuthenticated && (
             <span id="welcome-user">Signed-In: {userData.username}</span>
           )}
           <div>
             {location.pathname !== "/home" && (
               <Link to={"/home"}>
-                <button>Home</button>
+                <button type="submit">Home</button>
               </Link>
             )}
-            {userData.username && (
+            {userData.isAuthenticated && (
               <>
                 {location.pathname !== "/favorites" && (
                   <Link to={"/favorites"}>
-                    <button>Favorites</button>
+                    <button type="submit">Favorites</button>
                   </Link>
                 )}
                 {location.pathname !== "/profile" && (
                   <Link to={"/profile"}>
-                    <button>Profile</button>
+                    <button type="submit">Profile</button>
                   </Link>
                 )}
               </>
             )}
             {location.pathname !== "/login" &&
               location.pathname !== "/register" && (
-                <Link to={userData.username ? "/" : "/login"}>
-                  <button onClick={userData.username ? logout : undefined}>
-                    {userData.username ? "Logout" : "Login"}
+                <Link to={userData.isAuthenticated ? "/" : "/login"}>
+                  <button
+                    type="submit"
+                    onClick={userData.isAuthenticated ? logout : undefined}
+                  >
+                    {userData.isAuthenticated ? "Logout" : "Login"}
                   </button>
                 </Link>
               )}

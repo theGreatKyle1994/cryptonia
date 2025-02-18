@@ -5,13 +5,19 @@ import Table from "./components/Table";
 import Form from "./components/Form";
 
 const App = () => {
-  const [userData, setUserData] = useState({ username: "" });
-  const checkAuth = () => sessionStorage.getItem("userData").username;
+  const [userData, setUserData] = useState({
+    username: "",
+    isAuthenticated: false,
+  });
 
-  useEffect(
-    () => sessionStorage.setItem("userData", JSON.stringify(userData)),
-    [userData]
-  );
+  useEffect(() => {
+    const data = JSON.parse(sessionStorage.getItem("userData"));
+    if (data) setUserData(data);
+  }, []);
+
+  useEffect(() => {
+    sessionStorage.setItem("userData", JSON.stringify(userData));
+  }, [userData]);
 
   return (
     <>
@@ -25,7 +31,7 @@ const App = () => {
         <Route
           path="/favorites"
           element={
-            checkAuth() ? (
+            userData.isAuthenticated ? (
               <Table userData={userData} setUserData={setUserData} />
             ) : (
               <Navigate to="/" />
@@ -37,7 +43,7 @@ const App = () => {
         <Route
           path="/profile"
           element={
-            checkAuth() ? (
+            userData.isAuthenticated ? (
               <Form setUserData={setUserData} />
             ) : (
               <Navigate to="/" />

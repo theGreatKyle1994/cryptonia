@@ -49,7 +49,7 @@ const useAPI = (setUserData) => {
           successMsg: res.data.successMsg,
           isBtnDisabled: true,
         });
-        setUserData({ username: res.data.username });
+        setUserData({ username: res.data.username, isAuthenticated: true });
         setTimeout(() => navigate("/"), 3000);
       })
       .catch((err) => {
@@ -67,7 +67,7 @@ const useAPI = (setUserData) => {
             },
             isBtnDisabled: false,
           }));
-        } else setUserData(undefined);
+        } else setUserData({ username: "", isAuthenticated: false });
       });
   };
 
