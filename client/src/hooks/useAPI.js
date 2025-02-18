@@ -49,8 +49,10 @@ const useAPI = (setUserData) => {
           successMsg: res.data.successMsg,
           isBtnDisabled: true,
         });
-        setUserData({ username: res.data.username, isAuthenticated: true });
-        setTimeout(() => navigate("/"), 1500);
+        setTimeout(() => {
+          setUserData({ username: res.data.username, isAuthenticated: true });
+          navigate("/");
+        }, 1500);
       })
       .catch((err) => {
         if (err.response.data?.error) {
