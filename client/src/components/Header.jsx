@@ -1,14 +1,10 @@
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import "./Header.css";
 
 const Header = ({ userData, setUserData }) => {
-  const navigate = useNavigate();
   const location = useLocation();
 
-  const logout = () => {
-    setUserData({ username: "" });
-    navigate("/");
-  };
+  const logout = () => setUserData({ username: "" });
 
   const headerName = (path) => {
     switch (path) {
@@ -34,51 +30,33 @@ const Header = ({ userData, setUserData }) => {
             <span id="welcome-user">Signed-In: {userData.username}</span>
           )}
           <div>
-            {location.pathname == "/home" && !userData.username && (
-              <Link to={"/login"}>
-                <button type="submit">Login</button>
-              </Link>
-            )}
-            {location.pathname == "/home" && userData.username && (
-              <>
-                <Link to={"/favorites"}>
-                  <button type="submit">Favorites</button>
-                </Link>
-                <Link to={"/profile"}>
-                  <button type="submit">Profile</button>
-                </Link>
-                <button onClick={logout}>Logout</button>
-              </>
-            )}
-            {location.pathname == "/favorites" && userData.username && (
-              <>
-                <Link to={"/home"}>
-                  <button type="submit">Home</button>
-                </Link>
-                <Link to={"/profile"}>
-                  <button type="submit">Profile</button>
-                </Link>
-                <button onClick={logout}>Logout</button>
-              </>
-            )}
-            {location.pathname == "/login" && (
+            {location.pathname !== "/home" && (
               <Link to={"/home"}>
-                <button type="submit">Home</button>
+                <button>Home</button>
               </Link>
             )}
-            {location.pathname == "/register" && (
-              <Link to={"/home"}>
-                <button type="submit">Home</button>
-              </Link>
-            )}
-            {location.pathname == "/profile" && (
+            {userData.username && (
               <>
-                <Link to={"/home"}>
-                  <button type="submit">Home</button>
-                </Link>
-                <button onClick={logout}>Logout</button>
+                {location.pathname !== "/favorites" && (
+                  <Link to={"/favorites"}>
+                    <button>Favorites</button>
+                  </Link>
+                )}
+                {location.pathname !== "/profile" && (
+                  <Link to={"/profile"}>
+                    <button>Profile</button>
+                  </Link>
+                )}
               </>
             )}
+            {location.pathname !== "/login" &&
+              location.pathname !== "/register" && (
+                <Link to={userData.username ? "/" : "/login"}>
+                  <button onClick={userData.username ? logout : undefined}>
+                    {userData.username ? "Logout" : "Login"}
+                  </button>
+                </Link>
+              )}
           </div>
         </nav>
       </header>
