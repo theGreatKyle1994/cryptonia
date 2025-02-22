@@ -5,7 +5,9 @@ import useLogout from "../hooks/useLogout";
 import "./Header.css";
 
 const Header = () => {
-  const { userData } = useContext(globalContext);
+  const {
+    userData: { username, isAuthenticated },
+  } = useContext(globalContext);
   const location = useLocation();
   const logout = useLogout();
 
@@ -29,8 +31,8 @@ const Header = () => {
       <header>
         <h1>Cryptonia</h1>
         <nav>
-          {userData.isAuthenticated && (
-            <span id="welcome-user">Signed-In: {userData.username}</span>
+          {isAuthenticated && (
+            <span id="welcome-user">Signed-In: {username}</span>
           )}
           <div>
             {location.pathname !== "/home" && (
@@ -38,7 +40,7 @@ const Header = () => {
                 <button type="submit">Home</button>
               </Link>
             )}
-            {userData.isAuthenticated && (
+            {isAuthenticated && (
               <>
                 {location.pathname !== "/favorites" && (
                   <Link to={"/favorites"}>
@@ -54,14 +56,12 @@ const Header = () => {
             )}
             {location.pathname !== "/login" &&
               location.pathname !== "/register" && (
-                <Link to={userData.isAuthenticated ? "/" : "/login"}>
+                <Link to={isAuthenticated ? "/" : "/login"}>
                   <button
                     type="submit"
-                    onClick={() =>
-                      userData.isAuthenticated ? logout("/") : undefined
-                    }
+                    onClick={() => (isAuthenticated ? logout("/") : undefined)}
                   >
-                    {userData.isAuthenticated ? "Logout" : "Login"}
+                    {isAuthenticated ? "Logout" : "Login"}
                   </button>
                 </Link>
               )}

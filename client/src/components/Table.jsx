@@ -8,7 +8,9 @@ import axios from "axios";
 import { filterTable, filterFavs } from "../utilities/tableSorting";
 
 const Table = () => {
-  const { userData } = useContext(globalContext);
+  const {
+    userData: { isAuthenticated },
+  } = useContext(globalContext);
   const location = useLocation();
   const logout = useLogout();
   const [cryptoData, setCryptoData] = useState([]);
@@ -32,7 +34,7 @@ const Table = () => {
   };
 
   const getFavData = async () => {
-    if (userData.isAuthenticated) {
+    if (isAuthenticated) {
       await axios
         .get(`${import.meta.env.VITE_BACKEND_URL}/api/user/fav`, {
           withCredentials: true,
@@ -65,7 +67,7 @@ const Table = () => {
 
   useEffect(() => {
     (async () => await getFavData())();
-  }, [userData.isAuthenticated]);
+  }, [isAuthenticated]);
 
   return (
     <>

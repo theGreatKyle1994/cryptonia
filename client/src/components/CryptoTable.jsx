@@ -14,7 +14,9 @@ const CryptoTable = ({
   setModal,
   getFavData,
 }) => {
-  const { userData } = useContext(globalContext);
+  const {
+    userData: { isAuthenticated },
+  } = useContext(globalContext);
   const [symbols, setSymbols] = useState({});
   const logout = useLogout();
   const location = useLocation();
@@ -70,7 +72,7 @@ const CryptoTable = ({
             <th onClick={() => filterHandler("change")}>
               24hr Change {symbols.change}
             </th>
-            {userData.isAuthenticated && <th id="actions-tab">Actions</th>}
+            {isAuthenticated && <th id="actions-tab">Actions</th>}
           </tr>
         </thead>
       </table>
@@ -97,7 +99,7 @@ const CryptoTable = ({
                     >
                       {Number(crypto.changePercent24Hr).toFixed(2)}
                     </td>
-                    {userData.isAuthenticated && favoriteList && (
+                    {isAuthenticated && favoriteList && (
                       <td>
                         <button onClick={(e) => favoriteHandler(e, crypto)}>
                           {favoriteList && favoriteList.includes(crypto.id)
