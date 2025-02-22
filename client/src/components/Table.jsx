@@ -2,11 +2,13 @@ import CryptoTable from "./CryptoTable";
 import CryptoModal from "./CryptoModal";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import useLogout from "../hooks/useLogout";
 import axios from "axios";
 import { filterTable, filterFavs } from "../utilities/tableSorting";
 
 const Table = ({ userData, setUserData }) => {
   const location = useLocation();
+  const logout = useLogout(setUserData);
   const [cryptoData, setCryptoData] = useState([]);
   const [modal, setModal] = useState({ id: "" });
   const [favoriteList, setFavoriteList] = useState([]);
@@ -34,7 +36,7 @@ const Table = ({ userData, setUserData }) => {
           withCredentials: true,
         })
         .then((res) => setFavoriteList(res.data))
-        .catch(() => setUserData({ username: "", isAuthenticated: false }));
+        .catch(() => logout("/login"));
     }
   };
 

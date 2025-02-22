@@ -1,10 +1,10 @@
 import { Link, useLocation } from "react-router-dom";
+import useLogout from "../hooks/useLogout";
 import "./Header.css";
 
 const Header = ({ userData, setUserData }) => {
   const location = useLocation();
-
-  const logout = () => setUserData({ username: "", isAuthenticated: false });
+  const logout = useLogout(setUserData);
 
   const headerName = (path) => {
     switch (path) {
@@ -54,7 +54,9 @@ const Header = ({ userData, setUserData }) => {
                 <Link to={userData.isAuthenticated ? "/" : "/login"}>
                   <button
                     type="submit"
-                    onClick={userData.isAuthenticated ? logout : undefined}
+                    onClick={() =>
+                      userData.isAuthenticated ? logout("/") : undefined
+                    }
                   >
                     {userData.isAuthenticated ? "Logout" : "Login"}
                   </button>

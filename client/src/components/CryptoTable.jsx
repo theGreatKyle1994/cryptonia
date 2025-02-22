@@ -1,6 +1,7 @@
 import axios from "axios";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useState } from "react";
+import useLogout from "../hooks/useLogout";
 import "./CryptoTable.css";
 
 const CryptoTable = ({
@@ -15,7 +16,7 @@ const CryptoTable = ({
   setUserData,
 }) => {
   const [symbols, setSymbols] = useState({});
-  const navigate = useNavigate();
+  const logout = useLogout(setUserData);
   const location = useLocation();
 
   const filterHandler = (newFilter) => {
@@ -50,10 +51,7 @@ const CryptoTable = ({
       `${import.meta.env.VITE_BACKEND_URL}/api/user/fav`,
       { fav: crypto.id },
       { withCredentials: true }
-    ).catch(() => {
-      setUserData({ username: "", isAuthenticated: false });
-      navigate("/login");
-    });
+    ).catch(() => logout("/login"));
     getFavData();
   };
 
