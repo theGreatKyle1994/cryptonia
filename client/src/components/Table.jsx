@@ -1,14 +1,16 @@
 import CryptoTable from "./CryptoTable";
 import CryptoModal from "./CryptoModal";
-import { useEffect, useState } from "react";
+import { globalContext } from "../App";
+import { useEffect, useState, useContext } from "react";
 import { useLocation } from "react-router-dom";
 import useLogout from "../hooks/useLogout";
 import axios from "axios";
 import { filterTable, filterFavs } from "../utilities/tableSorting";
 
-const Table = ({ userData, setUserData }) => {
+const Table = () => {
+  const { userData } = useContext(globalContext);
   const location = useLocation();
-  const logout = useLogout(setUserData);
+  const logout = useLogout();
   const [cryptoData, setCryptoData] = useState([]);
   const [modal, setModal] = useState({ id: "" });
   const [favoriteList, setFavoriteList] = useState([]);
@@ -75,8 +77,6 @@ const Table = ({ userData, setUserData }) => {
         modal={modal}
         setModal={setModal}
         getFavData={getFavData}
-        userData={userData}
-        setUserData={setUserData}
       />
       <CryptoModal modal={modal} cryptoData={cryptoData} setModal={setModal} />
     </>

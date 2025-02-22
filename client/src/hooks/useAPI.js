@@ -1,11 +1,13 @@
 import axios from "axios";
 import useLogout from "./useLogout";
-import { useEffect, useState } from "react";
+import { globalContext } from "../App";
+import { useEffect, useState, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
-const useAPI = (setUserData) => {
+const useAPI = () => {
+  const { setUserData } = useContext(globalContext);
   const navigate = useNavigate();
-  const logout = useLogout(setUserData);
+  const logout = useLogout();
   const location = useLocation();
   const [formData, setFormData] = useState({
     username: "",

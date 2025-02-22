@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, createContext } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Header from "./components/Header";
 import Table from "./components/Table";
 import Form from "./components/Form";
+export const globalContext = createContext();
 
 const App = () => {
   const [userData, setUserData] = useState({
@@ -20,39 +21,24 @@ const App = () => {
   }, [userData]);
 
   return (
-    <>
-      <Header userData={userData} setUserData={setUserData} />
+    <globalContext.Provider value={{ userData, setUserData }}>
+      <Header />
       <Routes>
         <Route path="/" element={<Navigate to="/home" />} />
-        <Route
-          path="/home"
-          element={<Table userData={userData} setUserData={setUserData} />}
-        />
+        <Route path="/home" element={<Table />} />
         <Route
           path="/favorites"
-          element={
-            userData.isAuthenticated ? (
-              <Table userData={userData} setUserData={setUserData} />
-            ) : (
-              <Navigate to="/" />
-            )
-          }
+          element={userData.isAuthenticated ? <Table /> : <Navigate to="/" />}
         />
-        <Route path="/login" element={<Form setUserData={setUserData} />} />
-        <Route path="/register" element={<Form setUserData={setUserData} />} />
+        <Route path="/login" element={<Form />} />
+        <Route path="/register" element={<Form />} />
         <Route
           path="/profile"
-          element={
-            userData.isAuthenticated ? (
-              <Form setUserData={setUserData} />
-            ) : (
-              <Navigate to="/" />
-            )
-          }
+          element={userData.isAuthenticated ? <Form /> : <Navigate to="/" />}
         />
         <Route path="/*" element={<Navigate to="/" />} />
       </Routes>
-    </>
+    </globalContext.Provider>
   );
 };
 

@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useLocation } from "react-router-dom";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { globalContext } from "../App";
 import useLogout from "../hooks/useLogout";
 import "./CryptoTable.css";
 
@@ -12,11 +13,10 @@ const CryptoTable = ({
   modal,
   setModal,
   getFavData,
-  userData,
-  setUserData,
 }) => {
+  const { userData } = useContext(globalContext);
   const [symbols, setSymbols] = useState({});
-  const logout = useLogout(setUserData);
+  const logout = useLogout();
   const location = useLocation();
 
   const filterHandler = (newFilter) => {

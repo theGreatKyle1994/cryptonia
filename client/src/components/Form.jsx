@@ -3,8 +3,8 @@ import useRouteHandler from "../hooks/useRouteHandler";
 import useAPI from "../hooks/useAPI";
 import "./Form.css";
 
-const Form = ({ setUserData }) => {
-  const [formData, setFormData, APICall] = useAPI(setUserData);
+const Form = () => {
+  const [formData, setFormData, APICall] = useAPI();
   const routeData = useRouteHandler();
 
   const inputHandler = (e) => {

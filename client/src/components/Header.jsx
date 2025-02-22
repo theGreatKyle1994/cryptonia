@@ -1,10 +1,13 @@
 import { Link, useLocation } from "react-router-dom";
+import { useContext } from "react";
+import { globalContext } from "../App";
 import useLogout from "../hooks/useLogout";
 import "./Header.css";
 
-const Header = ({ userData, setUserData }) => {
+const Header = () => {
+  const { userData } = useContext(globalContext);
   const location = useLocation();
-  const logout = useLogout(setUserData);
+  const logout = useLogout();
 
   const headerName = (path) => {
     switch (path) {

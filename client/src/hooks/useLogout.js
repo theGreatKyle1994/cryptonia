@@ -1,6 +1,9 @@
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { globalContext } from "../App";
 
-const useLogout = (setUserData) => {
+const useLogout = () => {
+  const { setUserData } = useContext(globalContext);
   const navigate = useNavigate();
 
   const logout = (navigateTo = undefined) => {
