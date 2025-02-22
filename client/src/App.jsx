@@ -1,53 +1,41 @@
-import { useState } from "react";
+import { useState, useEffect, createContext } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Header from "./components/Header";
 import Table from "./components/Table";
-import LoginRegForm from "./components/LoginRegForm";
-import UpdateProfile from "./components/UpdateProfile";
+import Form from "./components/Form";
+export const globalContext = createContext();
 
 const App = () => {
-  const [userData, setUserData] = useState(undefined);
-  const checkAuth = () => sessionStorage.getItem("userData");
+  const [userData, setUserData] = useState(
+    JSON.parse(sessionStorage.getItem("userData")) || {
+      username: "",
+      isAuthenticated: false,
+    }
+  );
+
+  useEffect(() => {
+    sessionStorage.setItem("userData", JSON.stringify(userData));
+  }, [userData]);
 
   return (
-    <>
-      <Header userData={userData} setUserData={setUserData} />
+    <globalContext.Provider value={{ userData, setUserData }}>
+      <Header />
       <Routes>
         <Route path="/" element={<Navigate to="/home" />} />
-        <Route
-          path="/home"
-          element={<Table userData={userData} setUserData={setUserData} />}
-        />
+        <Route path="/home" element={<Table />} />
         <Route
           path="/favorites"
-          element={
-            checkAuth() ? (
-              <Table userData={userData} setUserData={setUserData} />
-            ) : (
-              <Navigate to="/" />
-            )
-          }
+          element={userData.isAuthenticated ? <Table /> : <Navigate to="/" />}
         />
-        <Route
-          path="/login"
-          element={<LoginRegForm setUserData={setUserData} />}
-        />
-        <Route
-          path="/register"
-          element={<LoginRegForm setUserData={setUserData} />}
-        />
+        <Route path="/login" element={<Form />} />
+        <Route path="/register" element={<Form />} />
         <Route
           path="/profile"
-          element={
-            checkAuth() ? (
-              <UpdateProfile setUserData={setUserData} />
-            ) : (
-              <Navigate to="/" />
-            )
-          }
+          element={userData.isAuthenticated ? <Form /> : <Navigate to="/" />}
         />
+        <Route path="/*" element={<Navigate to="/" />} />
       </Routes>
-    </>
+    </globalContext.Provider>
   );
 };
 

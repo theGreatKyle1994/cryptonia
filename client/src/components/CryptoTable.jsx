@@ -1,6 +1,8 @@
 import axios from "axios";
-import { useNavigate, useLocation } from "react-router-dom";
-import { useState } from "react";
+import { useLocation } from "react-router-dom";
+import { useState, useContext } from "react";
+import { globalContext } from "../App";
+import useLogout from "../hooks/useLogout";
 import "./CryptoTable.css";
 
 const CryptoTable = ({
@@ -11,11 +13,12 @@ const CryptoTable = ({
   modal,
   setModal,
   getFavData,
-  userData,
-  setUserData,
 }) => {
+  const {
+    userData: { isAuthenticated },
+  } = useContext(globalContext);
   const [symbols, setSymbols] = useState({});
-  const navigate = useNavigate();
+  const logout = useLogout();
   const location = useLocation();
 
   const filterHandler = (newFilter) => {
@@ -50,11 +53,7 @@ const CryptoTable = ({
       `${import.meta.env.VITE_BACKEND_URL}/api/user/fav`,
       { fav: crypto.id },
       { withCredentials: true }
-    ).catch(() => {
-      sessionStorage.clear();
-      setUserData(undefined);
-      navigate("/login");
-    });
+    ).catch(() => logout("/login"));
     getFavData();
   };
 
@@ -73,7 +72,7 @@ const CryptoTable = ({
             <th onClick={() => filterHandler("change")}>
               24hr Change {symbols.change}
             </th>
-            {userData && <th id="actions-tab">Actions</th>}
+            {isAuthenticated && <th id="actions-tab">Actions</th>}
           </tr>
         </thead>
       </table>
@@ -100,7 +99,7 @@ const CryptoTable = ({
                     >
                       {Number(crypto.changePercent24Hr).toFixed(2)}
                     </td>
-                    {userData && favoriteList && (
+                    {isAuthenticated && favoriteList && (
                       <td>
                         <button onClick={(e) => favoriteHandler(e, crypto)}>
                           {favoriteList && favoriteList.includes(crypto.id)

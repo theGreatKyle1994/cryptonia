@@ -1,15 +1,15 @@
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { useContext } from "react";
+import { globalContext } from "../App";
+import useLogout from "../hooks/useLogout";
 import "./Header.css";
 
-const Header = ({ userData, setUserData }) => {
-  const navigate = useNavigate();
+const Header = () => {
+  const {
+    userData: { username, isAuthenticated },
+  } = useContext(globalContext);
   const location = useLocation();
-
-  const logout = () => {
-    sessionStorage.clear();
-    setUserData(undefined);
-    navigate("/home");
-  };
+  const logout = useLogout();
 
   const headerName = (path) => {
     switch (path) {
@@ -18,7 +18,7 @@ const Header = ({ userData, setUserData }) => {
       case "/favorites":
         return "Favorites";
       case "/login":
-        return "Sign-In";
+        return "Sign In";
       case "/register":
         return "Create an Account";
       case "/profile":
@@ -31,55 +31,40 @@ const Header = ({ userData, setUserData }) => {
       <header>
         <h1>Cryptonia</h1>
         <nav>
-          {userData && (
-            <span id="welcome-user">Signed-In: {userData.username}</span>
+          {isAuthenticated && (
+            <span id="welcome-user">Signed-In: {username}</span>
           )}
           <div>
-            {location.pathname == "/home" && !userData && (
-              <Link to={"/login"}>
-                <button type="submit">Login</button>
-              </Link>
-            )}
-            {location.pathname == "/home" && userData && (
-              <>
-                <Link to={"/favorites"}>
-                  <button type="submit">Favorites</button>
-                </Link>
-                <Link to={"/profile"}>
-                  <button type="submit">Profile</button>
-                </Link>
-                <button onClick={logout}>Logout</button>
-              </>
-            )}
-            {location.pathname == "/favorites" && userData && (
-              <>
-                <Link to={"/home"}>
-                  <button type="submit">Home</button>
-                </Link>
-                <Link to={"/profile"}>
-                  <button type="submit">Profile</button>
-                </Link>
-                <button onClick={logout}>Logout</button>
-              </>
-            )}
-            {location.pathname == "/login" && (
+            {location.pathname !== "/home" && (
               <Link to={"/home"}>
                 <button type="submit">Home</button>
               </Link>
             )}
-            {location.pathname == "/register" && (
-              <Link to={"/home"}>
-                <button type="submit">Home</button>
-              </Link>
-            )}
-            {location.pathname == "/profile" && (
+            {isAuthenticated && (
               <>
-                <Link to={"/home"}>
-                  <button type="submit">Home</button>
-                </Link>
-                <button onClick={logout}>Logout</button>
+                {location.pathname !== "/favorites" && (
+                  <Link to={"/favorites"}>
+                    <button type="submit">Favorites</button>
+                  </Link>
+                )}
+                {location.pathname !== "/profile" && (
+                  <Link to={"/profile"}>
+                    <button type="submit">Profile</button>
+                  </Link>
+                )}
               </>
             )}
+            {location.pathname !== "/login" &&
+              location.pathname !== "/register" && (
+                <Link to={isAuthenticated ? "/" : "/login"}>
+                  <button
+                    type="submit"
+                    onClick={() => (isAuthenticated ? logout("/") : undefined)}
+                  >
+                    {isAuthenticated ? "Logout" : "Login"}
+                  </button>
+                </Link>
+              )}
           </div>
         </nav>
       </header>
