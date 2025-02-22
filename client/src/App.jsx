@@ -6,15 +6,12 @@ import Form from "./components/Form";
 export const globalContext = createContext();
 
 const App = () => {
-  const [userData, setUserData] = useState({
-    username: "",
-    isAuthenticated: false,
-  });
-
-  useEffect(() => {
-    const data = JSON.parse(sessionStorage.getItem("userData"));
-    if (data) setUserData(data);
-  }, []);
+  const [userData, setUserData] = useState(
+    JSON.parse(sessionStorage.getItem("userData")) || {
+      username: "",
+      isAuthenticated: false,
+    }
+  );
 
   useEffect(() => {
     sessionStorage.setItem("userData", JSON.stringify(userData));
