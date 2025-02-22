@@ -1,22 +1,20 @@
+import type { UserData, GlobalContext } from "./types/app";
 import { useState, useEffect, createContext } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Header from "./components/Header";
 import Table from "./components/Table";
 import Form from "./components/Form";
-export const globalContext = createContext({});
+export const globalContext = createContext<GlobalContext | null>(null);
 
 const App = (): JSX.Element => {
-  const [userData, setUserData] = useState<{
-    username: string;
-    isAuthenticated: boolean;
-  }>(
+  const [userData, setUserData] = useState<UserData>(
     JSON.parse(sessionStorage.getItem("userData")!) || {
       username: "",
       isAuthenticated: false,
     }
   );
 
-  useEffect(() => {
+  useEffect((): void => {
     sessionStorage.setItem("userData", JSON.stringify(userData));
   }, [userData]);
 
