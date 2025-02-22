@@ -3,11 +3,14 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import Header from "./components/Header";
 import Table from "./components/Table";
 import Form from "./components/Form";
-export const globalContext = createContext();
+export const globalContext = createContext({});
 
-const App = () => {
-  const [userData, setUserData] = useState(
-    JSON.parse(sessionStorage.getItem("userData")) || {
+const App = (): JSX.Element => {
+  const [userData, setUserData] = useState<{
+    username: string;
+    isAuthenticated: boolean;
+  }>(
+    JSON.parse(sessionStorage.getItem("userData")!) || {
       username: "",
       isAuthenticated: false,
     }
