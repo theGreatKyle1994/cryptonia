@@ -1,9 +1,11 @@
 import axios from "axios";
+import useLogout from "./useLogout";
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 const useAPI = (setUserData) => {
   const navigate = useNavigate();
+  const logout = useLogout(setUserData);
   const location = useLocation();
   const [formData, setFormData] = useState({
     username: "",
@@ -69,7 +71,7 @@ const useAPI = (setUserData) => {
             },
             isBtnDisabled: false,
           }));
-        } else setUserData({ username: "", isAuthenticated: false });
+        } else logout();
       });
   };
 
