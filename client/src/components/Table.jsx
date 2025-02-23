@@ -13,23 +13,20 @@ const Table = () => {
   } = useContext(globalContext);
   const location = useLocation();
   const logout = useLogout();
-  const [cryptoData, setCryptoData] = useState([]);
-  const [modal, setModal] = useState({ id: "" });
-  const [favoriteList, setFavoriteList] = useState([]);
-  const [currentFilter, setCurrentFilter] = useState("none");
-  const [filteredData, setFilteredData] = useState(
-    filterTable(
-      currentFilter,
-      location.pathname == "/home"
-        ? cryptoData
-        : filterFavs(favoriteList, cryptoData)
-    )
-  );
+  const [tableData, setTableData] = useState({
+    cryptoData: [],
+    modal: { id: "" },
+    favoriteList: [],
+    tableFilter: "none",
+    filteredData: [],
+  });
 
   const getCryptoData = async () => {
     await axios
       .get("https://api.coincap.io/v2/assets")
-      .then((res) => setCryptoData(res.data.data))
+      .then((res) =>
+        setTableData((prevData) => ({ ...prevData, cryptoData: res.data.data }))
+      )
       .catch((err) => console.log(err));
   };
 
@@ -39,24 +36,28 @@ const Table = () => {
         .get(`${import.meta.env.VITE_BACKEND_URL}/api/user/fav`, {
           withCredentials: true,
         })
-        .then((res) => setFavoriteList(res.data))
+        .then((res) =>
+          setTableData((prevData) => ({ ...prevData, favoriteList: res.data }))
+        )
         .catch(() => logout("/login"));
     }
   };
 
   useEffect(() => {
-    setFilteredData(
-      filterTable(
-        currentFilter,
+    setTableData((prevData) => ({
+      ...prevData,
+      filteredData: filterTable(
+        tableData.tableFilter,
         location.pathname == "/home"
-          ? cryptoData
-          : filterFavs(favoriteList, cryptoData)
-      )
-    );
+          ? tableData.cryptoData
+          : filterFavs(tableData.favoriteList, tableData.cryptoData)
+      ),
+    }));
   }, [
-    currentFilter,
-    cryptoData,
-    location.pathname == "/home" ? "" : favoriteList,
+    tableData.tableFilter,
+    tableData.cryptoData,
+    tableData.favoriteList,
+    location.pathname,
   ]);
 
   useEffect(() => {
@@ -72,15 +73,11 @@ const Table = () => {
   return (
     <>
       <CryptoTable
-        cryptoData={filteredData}
-        favoriteList={favoriteList}
-        currentFilter={currentFilter}
-        setCurrentFilter={setCurrentFilter}
-        modal={modal}
-        setModal={setModal}
+        tableData={tableData}
+        setTableData={setTableData}
         getFavData={getFavData}
       />
-      <CryptoModal modal={modal} cryptoData={cryptoData} setModal={setModal} />
+      <CryptoModal tableData={tableData} setTableData={setTableData} />
     </>
   );
 };

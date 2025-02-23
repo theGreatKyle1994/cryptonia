@@ -6,12 +6,8 @@ import useLogout from "../hooks/useLogout";
 import "./CryptoTable.css";
 
 const CryptoTable = ({
-  cryptoData,
-  favoriteList,
-  currentFilter,
-  setCurrentFilter,
-  modal,
-  setModal,
+  tableData: { tableFilter, favoriteList, modal, filteredData },
+  setTableData,
   getFavData,
 }) => {
   const {
@@ -31,19 +27,22 @@ const CryptoTable = ({
     };
     const filterObj = {
       name() {
-        return currentFilter == "nameAsc" ? "nameDesc" : "nameAsc";
+        return tableFilter == "nameAsc" ? "nameDesc" : "nameAsc";
       },
       symbol() {
-        return currentFilter == "symbolAsc" ? "symbolDesc" : "symbolAsc";
+        return tableFilter == "symbolAsc" ? "symbolDesc" : "symbolAsc";
       },
       price() {
-        return currentFilter == "priceAsc" ? "priceDesc" : "priceAsc";
+        return tableFilter == "priceAsc" ? "priceDesc" : "priceAsc";
       },
       change() {
-        return currentFilter == "changeAsc" ? "changeDesc" : "changeAsc";
+        return tableFilter == "changeAsc" ? "changeDesc" : "changeAsc";
       },
     };
-    setCurrentFilter(filterObj[newFilter]());
+    setTableData((prevData) => ({
+      ...prevData,
+      tableFilter: filterObj[newFilter](),
+    }));
     symbolHandler(newFilter);
   };
 
@@ -76,40 +75,44 @@ const CryptoTable = ({
           </tr>
         </thead>
       </table>
-      {cryptoData && cryptoData.length !== 0 ? (
+      {filteredData && filteredData.length !== 0 ? (
         <div id="table-scroll-container">
           <table id="table-body">
             <tbody>
-              {cryptoData &&
-                cryptoData.map((crypto) => (
-                  <tr
-                    key={Math.random()}
-                    onClick={() => setModal({ id: crypto.id })}
-                    id={modal.id == crypto.id ? "row-selected" : ""}
+              {filteredData.map((crypto) => (
+                <tr
+                  key={Math.random()}
+                  onClick={() =>
+                    setTableData((prevData) => ({
+                      ...prevData,
+                      modal: { id: crypto.id },
+                    }))
+                  }
+                  id={modal.id == crypto.id ? "row-selected" : ""}
+                >
+                  <td>{crypto.name}</td>
+                  <td>{crypto.symbol}</td>
+                  <td>${Number(crypto.priceUsd).toFixed(4)}</td>
+                  <td
+                    className={
+                      crypto.changePercent24Hr < 0
+                        ? "change-24hr-neg"
+                        : "change-24hr-pos"
+                    }
                   >
-                    <td>{crypto.name}</td>
-                    <td>{crypto.symbol}</td>
-                    <td>${Number(crypto.priceUsd).toFixed(4)}</td>
-                    <td
-                      className={
-                        crypto.changePercent24Hr < 0
-                          ? "change-24hr-neg"
-                          : "change-24hr-pos"
-                      }
-                    >
-                      {Number(crypto.changePercent24Hr).toFixed(2)}
+                    {Number(crypto.changePercent24Hr).toFixed(2)}
+                  </td>
+                  {isAuthenticated && favoriteList && (
+                    <td>
+                      <button onClick={(e) => favoriteHandler(e, crypto)}>
+                        {favoriteList && favoriteList.includes(crypto.id)
+                          ? "Unfavorite"
+                          : "Favorite"}
+                      </button>
                     </td>
-                    {isAuthenticated && favoriteList && (
-                      <td>
-                        <button onClick={(e) => favoriteHandler(e, crypto)}>
-                          {favoriteList && favoriteList.includes(crypto.id)
-                            ? "Unfavorite"
-                            : "Favorite"}
-                        </button>
-                      </td>
-                    )}
-                  </tr>
-                ))}
+                  )}
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
