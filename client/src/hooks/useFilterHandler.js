@@ -11,6 +11,7 @@ const useFilterHandler = (tableFilter, setTableData) => {
       });
       return symbols[type];
     };
+
     const filterObj = {
       name() {
         return tableFilter == "nameAsc" ? "nameDesc" : "nameAsc";
@@ -25,12 +26,15 @@ const useFilterHandler = (tableFilter, setTableData) => {
         return tableFilter == "changeAsc" ? "changeDesc" : "changeAsc";
       },
     };
+
     setTableData((prevData) => ({
       ...prevData,
       tableFilter: filterObj[newFilter](),
     }));
+
     symbolHandler(newFilter);
   };
+  
   return [symbols, filterHandler];
 };
 

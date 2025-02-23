@@ -1,5 +1,5 @@
-import axios from "axios";
 import { useEffect } from "react";
+import axios from "axios";
 
 const useCryptoHandler = (setTableData) => {
   const getCryptoData = async () => {
@@ -10,6 +10,7 @@ const useCryptoHandler = (setTableData) => {
       )
       .catch((err) => console.log(err));
   };
+  
   useEffect(() => {
     getCryptoData();
     const refreshCryptoData = setInterval(() => getCryptoData(), 10000);
