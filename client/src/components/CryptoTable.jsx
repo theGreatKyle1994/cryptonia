@@ -1,60 +1,19 @@
-import axios from "axios";
 import { useLocation } from "react-router-dom";
-import { useState, useContext } from "react";
+import { useContext } from "react";
 import { globalContext } from "../App";
-import useLogout from "../hooks/useLogout";
+import useFilterHandler from "../hooks/useFilterHandler";
 import "./CryptoTable.css";
 
 const CryptoTable = ({
-  tableData: { tableFilter, favoriteList, modal, filteredData },
+  tableData: { favoriteList, modal, filteredData, tableFilter },
   setTableData,
-  getFavData,
+  favoriteHandler,
 }) => {
   const {
     userData: { isAuthenticated },
   } = useContext(globalContext);
-  const [symbols, setSymbols] = useState({});
-  const logout = useLogout();
   const location = useLocation();
-
-  const filterHandler = (newFilter) => {
-    const symbolHandler = (type) => {
-      const sym = symbols[type] == `\u2227` ? `	\u2228` : `\u2227`;
-      setSymbols(() => {
-        return { [type]: sym };
-      });
-      return symbols[type];
-    };
-    const filterObj = {
-      name() {
-        return tableFilter == "nameAsc" ? "nameDesc" : "nameAsc";
-      },
-      symbol() {
-        return tableFilter == "symbolAsc" ? "symbolDesc" : "symbolAsc";
-      },
-      price() {
-        return tableFilter == "priceAsc" ? "priceDesc" : "priceAsc";
-      },
-      change() {
-        return tableFilter == "changeAsc" ? "changeDesc" : "changeAsc";
-      },
-    };
-    setTableData((prevData) => ({
-      ...prevData,
-      tableFilter: filterObj[newFilter](),
-    }));
-    symbolHandler(newFilter);
-  };
-
-  const favoriteHandler = async (e, crypto) => {
-    e.stopPropagation();
-    await axios[`${favoriteList.includes(crypto.id) ? "put" : "post"}`](
-      `${import.meta.env.VITE_BACKEND_URL}/api/user/fav`,
-      { fav: crypto.id },
-      { withCredentials: true }
-    ).catch(() => logout("/login"));
-    getFavData();
-  };
+  const [symbols, filterHandler] = useFilterHandler(tableFilter, setTableData);
 
   return (
     <div id="table-container">
@@ -105,7 +64,7 @@ const CryptoTable = ({
                   {isAuthenticated && favoriteList && (
                     <td>
                       <button onClick={(e) => favoriteHandler(e, crypto)}>
-                        {favoriteList && favoriteList.includes(crypto.id)
+                        {favoriteList.includes(crypto.id)
                           ? "Unfavorite"
                           : "Favorite"}
                       </button>

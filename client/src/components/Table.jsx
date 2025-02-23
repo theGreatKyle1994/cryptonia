@@ -43,6 +43,18 @@ const Table = () => {
     }
   };
 
+  const favoriteHandler = async (e, crypto) => {
+    e.stopPropagation();
+    await axios[
+      `${tableData.favoriteList.includes(crypto.id) ? "put" : "post"}`
+    ](
+      `${import.meta.env.VITE_BACKEND_URL}/api/user/fav`,
+      { fav: crypto.id },
+      { withCredentials: true }
+    ).catch(() => logout("/login"));
+    getFavData();
+  };
+
   useEffect(() => {
     setTableData((prevData) => ({
       ...prevData,
@@ -75,7 +87,7 @@ const Table = () => {
       <CryptoTable
         tableData={tableData}
         setTableData={setTableData}
-        getFavData={getFavData}
+        favoriteHandler={favoriteHandler}
       />
       <CryptoModal tableData={tableData} setTableData={setTableData} />
     </>
