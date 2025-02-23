@@ -4,6 +4,7 @@ import { globalContext } from "../App";
 import { useEffect, useState, useContext } from "react";
 import { useLocation } from "react-router-dom";
 import useLogout from "../hooks/useLogout";
+import useCryptoHandler from "../hooks/useCryptoHandler";
 import axios from "axios";
 import { filterTable, filterFavs } from "../utilities/tableSorting";
 
@@ -11,8 +12,6 @@ const Table = () => {
   const {
     userData: { isAuthenticated },
   } = useContext(globalContext);
-  const location = useLocation();
-  const logout = useLogout();
   const [tableData, setTableData] = useState({
     cryptoData: [],
     modal: { id: "" },
@@ -20,15 +19,9 @@ const Table = () => {
     tableFilter: "none",
     filteredData: [],
   });
-
-  const getCryptoData = async () => {
-    await axios
-      .get("https://api.coincap.io/v2/assets")
-      .then((res) =>
-        setTableData((prevData) => ({ ...prevData, cryptoData: res.data.data }))
-      )
-      .catch((err) => console.log(err));
-  };
+  useCryptoHandler(setTableData);
+  const location = useLocation();
+  const logout = useLogout();
 
   const getFavData = async () => {
     if (isAuthenticated) {
@@ -71,12 +64,6 @@ const Table = () => {
     tableData.favoriteList,
     location.pathname,
   ]);
-
-  useEffect(() => {
-    getCryptoData();
-    const refreshCryptoData = setInterval(() => getCryptoData(), 5000);
-    return () => clearInterval(refreshCryptoData);
-  }, []);
 
   useEffect(() => {
     (async () => await getFavData())();
