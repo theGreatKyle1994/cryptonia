@@ -1,19 +1,20 @@
+import type { RouteData } from "../types/app";
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
-const useRouteHandler = () => {
+const useRouteHandler = (): RouteData => {
   const location = useLocation();
-  const [routeData, setRouteData] = useState({
+  const [routeData, setRouteData] = useState<RouteData>({
     method: "get",
     route: "/",
     apiRoute: "/api",
     routeTo: "/",
-    header: "undefined",
-    btnText: "undefined",
-    btnMsg: "undefined",
+    header: "",
+    btnText: "",
+    btnMsg: "",
   });
 
-  const checkRoute = () => {
+  const checkRoute = (): RouteData => {
     switch (location.pathname) {
       case "/login":
         return {
@@ -45,13 +46,20 @@ const useRouteHandler = () => {
           btnText: "Change Username",
           btnMsg: "",
         };
+      default:
+        return {
+          method: "get",
+          route: "/",
+          apiRoute: "/api",
+          routeTo: "/",
+          header: "",
+          btnText: "",
+          btnMsg: "",
+        };
     }
   };
 
-  useEffect(
-    () => setRouteData(checkRoute(location.pathname)),
-    [location.pathname]
-  );
+  useEffect((): void => setRouteData(checkRoute()), [location.pathname]);
 
   return routeData;
 };

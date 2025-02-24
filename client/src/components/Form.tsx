@@ -7,7 +7,7 @@ const Form: React.FC = (): JSX.Element => {
   const [formData, setFormData, APICall] = useAPI();
   const routeData = useRouteHandler();
 
-  const inputHandler = (e) => {
+  const inputHandler = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = e.target;
     setFormData((prevFormData) => ({
       ...prevFormData,
@@ -15,7 +15,9 @@ const Form: React.FC = (): JSX.Element => {
     }));
   };
 
-  const submitHandler = async (e) => {
+  const submitHandler = async (
+    e: React.FormEvent<HTMLFormElement>
+  ): Promise<void> => {
     e.preventDefault();
     APICall({
       method: routeData.method,
@@ -91,7 +93,6 @@ const Form: React.FC = (): JSX.Element => {
         </div>
       )}
       <div id="button-container">
-        <span>{routeData.subText}</span>
         <Link to={routeData.routeTo}>{routeData.btnMsg}</Link>
         <button disabled={formData.isBtnDisabled}>{routeData.btnText}</button>
       </div>

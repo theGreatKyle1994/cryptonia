@@ -1,3 +1,5 @@
+export type Method = "get" | "post" | "put" | "delete";
+
 export interface UserData {
   username: string;
   isAuthenticated: boolean;
@@ -9,6 +11,16 @@ export interface GlobalContext {
 }
 
 export type LogoutFunction = (navigateTo?: string) => void;
+
+export interface RouteData {
+  method: Method;
+  route: string;
+  apiRoute: string;
+  routeTo: string;
+  header: string;
+  btnText: string;
+  btnMsg: string;
+}
 
 export namespace API {
   interface APIFormData {
@@ -32,7 +44,7 @@ export namespace API {
   }
 
   interface APIRequestConfig {
-    method?: "get" | "post" | "put";
+    method?: Method;
     route?: string;
     withCredentials?: boolean;
   }
