@@ -48,6 +48,7 @@ export const filterTable = (filter, cryptoData) => {
       return cryptoData;
     },
   };
+  
   return filterObj[filter]();
 };
 

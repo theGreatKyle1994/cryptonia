@@ -1,91 +1,85 @@
-import axios from "axios";
-import { useLocation } from "react-router-dom";
-import { useState, useContext } from "react";
 import { globalContext } from "../App";
-import useLogout from "../hooks/useLogout";
+import { useState, useContext, useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import useFilterHandler from "../hooks/useFilterHandler";
+import useCryptoHandler from "../hooks/useCryptoHandler";
+import useFavoriteHandler from "../hooks/useFavoriteHandler";
+import CryptoModal from "./CryptoModal";
+import { filterTable, filterFavs } from "../utilities/tableSorting";
 import "./CryptoTable.css";
 
-const CryptoTable = ({
-  cryptoData,
-  favoriteList,
-  currentFilter,
-  setCurrentFilter,
-  modal,
-  setModal,
-  getFavData,
-}) => {
-  const {
-    userData: { isAuthenticated },
-  } = useContext(globalContext);
-  const [symbols, setSymbols] = useState({});
-  const logout = useLogout();
+const CryptoTable = () => {
+  const { userData } = useContext(globalContext);
+  const [tableData, setTableData] = useState({
+    cryptoData: [],
+    modal: { id: "" },
+    favoriteList: [],
+    tableFilter: "none",
+    filteredData: [],
+  });
+  const favoriteHandler = useFavoriteHandler(
+    tableData.favoriteList,
+    setTableData
+  );
   const location = useLocation();
+  const [symbols, filterHandler] = useFilterHandler(
+    tableData.tableFilter,
+    setTableData
+  );
 
-  const filterHandler = (newFilter) => {
-    const symbolHandler = (type) => {
-      const sym = symbols[type] == `\u2227` ? `	\u2228` : `\u2227`;
-      setSymbols(() => {
-        return { [type]: sym };
-      });
-      return symbols[type];
-    };
-    const filterObj = {
-      name() {
-        return currentFilter == "nameAsc" ? "nameDesc" : "nameAsc";
-      },
-      symbol() {
-        return currentFilter == "symbolAsc" ? "symbolDesc" : "symbolAsc";
-      },
-      price() {
-        return currentFilter == "priceAsc" ? "priceDesc" : "priceAsc";
-      },
-      change() {
-        return currentFilter == "changeAsc" ? "changeDesc" : "changeAsc";
-      },
-    };
-    setCurrentFilter(filterObj[newFilter]());
-    symbolHandler(newFilter);
-  };
+  useCryptoHandler(setTableData);
 
-  const favoriteHandler = async (e, crypto) => {
-    e.stopPropagation();
-    await axios[`${favoriteList.includes(crypto.id) ? "put" : "post"}`](
-      `${import.meta.env.VITE_BACKEND_URL}/api/user/fav`,
-      { fav: crypto.id },
-      { withCredentials: true }
-    ).catch(() => logout("/login"));
-    getFavData();
-  };
+  useEffect(() => {
+    setTableData((prevData) => ({
+      ...prevData,
+      filteredData: filterTable(
+        tableData.tableFilter,
+        location.pathname == "/home"
+          ? tableData.cryptoData
+          : filterFavs(tableData.favoriteList, tableData.cryptoData)
+      ),
+    }));
+  }, [
+    tableData.tableFilter,
+    tableData.cryptoData,
+    tableData.favoriteList,
+    location.pathname,
+  ]);
 
   return (
-    <div id="table-container">
-      <table id="table-header">
-        <thead>
-          <tr id="table-header-row">
-            <th onClick={() => filterHandler("name")}>Name {symbols.name}</th>
-            <th onClick={() => filterHandler("symbol")}>
-              Symbol {symbols.symbol}
-            </th>
-            <th onClick={() => filterHandler("price")}>
-              Price {symbols.price}
-            </th>
-            <th onClick={() => filterHandler("change")}>
-              24hr Change {symbols.change}
-            </th>
-            {isAuthenticated && <th id="actions-tab">Actions</th>}
-          </tr>
-        </thead>
-      </table>
-      {cryptoData && cryptoData.length !== 0 ? (
-        <div id="table-scroll-container">
-          <table id="table-body">
-            <tbody>
-              {cryptoData &&
-                cryptoData.map((crypto) => (
+    <>
+      <div id="table-container">
+        <table id="table-header">
+          <thead>
+            <tr id="table-header-row">
+              <th onClick={() => filterHandler("name")}>Name {symbols.name}</th>
+              <th onClick={() => filterHandler("symbol")}>
+                Symbol {symbols.symbol}
+              </th>
+              <th onClick={() => filterHandler("price")}>
+                Price {symbols.price}
+              </th>
+              <th onClick={() => filterHandler("change")}>
+                24hr Change {symbols.change}
+              </th>
+              {userData.isAuthenticated && <th id="actions-tab">Actions</th>}
+            </tr>
+          </thead>
+        </table>
+        {tableData.filteredData && tableData.filteredData.length !== 0 ? (
+          <div id="table-scroll-container">
+            <table id="table-body">
+              <tbody>
+                {tableData.filteredData.map((crypto) => (
                   <tr
                     key={Math.random()}
-                    onClick={() => setModal({ id: crypto.id })}
-                    id={modal.id == crypto.id ? "row-selected" : ""}
+                    onClick={() =>
+                      setTableData((prevData) => ({
+                        ...prevData,
+                        modal: { id: crypto.id },
+                      }))
+                    }
+                    id={tableData.modal.id == crypto.id ? "row-selected" : ""}
                   >
                     <td>{crypto.name}</td>
                     <td>{crypto.symbol}</td>
@@ -99,10 +93,10 @@ const CryptoTable = ({
                     >
                       {Number(crypto.changePercent24Hr).toFixed(2)}
                     </td>
-                    {isAuthenticated && favoriteList && (
+                    {userData.isAuthenticated && tableData.favoriteList && (
                       <td>
                         <button onClick={(e) => favoriteHandler(e, crypto)}>
-                          {favoriteList && favoriteList.includes(crypto.id)
+                          {tableData.favoriteList.includes(crypto.id)
                             ? "Unfavorite"
                             : "Favorite"}
                         </button>
@@ -110,19 +104,21 @@ const CryptoTable = ({
                     )}
                   </tr>
                 ))}
-            </tbody>
-          </table>
-        </div>
-      ) : (
-        <h3 id="await-data-header">
-          {location.pathname == "/home"
-            ? "Loading Crypto Data..."
-            : !favoriteList.length
-            ? "Add favorites to this list"
-            : "Loading Favorites..."}
-        </h3>
-      )}
-    </div>
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <h3 id="await-data-header">
+            {location.pathname == "/home"
+              ? "Loading Crypto Data..."
+              : !tableData.favoriteList.length
+              ? "Add favorites to this list"
+              : "Loading Favorites..."}
+          </h3>
+        )}
+      </div>
+      <CryptoModal tableData={tableData} setTableData={setTableData} />
+    </>
   );
 };
 

@@ -1,13 +1,11 @@
-import { Link, useLocation } from "react-router-dom";
-import { useContext } from "react";
 import { globalContext } from "../App";
+import { useContext } from "react";
+import { Link, useLocation } from "react-router-dom";
 import useLogout from "../hooks/useLogout";
 import "./Header.css";
 
 const Header = () => {
-  const {
-    userData: { username, isAuthenticated },
-  } = useContext(globalContext);
+  const { userData } = useContext(globalContext);
   const location = useLocation();
   const logout = useLogout();
 
@@ -31,8 +29,8 @@ const Header = () => {
       <header>
         <h1>Cryptonia</h1>
         <nav>
-          {isAuthenticated && (
-            <span id="welcome-user">Signed-In: {username}</span>
+          {userData.isAuthenticated && (
+            <span id="welcome-user">Signed-In: {userData.username}</span>
           )}
           <div>
             {location.pathname !== "/home" && (
@@ -40,7 +38,7 @@ const Header = () => {
                 <button type="submit">Home</button>
               </Link>
             )}
-            {isAuthenticated && (
+            {userData.isAuthenticated && (
               <>
                 {location.pathname !== "/favorites" && (
                   <Link to={"/favorites"}>
@@ -56,12 +54,14 @@ const Header = () => {
             )}
             {location.pathname !== "/login" &&
               location.pathname !== "/register" && (
-                <Link to={isAuthenticated ? "/" : "/login"}>
+                <Link to={userData.isAuthenticated ? "/" : "/login"}>
                   <button
                     type="submit"
-                    onClick={() => (isAuthenticated ? logout("/") : undefined)}
+                    onClick={() =>
+                      userData.isAuthenticated ? logout("/") : undefined
+                    }
                   >
-                    {isAuthenticated ? "Logout" : "Login"}
+                    {userData.isAuthenticated ? "Logout" : "Login"}
                   </button>
                 </Link>
               )}
