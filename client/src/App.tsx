@@ -4,6 +4,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import Header from "./components/Header";
 import CryptoTable from "./components/CryptoTable";
 import Form from "./components/Form";
+
 export const globalContext = createContext<GlobalContext | null>(null);
 
 const App: React.FC = (): JSX.Element => {
@@ -14,9 +15,10 @@ const App: React.FC = (): JSX.Element => {
     }
   );
 
-  useEffect((): void => {
-    sessionStorage.setItem("userData", JSON.stringify(userData));
-  }, [userData]);
+  useEffect(
+    () => sessionStorage.setItem("userData", JSON.stringify(userData)),
+    [userData]
+  );
 
   return (
     <globalContext.Provider value={{ userData, setUserData }}>

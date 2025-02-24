@@ -14,13 +14,10 @@ const useCryptoHandler = (
       .catch((err) => console.log(err));
   };
 
-  useEffect((): (() => void) => {
+  useEffect(() => {
     getCryptoData();
-    const refreshCryptoData = setInterval(
-      (): Promise<void> => getCryptoData(),
-      10000
-    );
-    return (): void => clearInterval(refreshCryptoData);
+    const refreshCryptoData = setInterval(() => getCryptoData(), 10000);
+    return () => clearInterval(refreshCryptoData);
   }, []);
 };
 

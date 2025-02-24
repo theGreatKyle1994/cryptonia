@@ -59,7 +59,7 @@ const useRouteHandler = (): Route.RouteData => {
     }
   };
 
-  useEffect((): void => setRouteData(checkRoute()), [location.pathname]);
+  useEffect(() => setRouteData(checkRoute()), [location.pathname]);
 
   return routeData;
 };

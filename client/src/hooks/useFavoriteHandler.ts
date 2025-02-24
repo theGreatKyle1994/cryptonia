@@ -7,7 +7,7 @@ import axios from "axios";
 const useFavoriteHandler = (
   favoriteList: Table.TableData["favoriteList"],
   setTableData: React.Dispatch<React.SetStateAction<Table.TableData>>
-) => {
+): Table.FavoriteHandler => {
   const { userData } = useContext(globalContext) as GlobalContext;
   const logout = useLogout();
 
@@ -17,10 +17,10 @@ const useFavoriteHandler = (
         .get(`${import.meta.env.VITE_BACKEND_URL}/api/user/fav`, {
           withCredentials: true,
         })
-        .then((res): void =>
+        .then((res) =>
           setTableData((prevData) => ({ ...prevData, favoriteList: res.data }))
         )
-        .catch((): void => logout("/login"));
+        .catch(() => logout("/login"));
     }
   };
 
@@ -33,12 +33,12 @@ const useFavoriteHandler = (
       `${import.meta.env.VITE_BACKEND_URL}/api/user/fav`,
       { fav: crypto.id },
       { withCredentials: true }
-    ).catch((): void => logout("/login"));
+    ).catch(() => logout("/login"));
     getFavData();
   };
 
-  useEffect((): void => {
-    (async (): Promise<void> => await getFavData())();
+  useEffect(() => {
+    (async () => await getFavData())();
   }, [userData.isAuthenticated]);
 
   return favoriteHandler;

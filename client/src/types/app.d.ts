@@ -66,7 +66,7 @@ export namespace Table {
 
   type FilterHandler = (newFilter: FilterName) => void;
 
-  type FilterReturnData = [HeaderData, FilterHandlerFunction];
+  type FilterReturnData = [HeaderData, FilterHandler];
 }
 
 export namespace API {

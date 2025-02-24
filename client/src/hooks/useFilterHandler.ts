@@ -12,7 +12,9 @@ const useFilterHandler = (
     change: "",
   });
 
-  const filterHandler = (newFilter: Table.FilterName): void => {
+  const filterHandler: Table.FilterHandler = (
+    newFilter: Table.FilterName
+  ): void => {
     const symbolHandler = (): void => {
       const sym: Table.Symbol =
         headers[newFilter] == `\u2227` ? `\u2228` : `\u2227`;

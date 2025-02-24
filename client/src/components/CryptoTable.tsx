@@ -30,22 +30,24 @@ const CryptoTable: React.FC = (): JSX.Element => {
 
   useCryptoHandler(setTableData);
 
-  useEffect((): void => {
-    setTableData((prevData) => ({
-      ...prevData,
-      filteredData: filterTable(
-        tableData.tableFilter,
-        location.pathname == "/home"
-          ? tableData.cryptoData
-          : filterFavs(tableData.favoriteList, tableData.cryptoData)
-      ),
-    }));
-  }, [
-    tableData.tableFilter,
-    tableData.cryptoData,
-    tableData.favoriteList,
-    location.pathname,
-  ]);
+  useEffect(
+    () =>
+      setTableData((prevData) => ({
+        ...prevData,
+        filteredData: filterTable(
+          tableData.tableFilter,
+          location.pathname == "/home"
+            ? tableData.cryptoData
+            : filterFavs(tableData.favoriteList, tableData.cryptoData)
+        ),
+      })),
+    [
+      tableData.tableFilter,
+      tableData.cryptoData,
+      tableData.favoriteList,
+      location.pathname,
+    ]
+  );
 
   return (
     <>
@@ -53,16 +55,14 @@ const CryptoTable: React.FC = (): JSX.Element => {
         <table id="table-header">
           <thead>
             <tr id="table-header-row">
-              <th onClick={(): void => filterHandler("name")}>
-                Name {headers.name}
-              </th>
-              <th onClick={(): void => filterHandler("symbol")}>
+              <th onClick={() => filterHandler("name")}>Name {headers.name}</th>
+              <th onClick={() => filterHandler("symbol")}>
                 Symbol {headers.symbol}
               </th>
-              <th onClick={(): void => filterHandler("price")}>
+              <th onClick={() => filterHandler("price")}>
                 Price {headers.price}
               </th>
-              <th onClick={(): void => filterHandler("change")}>
+              <th onClick={() => filterHandler("change")}>
                 24hr Change {headers.change}
               </th>
               {userData.isAuthenticated && <th id="actions-tab">Actions</th>}
@@ -76,7 +76,7 @@ const CryptoTable: React.FC = (): JSX.Element => {
                 {tableData.filteredData.map((crypto) => (
                   <tr
                     key={Math.random()}
-                    onClick={(): void =>
+                    onClick={() =>
                       setTableData((prevData) => ({
                         ...prevData,
                         modal: { id: crypto.id },
@@ -98,11 +98,7 @@ const CryptoTable: React.FC = (): JSX.Element => {
                     </td>
                     {userData.isAuthenticated && tableData.favoriteList && (
                       <td>
-                        <button
-                          onClick={(e): Promise<void> =>
-                            favoriteHandler(e, crypto)
-                          }
-                        >
+                        <button onClick={(e) => favoriteHandler(e, crypto)}>
                           {tableData.favoriteList.includes(crypto.id)
                             ? "Unfavorite"
                             : "Favorite"}

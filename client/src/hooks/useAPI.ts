@@ -50,17 +50,17 @@ const useAPI = (): API.APIData => {
       withCredentials,
       data: { username, newUsername, password, confirmPassword },
     })
-      .then((res): void => {
+      .then((res) => {
         resetFormErrors({
           successMsg: res.data.successMsg,
           isBtnDisabled: true,
         });
-        setTimeout((): void => {
+        setTimeout(() => {
           setUserData({ username: res.data.username, isAuthenticated: true });
           navigate("/");
         }, 1500);
       })
-      .catch((err): void => {
+      .catch((err) => {
         if (err.response.data?.error) {
           const { username, password, confirmPassword, newUsername } =
             err.response.data?.error.errors;
@@ -79,7 +79,7 @@ const useAPI = (): API.APIData => {
       });
   };
 
-  useEffect((): void => resetFormErrors(), [location.pathname]);
+  useEffect(() => resetFormErrors(), [location.pathname]);
 
   return [formData, setFormData, request];
 };

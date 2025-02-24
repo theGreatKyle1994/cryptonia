@@ -9,8 +9,7 @@ const CryptoModal: React.FC<Modal.ModalProps> = ({
   const [crypto, setCrypto] = useState<Table.Crypto | undefined>(undefined);
 
   useEffect(
-    (): void =>
-      setCrypto(cryptoData.filter((crypto) => crypto.id == modal.id)[0]),
+    () => setCrypto(cryptoData.filter((crypto) => crypto.id == modal.id)[0]),
     [cryptoData, modal.id]
   );
 
@@ -45,7 +44,7 @@ const CryptoModal: React.FC<Modal.ModalProps> = ({
         </div>
         <div
           id="close-btn"
-          onClick={(): void =>
+          onClick={() =>
             setTableData((prevData) => ({ ...prevData, modal: { id: "" } }))
           }
         >
