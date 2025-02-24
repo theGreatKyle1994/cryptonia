@@ -1,8 +1,8 @@
-import axios from "axios";
-import useLogout from "./useLogout";
 import { globalContext } from "../App";
 import { useEffect, useState, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import useLogout from "./useLogout";
+import axios from "axios";
 
 const useAPI = () => {
   const { setUserData } = useContext(globalContext);
@@ -42,6 +42,7 @@ const useAPI = () => {
     withCredentials = false,
   } = {}) => {
     const { username, password, confirmPassword, newUsername } = formData;
+
     axios({
       method,
       url: `${import.meta.env.VITE_BACKEND_URL}${route}`,
@@ -62,6 +63,7 @@ const useAPI = () => {
         if (err.response.data?.error) {
           const { username, password, confirmPassword, newUsername } =
             err.response.data?.error.errors;
+            
           setFormData((prevData) => ({
             ...prevData,
             errors: {

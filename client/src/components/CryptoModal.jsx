@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import "./CryptoModal.css";
 
-const CryptoModal = ({ modal, cryptoData, setModal }) => {
+const CryptoModal = ({ tableData: { cryptoData, modal }, setTableData }) => {
   const [crypto, setCrypto] = useState(undefined);
 
   useEffect(
@@ -38,7 +38,12 @@ const CryptoModal = ({ modal, cryptoData, setModal }) => {
           <div>Market Cap:</div>
           <div>${Number(crypto.marketCapUsd).toFixed(4)}</div>
         </div>
-        <div id="close-btn" onClick={() => setModal({ id: "" })}>
+        <div
+          id="close-btn"
+          onClick={() =>
+            setTableData((prevData) => ({ ...prevData, modal: { id: "" } }))
+          }
+        >
           X
         </div>
       </div>

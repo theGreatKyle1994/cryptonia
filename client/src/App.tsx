@@ -2,7 +2,7 @@ import type { UserData, GlobalContext } from "./types/app";
 import { useState, useEffect, createContext } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Header from "./components/Header";
-import Table from "./components/Table";
+import CryptoTable from "./components/CryptoTable";
 import Form from "./components/Form";
 export const globalContext = createContext<GlobalContext | null>(null);
 
@@ -23,10 +23,12 @@ const App = (): JSX.Element => {
       <Header />
       <Routes>
         <Route path="/" element={<Navigate to="/home" />} />
-        <Route path="/home" element={<Table />} />
+        <Route path="/home" element={<CryptoTable />} />
         <Route
           path="/favorites"
-          element={userData.isAuthenticated ? <Table /> : <Navigate to="/" />}
+          element={
+            userData.isAuthenticated ? <CryptoTable /> : <Navigate to="/" />
+          }
         />
         <Route path="/login" element={<Form />} />
         <Route path="/register" element={<Form />} />

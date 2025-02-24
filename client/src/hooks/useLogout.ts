@@ -1,7 +1,7 @@
 import type { GlobalContext, LogoutFunction } from "../types/app";
-import { useNavigate } from "react-router-dom";
-import { useContext } from "react";
 import { globalContext } from "../App";
+import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 
 const useLogout = (): LogoutFunction => {
   const { setUserData } = useContext(globalContext) as GlobalContext;
@@ -11,6 +11,7 @@ const useLogout = (): LogoutFunction => {
     setUserData({ username: "", isAuthenticated: false });
     if (navigateTo) navigate(navigateTo);
   };
+
   return logout;
 };
 
