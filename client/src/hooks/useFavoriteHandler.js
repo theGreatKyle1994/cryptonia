@@ -7,16 +7,6 @@ const useFavoriteHandler = (favoriteList, setTableData) => {
   const { userData } = useContext(globalContext);
   const logout = useLogout();
 
-  const favoriteHandler = async (e, crypto) => {
-    e.stopPropagation();
-    await axios[`${favoriteList.includes(crypto.id) ? "put" : "post"}`](
-      `${import.meta.env.VITE_BACKEND_URL}/api/user/fav`,
-      { fav: crypto.id },
-      { withCredentials: true }
-    ).catch(() => logout("/login"));
-    getFavData();
-  };
-
   const getFavData = async () => {
     if (userData.isAuthenticated) {
       await axios
@@ -28,6 +18,16 @@ const useFavoriteHandler = (favoriteList, setTableData) => {
         )
         .catch(() => logout("/login"));
     }
+  };
+
+  const favoriteHandler = async (e, crypto) => {
+    e.stopPropagation();
+    await axios[`${favoriteList.includes(crypto.id) ? "put" : "post"}`](
+      `${import.meta.env.VITE_BACKEND_URL}/api/user/fav`,
+      { fav: crypto.id },
+      { withCredentials: true }
+    ).catch(() => logout("/login"));
+    getFavData();
   };
 
   useEffect(() => {
