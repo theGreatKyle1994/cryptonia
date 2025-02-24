@@ -6,9 +6,7 @@ const useFilterHandler = (tableFilter, setTableData) => {
   const filterHandler = (newFilter) => {
     const symbolHandler = (type) => {
       const sym = symbols[type] == `\u2227` ? `	\u2228` : `\u2227`;
-      setSymbols(() => {
-        return { [type]: sym };
-      });
+      setSymbols({ [type]: sym });
       return symbols[type];
     };
 
@@ -34,7 +32,7 @@ const useFilterHandler = (tableFilter, setTableData) => {
 
     symbolHandler(newFilter);
   };
-  
+
   return [symbols, filterHandler];
 };
 
