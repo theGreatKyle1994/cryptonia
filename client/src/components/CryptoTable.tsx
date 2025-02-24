@@ -1,3 +1,4 @@
+import type { GlobalContext, Table } from "../types/app";
 import { globalContext } from "../App";
 import { useState, useContext, useEffect } from "react";
 import { useLocation } from "react-router-dom";
@@ -8,9 +9,9 @@ import CryptoModal from "./CryptoModal";
 import { filterTable, filterFavs } from "../utilities/tableSorting";
 import "./CryptoTable.css";
 
-const CryptoTable = () => {
-  const { userData } = useContext(globalContext);
-  const [tableData, setTableData] = useState({
+const CryptoTable: React.FC = (): JSX.Element => {
+  const { userData } = useContext(globalContext) as GlobalContext;
+  const [tableData, setTableData] = useState<Table.TableData>({
     cryptoData: [],
     modal: { id: "" },
     favoriteList: [],
@@ -22,14 +23,14 @@ const CryptoTable = () => {
     setTableData
   );
   const location = useLocation();
-  const [symbols, filterHandler] = useFilterHandler(
+  const [headers, filterHandler] = useFilterHandler(
     tableData.tableFilter,
     setTableData
   );
 
   useCryptoHandler(setTableData);
 
-  useEffect(() => {
+  useEffect((): void => {
     setTableData((prevData) => ({
       ...prevData,
       filteredData: filterTable(
@@ -52,15 +53,17 @@ const CryptoTable = () => {
         <table id="table-header">
           <thead>
             <tr id="table-header-row">
-              <th onClick={() => filterHandler("name")}>Name {symbols.name}</th>
-              <th onClick={() => filterHandler("symbol")}>
-                Symbol {symbols.symbol}
+              <th onClick={(): void => filterHandler("name")}>
+                Name {headers.name}
               </th>
-              <th onClick={() => filterHandler("price")}>
-                Price {symbols.price}
+              <th onClick={(): void => filterHandler("symbol")}>
+                Symbol {headers.symbol}
               </th>
-              <th onClick={() => filterHandler("change")}>
-                24hr Change {symbols.change}
+              <th onClick={(): void => filterHandler("price")}>
+                Price {headers.price}
+              </th>
+              <th onClick={(): void => filterHandler("change")}>
+                24hr Change {headers.change}
               </th>
               {userData.isAuthenticated && <th id="actions-tab">Actions</th>}
             </tr>
@@ -73,7 +76,7 @@ const CryptoTable = () => {
                 {tableData.filteredData.map((crypto) => (
                   <tr
                     key={Math.random()}
-                    onClick={() =>
+                    onClick={(): void =>
                       setTableData((prevData) => ({
                         ...prevData,
                         modal: { id: crypto.id },
@@ -86,7 +89,7 @@ const CryptoTable = () => {
                     <td>${Number(crypto.priceUsd).toFixed(4)}</td>
                     <td
                       className={
-                        crypto.changePercent24Hr < 0
+                        Number(crypto.changePercent24Hr) < 0
                           ? "change-24hr-neg"
                           : "change-24hr-pos"
                       }
@@ -95,7 +98,11 @@ const CryptoTable = () => {
                     </td>
                     {userData.isAuthenticated && tableData.favoriteList && (
                       <td>
-                        <button onClick={(e) => favoriteHandler(e, crypto)}>
+                        <button
+                          onClick={(e): Promise<void> =>
+                            favoriteHandler(e, crypto)
+                          }
+                        >
                           {tableData.favoriteList.includes(crypto.id)
                             ? "Unfavorite"
                             : "Favorite"}

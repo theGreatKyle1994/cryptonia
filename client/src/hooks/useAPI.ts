@@ -38,7 +38,7 @@ const useAPI = (): API.APIData => {
     }));
   };
 
-  const request: API.APIRequestFunction = ({
+  const request: API.APIRequest = ({
     method = "get",
     route = "/api",
     withCredentials = false,

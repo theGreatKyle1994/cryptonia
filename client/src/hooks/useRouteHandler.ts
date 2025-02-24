@@ -1,10 +1,10 @@
-import type { RouteData } from "../types/app";
+import type { Route } from "../types/app";
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
-const useRouteHandler = (): RouteData => {
+const useRouteHandler = (): Route.RouteData => {
   const location = useLocation();
-  const [routeData, setRouteData] = useState<RouteData>({
+  const [routeData, setRouteData] = useState<Route.RouteData>({
     method: "get",
     route: "/",
     apiRoute: "/api",
@@ -14,7 +14,7 @@ const useRouteHandler = (): RouteData => {
     btnMsg: "",
   });
 
-  const checkRoute = (): RouteData => {
+  const checkRoute = (): Route.RouteData => {
     switch (location.pathname) {
       case "/login":
         return {
