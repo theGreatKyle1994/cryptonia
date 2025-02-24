@@ -6,7 +6,7 @@ import CryptoTable from "./components/CryptoTable";
 import Form from "./components/Form";
 export const globalContext = createContext<GlobalContext | null>(null);
 
-const App = (): JSX.Element => {
+const App: React.FC = (): JSX.Element => {
   const [userData, setUserData] = useState<UserData>(
     JSON.parse(sessionStorage.getItem("userData")!) || {
       username: "",

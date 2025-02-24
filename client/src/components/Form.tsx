@@ -3,7 +3,7 @@ import useRouteHandler from "../hooks/useRouteHandler";
 import useAPI from "../hooks/useAPI";
 import "./Form.css";
 
-const Form = () => {
+const Form: React.FC = (): JSX.Element => {
   const [formData, setFormData, APICall] = useAPI();
   const routeData = useRouteHandler();
 

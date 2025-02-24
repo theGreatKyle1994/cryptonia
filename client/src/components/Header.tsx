@@ -5,7 +5,7 @@ import { Link, useLocation } from "react-router-dom";
 import useLogout from "../hooks/useLogout";
 import "./Header.css";
 
-const Header = (): JSX.Element => {
+const Header: React.FC = (): JSX.Element => {
   const { userData } = useContext(globalContext) as GlobalContext;
   const location = useLocation();
   const logout = useLogout();
