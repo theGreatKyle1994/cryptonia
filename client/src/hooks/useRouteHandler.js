@@ -3,7 +3,15 @@ import { useLocation } from "react-router-dom";
 
 const useRouteHandler = () => {
   const location = useLocation();
-  const [routeData, setRouteData] = useState({});
+  const [routeData, setRouteData] = useState({
+    method: "get",
+    route: "/",
+    apiRoute: "/api",
+    routeTo: "/",
+    header: "undefined",
+    btnText: "undefined",
+    btnMsg: "undefined",
+  });
 
   const checkRoute = () => {
     switch (location.pathname) {

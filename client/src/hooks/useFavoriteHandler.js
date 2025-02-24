@@ -22,11 +22,13 @@ const useFavoriteHandler = (favoriteList, setTableData) => {
 
   const favoriteHandler = async (e, crypto) => {
     e.stopPropagation();
+
     await axios[`${favoriteList.includes(crypto.id) ? "put" : "post"}`](
       `${import.meta.env.VITE_BACKEND_URL}/api/user/fav`,
       { fav: crypto.id },
       { withCredentials: true }
     ).catch(() => logout("/login"));
+    
     getFavData();
   };
 
