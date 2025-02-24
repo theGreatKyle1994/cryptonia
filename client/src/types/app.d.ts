@@ -55,7 +55,7 @@ export namespace Table {
 
   type Symbol = "" | `\u2228` | `\u2227`;
 
-  interface Headers {
+  interface HeaderData {
     name: Symbol;
     symbol: Symbol;
     price: Symbol;
@@ -66,7 +66,7 @@ export namespace Table {
 
   type FilterHandler = (newFilter: FilterName) => void;
 
-  type FilterReturnData = [Headers, FilterHandlerFunction];
+  type FilterReturnData = [HeaderData, FilterHandlerFunction];
 }
 
 export namespace API {
@@ -103,4 +103,11 @@ export namespace API {
     React.Dispatch<React.SetStateAction<APIFormData>>,
     APIRequest
   ];
+}
+
+export namespace Modal {
+  interface ModalProps {
+    tableData: Table.TableData;
+    setTableData: React.Dispatch<React.SetStateAction<Table.TableData>>;
+  }
 }

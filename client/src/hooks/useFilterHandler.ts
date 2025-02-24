@@ -5,7 +5,7 @@ const useFilterHandler = (
   tableFilter: Table.TableData["tableFilter"],
   setTableData: React.Dispatch<React.SetStateAction<Table.TableData>>
 ): Table.FilterReturnData => {
-  const [headers, setHeaders] = useState<Table.Headers>({
+  const [headers, setHeaders] = useState<Table.HeaderData>({
     name: "",
     symbol: "",
     price: "",

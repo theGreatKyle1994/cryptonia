@@ -1,11 +1,16 @@
+import type { Table, Modal } from "../types/app";
 import { useState, useEffect } from "react";
 import "./CryptoModal.css";
 
-const CryptoModal = ({ tableData: { cryptoData, modal }, setTableData }) => {
-  const [crypto, setCrypto] = useState(undefined);
+const CryptoModal: React.FC<Modal.ModalProps> = ({
+  tableData: { modal, cryptoData },
+  setTableData,
+}): JSX.Element | undefined => {
+  const [crypto, setCrypto] = useState<Table.Crypto | undefined>(undefined);
 
   useEffect(
-    () => setCrypto(cryptoData.filter((crypto) => crypto.id == modal.id)[0]),
+    (): void =>
+      setCrypto(cryptoData.filter((crypto) => crypto.id == modal.id)[0]),
     [cryptoData, modal.id]
   );
 
@@ -40,7 +45,7 @@ const CryptoModal = ({ tableData: { cryptoData, modal }, setTableData }) => {
         </div>
         <div
           id="close-btn"
-          onClick={() =>
+          onClick={(): void =>
             setTableData((prevData) => ({ ...prevData, modal: { id: "" } }))
           }
         >
