@@ -13,7 +13,7 @@ const useFilterHandler = (
   });
 
   const filterHandler: Table.FilterHandler = (
-    newFilter: Table.FilterName
+    newFilter: Table.TableHeaderTitle
   ): void => {
     const symbolHandler = (): void => {
       const sym: Table.Symbol =
@@ -28,7 +28,7 @@ const useFilterHandler = (
       });
     };
 
-    const filterObj: { [key in string]: () => string } = {
+    const filterHeaderObj: { [key in string]: () => Table.TableFilters } = {
       name: () => (tableFilter == "nameAsc" ? "nameDesc" : "nameAsc"),
       symbol: () => (tableFilter == "symbolAsc" ? "symbolDesc" : "symbolAsc"),
       price: () => (tableFilter == "priceAsc" ? "priceDesc" : "priceAsc"),
@@ -37,7 +37,7 @@ const useFilterHandler = (
 
     setTableData((prevData) => ({
       ...prevData,
-      tableFilter: filterObj[newFilter](),
+      tableFilter: filterHeaderObj[newFilter](),
     }));
 
     symbolHandler();

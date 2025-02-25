@@ -40,11 +40,22 @@ export namespace Table {
     vwap24Hr: string;
   }
 
+  type TableFilters =
+    | "nameAsc"
+    | "nameDesc"
+    | "symbolAsc"
+    | "symbolDesc"
+    | "priceAsc"
+    | "priceDesc"
+    | "changeAsc"
+    | "changeDesc"
+    | "none";
+
   interface TableData {
     cryptoData: Crypto[];
     modal: { id: string };
     favoriteList: string[];
-    tableFilter: string;
+    tableFilter: TableFilters;
     filteredData: Crypto[];
   }
 
@@ -56,15 +67,16 @@ export namespace Table {
   type Symbol = "" | `\u2228` | `\u2227`;
 
   interface HeaderData {
+    [key as string]: Symbol;
     name: Symbol;
     symbol: Symbol;
     price: Symbol;
     change: Symbol;
   }
 
-  type FilterName = "name" | "symbol" | "price" | "change";
+  type TableHeaderTitle = "name" | "symbol" | "price" | "change";
 
-  type FilterHandler = (newFilter: FilterName) => void;
+  type FilterHandler = (newFilter: Table.TableHeaderTitle) => void;
 
   type FilterReturnData = [HeaderData, FilterHandler];
 }
