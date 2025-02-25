@@ -5,7 +5,7 @@ import "./CryptoModal.css";
 const CryptoModal: React.FC<Modal.ModalProps> = ({
   tableData: { modal, cryptoData },
   setTableData,
-}): JSX.Element | undefined => {
+}): React.ReactElement | undefined => {
   const [crypto, setCrypto] = useState<Table.Crypto | undefined>(undefined);
 
   useEffect(

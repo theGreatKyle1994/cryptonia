@@ -9,7 +9,7 @@ import CryptoModal from "./CryptoModal";
 import { filterTable, filterFavs } from "../utilities/tableSorting";
 import "./CryptoTable.css";
 
-const CryptoTable: React.FC = (): JSX.Element => {
+const CryptoTable: React.FC = (): React.ReactElement => {
   const { userData } = useContext(globalContext) as GlobalContext;
   const [tableData, setTableData] = useState<Table.TableData>({
     cryptoData: [],
