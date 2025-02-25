@@ -28,19 +28,11 @@ const useFilterHandler = (
       });
     };
 
-    const filterObj = {
-      name(): string {
-        return tableFilter == "nameAsc" ? "nameDesc" : "nameAsc";
-      },
-      symbol(): string {
-        return tableFilter == "symbolAsc" ? "symbolDesc" : "symbolAsc";
-      },
-      price(): string {
-        return tableFilter == "priceAsc" ? "priceDesc" : "priceAsc";
-      },
-      change(): string {
-        return tableFilter == "changeAsc" ? "changeDesc" : "changeAsc";
-      },
+    const filterObj: { [key in string]: () => string } = {
+      name: () => (tableFilter == "nameAsc" ? "nameDesc" : "nameAsc"),
+      symbol: () => (tableFilter == "symbolAsc" ? "symbolDesc" : "symbolAsc"),
+      price: () => (tableFilter == "priceAsc" ? "priceDesc" : "priceAsc"),
+      change: () => (tableFilter == "changeAsc" ? "changeDesc" : "changeAsc"),
     };
 
     setTableData((prevData) => ({
