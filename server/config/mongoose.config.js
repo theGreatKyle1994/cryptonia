@@ -7,10 +7,7 @@ const db_uri =
 console.log(db_uri);
 
 mongoose
-  .connect(`${db_uri}${db}`, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(`${db_uri}${db}`)
   .then(() => console.log(`Established a connection to ${db}`))
   .catch((err) =>
     console.log(`Something went wrong when connecting to ${db}`, err)
