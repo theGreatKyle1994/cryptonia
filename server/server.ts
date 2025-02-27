@@ -1,10 +1,11 @@
-const express = require("express");
-const cors = require("cors");
-const cookieParser = require("cookie-parser");
+import express from "express";
+import cors from "cors";
+import cookieParser from "cookie-parser";
+import { configDotenv } from "dotenv";
 const app = express();
-const port = process.env.PORT || 8000;
+const port = Number(process.env.PORT) || 8000;
 
-require("dotenv").config();
+configDotenv();
 require("./config/mongoose.config");
 
 app.use(

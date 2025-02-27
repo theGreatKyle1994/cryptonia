@@ -2,10 +2,11 @@
   "name": "cryptonia-server",
   "type": "commonjs",
   "scripts": {
-    "dev": "env NODE_ENV=development nodemon server.js",
-    "start": "env NODE_ENV=production pm2 start --update-env server.js",
-    "restart": "env NODE_ENV=production pm2 restart --update-env server.js",
-    "stop": "pm2 stop server.js",
+    "dev": "env NODE_ENV=development nodemon server.ts",
+    "start": "env NODE_ENV=production pm2 start --update-env ./dist/server.js",
+    "build": "tsc",
+    "restart": "env NODE_ENV=production pm2 restart --update-env ./dist/server.js",
+    "stop": "pm2 stop ./dist/server.js",
     "status": "pm2 status",
     "logs": "pm2 logs"
   },
@@ -20,7 +21,13 @@
     "pm2": "^5.4.3"
   },
   "devDependencies": {
+    "@types/cookie-parser": "^1.4.8",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.13.5",
     "nodemon": "^3.1.9",
-    "npm-check-updates": "^17.1.15"
+    "npm-check-updates": "^17.1.15",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.3"
   }
 }
