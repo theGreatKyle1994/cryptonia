@@ -1,15 +1,17 @@
-import type { Response, NextFunction } from "express";
-import type { CookieRequest, Payload } from "../types";
+import type { Request, Response, NextFunction } from "express";
+import type { Cookies, Payload } from "../types";
+import type { Environment } from "../types/env";
 import * as jwt from "jsonwebtoken";
 
-const { SECRET_KEY } = process.env as { SECRET_KEY: string };
+const { SECRET_KEY } = process.env as Environment;
 
 const authenticate = (
-  req: CookieRequest,
+  req: Request,
   res: Response,
   next: NextFunction
 ): void => {
-  jwt.verify(req.cookies.userToken, SECRET_KEY, (err, decoded) => {
+  const { userToken } = req.cookies as Cookies;
+  jwt.verify(userToken, SECRET_KEY, (err, decoded) => {
     if (!err && decoded) {
       const { userId } = decoded as Payload;
       req.body.userId = userId;
