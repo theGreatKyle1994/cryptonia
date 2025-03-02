@@ -1,12 +1,14 @@
+import { configDotenv } from "dotenv";
+configDotenv();
+
+import connectToDB from "./config/mongoose.config";
+connectToDB();
+
 import type { Express } from "express";
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import { configDotenv } from "dotenv";
-import connectToDB from "./config/mongoose.config";
-
-configDotenv();
-connectToDB();
+import routes from "./routes/user.routes";
 
 const app: Express = express();
 const port: number = Number(process.env.PORT) ?? 8000;
@@ -21,7 +23,7 @@ app.use(
   express.urlencoded({ extended: true })
 );
 
-require("./routes/user.routes")(app);
+routes(app);
 
 app.listen(port, (err): void =>
   console.log(err ? err : `Server live on port: ${port}`)

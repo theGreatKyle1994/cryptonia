@@ -1,7 +1,8 @@
+import type { Express } from "express";
 const UserController = require("../controllers/user.controller");
-const { authenticate } = require("../config/jwt.auth");
+import authenticate from "../config/jwt.auth";
 
-module.exports = (app) => {
+const routes = (app: Express): void => {
   app.post("/api/user/login", UserController.login);
   app.post("/api/user/register", UserController.register);
   app.get("/api/user/fav", authenticate, UserController.getFavorites);
@@ -9,3 +10,5 @@ module.exports = (app) => {
   app.put("/api/user/fav", authenticate, UserController.removeFavorite);
   app.put("/api/user/update", authenticate, UserController.updateUser);
 };
+
+export default routes;
