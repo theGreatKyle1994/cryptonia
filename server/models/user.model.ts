@@ -1,8 +1,12 @@
-import type { User, BodyData } from "../types/global";
+import type { user, BodyData } from "../types";
 import { Schema, model } from "mongoose";
 import * as bcrypt from "bcrypt";
 
-const UserSchema = new Schema<User.UserDoc, User.UserModel, User.UserVirtuals>(
+type UserDoc = user.UserDoc;
+type UserModel = user.UserModel;
+type UserVirtuals = user.UserVirtuals;
+
+const UserSchema = new Schema<UserDoc, UserModel, UserVirtuals>(
   {
     username: {
       type: String,
@@ -26,7 +30,6 @@ UserSchema.virtual("confirmPassword")
     return this.confirmPassword;
   })
   .set(function (value: BodyData["confirmPassword"]) {
-    console.log(value);
     if (value) this.confirmPassword = value;
   });
 

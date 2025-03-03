@@ -24,6 +24,6 @@ app.use(
 
 routes(app);
 
-app.listen(port, (err): void =>
+app.listen(port, (err) =>
   console.log(err ? err : `Server live on port: ${port}`)
 );
