@@ -1,7 +1,7 @@
-const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
+import { Schema, model, PreMiddlewareFunction } from "mongoose";
+import * as bcrypt from "bcrypt";
 
-const UserSchema = new mongoose.Schema(
+const UserSchema = new Schema<User>(
   {
     username: {
       type: String,
@@ -15,11 +15,13 @@ const UserSchema = new mongoose.Schema(
       minLength: [3, "Password requires at least 3 characters."],
       trim: true,
     },
-    favorites: {
-      type: Array,
-    },
+    favorites: [{ type: String }],
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+  }
 );
 
 UserSchema.virtual("confirmPassword")
@@ -40,4 +42,5 @@ UserSchema.pre("save", function (next) {
   });
 });
 
-module.exports = mongoose.model("User", UserSchema);
+const User = model<User>("User", UserSchema);
+export default User;
