@@ -1,6 +1,6 @@
+import type { Environment } from "../types/env";
 import type { Request, Response, NextFunction } from "express";
 import type { Cookies, user } from "../types";
-import type { Environment } from "../types/env";
 import * as jwt from "jsonwebtoken";
 
 type UserPayload = user.UserPayload;

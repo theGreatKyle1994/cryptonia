@@ -1,13 +1,10 @@
 import type { Express } from "express";
 import express from "express";
-import { configDotenv } from "dotenv";
-import connectToDB from "./config/mongoose.config";
+import "dotenv/config.js";
+import "./config/mongoose.config";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import routes from "./routes/user.routes";
-
-configDotenv();
-connectToDB();
 
 const app: Express = express();
 const port: number = Number(process.env.PORT) ?? 8000;
