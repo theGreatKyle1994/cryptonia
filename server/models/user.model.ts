@@ -1,7 +1,8 @@
-import { Schema, model, PreMiddlewareFunction } from "mongoose";
+import type { User, BodyData } from "../types/global";
+import { Schema, model } from "mongoose";
 import * as bcrypt from "bcrypt";
 
-const UserSchema = new Schema<User>(
+const UserSchema = new Schema<User.UserDoc, User.UserModel, User.UserVirtuals>(
   {
     username: {
       type: String,
@@ -17,16 +18,17 @@ const UserSchema = new Schema<User>(
     },
     favorites: [{ type: String }],
   },
-  {
-    timestamps: true,
-    toJSON: { virtuals: true },
-    toObject: { virtuals: true },
-  }
+  { timestamps: true }
 );
 
 UserSchema.virtual("confirmPassword")
-  .get(() => this.confirmPassword)
-  .set((value) => (this.confirmPassword = value));
+  .get(function () {
+    return this.confirmPassword;
+  })
+  .set(function (value: BodyData["confirmPassword"]) {
+    console.log(value);
+    if (value) this.confirmPassword = value;
+  });
 
 UserSchema.pre("validate", function (next) {
   if (this.password !== this.confirmPassword) {
@@ -35,12 +37,12 @@ UserSchema.pre("validate", function (next) {
   next();
 });
 
-UserSchema.pre("save", function (next) {
-  bcrypt.hash(this.password, 10).then((hash) => {
+UserSchema.pre("save", async function (next) {
+  await bcrypt.hash(this.password, 10).then((hash) => {
     this.password = hash;
     next();
   });
 });
 
-const User = model<User>("User", UserSchema);
+const User = model("User", UserSchema);
 export default User;
