@@ -9,8 +9,8 @@ export interface Cookies {
 export interface BodyData {
   username: string;
   password: string;
-  confirmPassword?: string;
-  newUsername?: string;
+  confirmPassword: string;
+  newUsername: string;
   userId: string;
   fav?: string;
 }
