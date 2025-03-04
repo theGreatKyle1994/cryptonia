@@ -1,7 +1,7 @@
 import type { Express } from "express";
-import express from "express";
 import "dotenv/config.js";
-import "./config/mongoose.config";
+import connectToDB from "./config/mongoose.config";
+import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import routes from "./routes/user.routes";
@@ -19,6 +19,7 @@ app.use(
   express.urlencoded({ extended: true })
 );
 
+connectToDB();
 routes(app);
 
 app.listen(port, (err) =>

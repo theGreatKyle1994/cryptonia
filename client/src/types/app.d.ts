@@ -108,13 +108,24 @@ export namespace API {
     withCredentials?: boolean;
   }
 
-  type APIRequest = (APIRequestConfig: APIRequestConfig) => void;
+  type APIRequest = (APIRequestConfig: APIRequestConfig) => Promise<void>;
 
   type APIData = [
     APIFormData,
     React.Dispatch<React.SetStateAction<APIFormData>>,
     APIRequest
   ];
+
+  interface APIError {
+    error: {
+      errors: {
+        username: { message: string };
+        password: { message: string };
+        confirmPassword: { message: string };
+        newUsername: { message: string };
+      };
+    };
+  }
 }
 
 export namespace Modal {

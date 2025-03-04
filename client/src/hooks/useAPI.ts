@@ -1,4 +1,5 @@
 import type { GlobalContext, API } from "../types/app";
+import type { AxiosError } from "axios";
 import { globalContext } from "../App";
 import { useEffect, useState, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -38,13 +39,13 @@ const useAPI = (): API.APIData => {
     }));
   };
 
-  const request: API.APIRequest = ({
+  const request: API.APIRequest = async ({
     method = "get",
     route = "/api",
     withCredentials = false,
-  }: API.APIRequestConfig = {}): void => {
+  }: API.APIRequestConfig = {}): Promise<void> => {
     const { username, password, confirmPassword, newUsername } = formData;
-    axios({
+    await axios({
       method,
       url: `${import.meta.env.VITE_BACKEND_URL}${route}`,
       withCredentials,
@@ -60,10 +61,11 @@ const useAPI = (): API.APIData => {
           navigate("/");
         }, 1500);
       })
-      .catch((err) => {
-        if (err.response.data?.error) {
+      .catch((err: AxiosError<API.APIError>) => {
+        console.log(err.response?.data.error);
+        if (err.response!.data.error.errors) {
           const { username, password, confirmPassword, newUsername } =
-            err.response.data?.error.errors;
+            err.response!.data.error.errors;
           setFormData((prevData) => ({
             ...prevData,
             errors: {
