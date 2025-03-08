@@ -1,14 +1,16 @@
 import type { Environment } from "../types/env";
-import type { Response } from "express";
+import type { Request, Response } from "express";
 import type { user } from "../types";
 import User from "../models/user.model";
-import * as bcrypt from "bcrypt";
-import * as jwt from "jsonwebtoken";
 
 type UserRequest = user.UserRequest;
 const { SECRET_KEY } = process.env as Environment;
 
 const userController = {
+  getAllUsers: async (req: Request, res: Response): Promise<void> => {
+    const users: (typeof User)[] | undefined = await User.find();
+    res.json(users);
+  },
   getFavorites: async (req: UserRequest, res: Response): Promise<void> => {
     await User.findById({ _id: req.body.userId }).then((user) =>
       user ? res.status(200).json(user.favorites) : res.status(400).end()

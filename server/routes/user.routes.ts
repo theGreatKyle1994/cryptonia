@@ -3,6 +3,7 @@ import userController from "../controllers/user.controller";
 import authenticate from "../config/jwt.auth";
 
 const routes = (app: Express): void => {
+  app.get("/api/users", userController.getAllUsers);
   app.post("/api/user/login", userController.login);
   app.post("/api/user/register", userController.register);
   app.get("/api/user/fav", authenticate, userController.getFavorites);
