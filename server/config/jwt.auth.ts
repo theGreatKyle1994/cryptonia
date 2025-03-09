@@ -13,7 +13,7 @@ const authenticate = (
 ): void => {
   const { userToken } = req.cookies as Cookies;
   jwt.verify(userToken, SECRET_KEY, (err, decoded) => {
-    if (err) res.status(401).end();
+    if (err) res.status(401).json({ error: err });
     else {
       const { userId } = decoded as UserPayload;
       req.body.userId = userId;

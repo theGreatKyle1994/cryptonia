@@ -19,5 +19,12 @@ const UserSchema = new Schema(
   { timestamps: true }
 );
 
+UserSchema.path("username").validate(async function (
+  value: string
+): Promise<void> {
+  if (await User.findOne({ username: value }))
+    this.invalidate("username", "Username already taken.");
+});
+
 const User = model("User", UserSchema);
 export default User;

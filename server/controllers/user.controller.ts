@@ -8,6 +8,7 @@ const { SECRET_KEY } = process.env as Environment;
 
 const userController = {
   getAllUsers: async (req: Request, res: Response): Promise<void> => {
+    console.log("In users!");
     const users: (typeof User)[] | undefined = await User.find();
     res.json(users);
   },
@@ -29,9 +30,16 @@ const userController = {
       { $pull: { favorites: req.body.fav } }
     ).then(() => res.status(200).end());
   },
-  register: async (req: UserRequest, res: Response): Promise<void> => {},
-  login: async (req: UserRequest, res: Response): Promise<void> => {},
-  updateUser: async (req: UserRequest, res: Response): Promise<void> => {},
+  register: async (req: UserRequest, res: Response): Promise<void> => {
+    await User.create(req.body).catch((err) => res.status(400).json(err));
+    res.status(201).end();
+  },
+  login: async (req: UserRequest, res: Response): Promise<void> => {
+    res.end();
+  },
+  updateUser: async (req: UserRequest, res: Response): Promise<void> => {
+    res.end();
+  },
 };
 
 export default userController;
