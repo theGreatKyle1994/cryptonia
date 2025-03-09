@@ -2,6 +2,7 @@ import type { Environment } from "../types/env";
 import type { Request, Response } from "express";
 import type { user } from "../types";
 import User from "../models/user.model";
+import * as jwt from "jsonwebtoken";
 
 type UserRequest = user.UserRequest;
 const { SECRET_KEY } = process.env as Environment;
@@ -31,7 +32,18 @@ const userController = {
   },
   register: async (req: UserRequest, res: Response): Promise<void> => {
     await User.create(req.body)
-      .then((user) => res.status(201).json({ userId: user._id }))
+      .then((user) => {
+        const userToken = jwt.sign({ userId: user._id }, SECRET_KEY, {
+          expiresIn: 86400000 * 365,
+        });
+        return res
+          .status(201)
+          .cookie("userToken", userToken, {
+            httpOnly: true,
+            maxAge: 86400000 * 365,
+          })
+          .end();
+      })
       .catch((err) => res.status(400).json(err));
   },
   login: async (req: UserRequest, res: Response): Promise<void> => {

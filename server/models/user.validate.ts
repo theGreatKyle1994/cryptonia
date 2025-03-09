@@ -8,12 +8,22 @@ function setValidations(UserSchema: UserSchema): void {
     value: string
   ): Promise<void> {
     if (await User.findOne({ username: value }))
-      this.invalidate("username", "Username already taken.");
+      this.invalidate(
+        "username",
+        "Username already taken.",
+        value,
+        "duplicate"
+      );
   });
 
   UserSchema.path("password").validate(function (value: string): void {
     if (this._confirmPassword !== value)
-      this.invalidate("confirmPassword", "Passwords must match.");
+      this.invalidate(
+        "confirmPassword",
+        "Passwords must match.",
+        value,
+        "validate"
+      );
   });
 
   UserSchema.virtual("confirmPassword")
