@@ -1,6 +1,7 @@
 import type { user } from "../types";
 import { Schema, model } from "mongoose";
 import setValidations from "./user.validate";
+import setMiddleware from "./user.middleware";
 
 type UserSchema = user.UserSchema;
 
@@ -26,6 +27,7 @@ const UserSchema: UserSchema = new Schema(
 );
 
 setValidations(UserSchema);
+setMiddleware(UserSchema);
 
 const User = model("User", UserSchema);
 export default User;

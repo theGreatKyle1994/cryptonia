@@ -8,9 +8,8 @@ const { SECRET_KEY } = process.env as Environment;
 
 const userController = {
   getAllUsers: async (req: Request, res: Response): Promise<void> => {
-    console.log("In users!");
     const users: (typeof User)[] | undefined = await User.find();
-    res.json(users);
+    res.status(200).json(users);
   },
   getFavorites: async (req: UserRequest, res: Response): Promise<void> => {
     await User.findById({ _id: req.body.userId }).then((user) =>
@@ -31,8 +30,9 @@ const userController = {
     ).then(() => res.status(200).end());
   },
   register: async (req: UserRequest, res: Response): Promise<void> => {
-    await User.create(req.body).catch((err) => res.status(400).json(err));
-    res.status(201).end();
+    await User.create(req.body)
+      .then((user) => res.status(201).json({ userId: user._id }))
+      .catch((err) => res.status(400).json(err));
   },
   login: async (req: UserRequest, res: Response): Promise<void> => {
     res.end();
