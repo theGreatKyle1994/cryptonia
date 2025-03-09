@@ -1,5 +1,6 @@
 import type { JwtPayload } from "jsonwebtoken";
 import type { Request } from "express";
+import type { Model } from "mongoose";
 
 export interface Cookies {
   userToken: string;
@@ -18,6 +19,18 @@ export namespace user {
   interface UserPayload extends JwtPayload {
     userId: string;
   }
+
+  interface UserDoc {
+    username: string;
+    password: string;
+    favorites: string[];
+  }
+
+  interface UserVirtuals {
+    _confirmPassword: string
+  }
+
+  type UserModal = Model<UserDoc, {}, UserVirtuals>;
 
   interface UserRequest<ReqBody = BodyData> extends Request<{}, {}, ReqBody> {}
 }
