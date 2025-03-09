@@ -1,11 +1,10 @@
 import type { user } from "../types";
 import { Schema, model } from "mongoose";
+import setValidations from "./user.validate";
 
-type UserDoc = user.UserDoc;
-type UserModel = user.UserModal;
-type UserVirtuals = user.UserVirtuals;
+type UserSchema = user.UserSchema;
 
-const UserSchema = new Schema<UserDoc, UserModel, UserVirtuals>(
+const UserSchema: UserSchema = new Schema(
   {
     username: {
       type: String,
@@ -26,27 +25,7 @@ const UserSchema = new Schema<UserDoc, UserModel, UserVirtuals>(
   { timestamps: true }
 );
 
-UserSchema.virtual("confirmPassword")
-  .get(function (): string {
-    return this._confirmPassword;
-  })
-  .set(function (value: string): void {
-    this._confirmPassword = value;
-  });
-
-UserSchema.path("username").validate(async function (
-  value: string
-): Promise<void> {
-  if (await User.findOne({ username: value })) {
-    this.invalidate("username", "Username already taken.");
-  }
-});
-
-UserSchema.path("password").validate(function (value: string): void {
-  if (this._confirmPassword !== value) {
-    this.invalidate("confirmPassword", "Passwords must match.");
-  }
-});
+setValidations(UserSchema);
 
 const User = model("User", UserSchema);
 export default User;
