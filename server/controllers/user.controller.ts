@@ -50,7 +50,8 @@ const userController = {
   login: async (req: UserRequest, res: Response): Promise<void> => {
     const result = await User.login(req.body.username, req.body.password);
     if (Types.ObjectId.isValid(result as Types.ObjectId)) {
-      const userToken = jwt.sign({ userId: result }, SECRET_KEY, {
+      const id = result as Types.ObjectId;
+      const userToken = jwt.sign({ userId: id }, SECRET_KEY, {
         expiresIn: 86400000 * 365,
       });
       res
@@ -59,7 +60,7 @@ const userController = {
           httpOnly: true,
           maxAge: 86400000 * 365,
         })
-        .json({ userId: result });
+        .json({ userId: id, msg: "Success" });
     } else {
       res.status(400).json(result);
     }
