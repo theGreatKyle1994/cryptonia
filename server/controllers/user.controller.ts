@@ -1,4 +1,5 @@
 import type { Environment } from "../types/env";
+import { Types } from "mongoose";
 import type { Request, Response } from "express";
 import type { user } from "../types";
 import User from "../models/user.model";
@@ -48,7 +49,20 @@ const userController = {
   },
   login: async (req: UserRequest, res: Response): Promise<void> => {
     const result = await User.login(req.body.username, req.body.password);
-    res.json(result);
+    if (Types.ObjectId.isValid(result as Types.ObjectId)) {
+      const userToken = jwt.sign({ userId: result }, SECRET_KEY, {
+        expiresIn: 86400000 * 365,
+      });
+      res
+        .status(200)
+        .cookie("userToken", userToken, {
+          httpOnly: true,
+          maxAge: 86400000 * 365,
+        })
+        .json({ userId: result });
+    } else {
+      res.status(400).json(result);
+    }
   },
   updateUser: async (req: UserRequest, res: Response): Promise<void> => {
     res.end();
