@@ -1,7 +1,7 @@
 import type { user } from "../types";
 import { Schema, model } from "mongoose";
-import setValidations from "./user.validate";
-import setMiddleware from "./user.middleware";
+import { setValidations } from "./user.validate";
+import { setMiddleware } from "./user.middleware";
 
 type UserSchema = user.UserSchema;
 

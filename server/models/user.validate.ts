@@ -3,7 +3,7 @@ import User from "../models/user.model";
 
 type UserSchema = user.UserSchema;
 
-function setValidations(UserSchema: UserSchema): void {
+export function setValidations(UserSchema: UserSchema): void {
   UserSchema.path("username").validate(async function (
     value: string
   ): Promise<void> {
@@ -28,5 +28,3 @@ function setValidations(UserSchema: UserSchema): void {
     }
   });
 }
-
-export default setValidations;

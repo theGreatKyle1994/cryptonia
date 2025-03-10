@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 
 type UserSchema = user.UserSchema;
 
-function setMiddleware(UserSchema: UserSchema) {
+export function setMiddleware(UserSchema: UserSchema) {
   UserSchema.pre("save", async function (next): Promise<void> {
     await bcrypt
       .hash(this.password, await bcrypt.genSalt())
@@ -14,5 +14,3 @@ function setMiddleware(UserSchema: UserSchema) {
     next();
   });
 }
-
-export default setMiddleware;
