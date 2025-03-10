@@ -42,13 +42,13 @@ const userController = {
             httpOnly: true,
             maxAge: 86400000 * 365,
           })
-          .end();
+          .json({ userId: user._id, msg: "Success" });
       })
       .catch((err) => res.status(400).json(err));
   },
   login: async (req: UserRequest, res: Response): Promise<void> => {
-    await User.login(req.body.username, req.body.password);
-    res.end();
+    const result = await User.login(req.body.username, req.body.password);
+    res.json(result);
   },
   updateUser: async (req: UserRequest, res: Response): Promise<void> => {
     res.end();

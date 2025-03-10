@@ -1,6 +1,6 @@
 import type { JwtPayload } from "jsonwebtoken";
 import type { Request } from "express";
-import type { Model, Schema } from "mongoose";
+import type { Model, Schema, Types } from "mongoose";
 
 export interface Cookies {
   userToken: string;
@@ -27,12 +27,14 @@ export namespace user {
   }
 
   interface UserStatics {
-    login(this: UserModel, username: string, password: string): Promise<void>;
+    login(
+      this: UserModel,
+      username: string,
+      password: string
+    ): Promise<NativeError | Types.ObjectId>;
   }
 
-  interface UserMethods {
-    invalidateNow(path: string, msg: string): void;
-  }
+  interface UserMethods {}
 
   interface UserVirtuals {
     _confirmPassword: string;
