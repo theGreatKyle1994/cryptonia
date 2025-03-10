@@ -1,4 +1,5 @@
 import type { user } from "../types";
+import User from "./user.model";
 import bcrypt from "bcrypt";
 
 type UserSchema = user.UserSchema;

@@ -26,13 +26,28 @@ export namespace user {
     favorites: string[];
   }
 
+  interface UserStatics {
+    login(this: UserModel, username: string, password: string): Promise<void>;
+  }
+
+  interface UserMethods {
+    invalidateNow(path: string, msg: string): void;
+  }
+
   interface UserVirtuals {
     _confirmPassword: string;
   }
 
-  type UserModel = Model<UserDoc, {}, UserVirtuals>;
+  type UserModel = Model<UserDoc, {}, UserMethods, UserVirtuals>;
 
-  type UserSchema = Schema<UserDoc, UserModel, UserVirtuals>;
+  type UserSchema = Schema<
+    UserDoc,
+    UserModel,
+    UserMethods,
+    {},
+    UserVirtuals,
+    UserStatics
+  >;
 
   interface UserRequest<ReqBody = BodyData> extends Request<{}, {}, ReqBody> {}
 }

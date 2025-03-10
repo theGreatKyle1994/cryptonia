@@ -47,6 +47,7 @@ const userController = {
       .catch((err) => res.status(400).json(err));
   },
   login: async (req: UserRequest, res: Response): Promise<void> => {
+    await User.login(req.body.username, req.body.password);
     res.end();
   },
   updateUser: async (req: UserRequest, res: Response): Promise<void> => {
