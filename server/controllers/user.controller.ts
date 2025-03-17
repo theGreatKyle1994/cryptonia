@@ -69,7 +69,9 @@ const userController = {
     const result = await User.login(req.body.username, req.body.password);
     if (Types.ObjectId.isValid(result as Types.ObjectId)) {
       const id = result as Types.ObjectId;
-      res.status(200).json({ userId: id });
+      res
+        .status(200)
+        .json({ userId: id, username: req.body.newUsername, msg: "Sucess" });
     } else {
       res.status(400).json(result);
     }

@@ -38,4 +38,15 @@ export function setStatics(UserSchema: UserSchema) {
       }
     }
   );
+
+  UserSchema.static(
+    "updateProfile",
+    async function (
+      type: string,
+      data: user.UserUpdateData
+    ): Promise<NativeError | Types.ObjectId | void> {
+      const { username, password } = data;
+      const result = await this.login(username, password);
+    }
+  );
 }

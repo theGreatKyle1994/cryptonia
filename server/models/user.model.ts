@@ -39,5 +39,5 @@ setStatics(UserSchema);
 setValidations(UserSchema);
 setMiddleware(UserSchema);
 
-const User = model("User", UserSchema);
+const User = model<user.UserDoc, user.UserModel>("User", UserSchema);
 export default User;

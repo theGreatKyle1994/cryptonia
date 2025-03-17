@@ -26,21 +26,33 @@ export namespace user {
     favorites: string[];
   }
 
+  interface UserUpdateData {
+    username: string;
+    password: string;
+    newUsername?: string;
+  }
+
+  interface UserMethods {}
+
   interface UserStatics {
     login(
       this: UserModel,
       username: string,
       password: string
     ): Promise<NativeError | Types.ObjectId>;
+    updateProfile(
+      this: UserModel,
+      data: UserUpdateData
+    ): Promise<NativeError | Types.ObjectId>;
   }
-
-  interface UserMethods {}
 
   interface UserVirtuals {
     _confirmPassword: string;
   }
 
-  type UserModel = Model<UserDoc, {}, UserMethods, UserVirtuals>;
+  interface UserModel
+    extends Model<UserDoc, UserMethods, UserVirtuals>,
+      UserStatics {}
 
   type UserSchema = Schema<
     UserDoc,
