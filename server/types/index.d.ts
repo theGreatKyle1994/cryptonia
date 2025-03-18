@@ -42,6 +42,7 @@ export namespace user {
     ): Promise<NativeError | Types.ObjectId>;
     updateProfile(
       this: UserModel,
+      type: "username" | "password",
       data: UserUpdateData
     ): Promise<NativeError | Types.ObjectId>;
   }

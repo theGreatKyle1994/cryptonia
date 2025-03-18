@@ -66,7 +66,7 @@ const userController = {
     }
   },
   updateUser: async (req: UserRequest, res: Response): Promise<void> => {
-    const result = await User.login(req.body.username, req.body.password);
+    const result = await User.updateProfile("username", req.body);
     if (Types.ObjectId.isValid(result as Types.ObjectId)) {
       const id = result as Types.ObjectId;
       res
