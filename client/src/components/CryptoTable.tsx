@@ -122,7 +122,9 @@ const CryptoTable: React.FC = (): React.ReactElement => {
           </h3>
         )}
       </div>
-      <CryptoModal tableData={tableData} setTableData={setTableData} />
+      {tableData.modal.id && (
+        <CryptoModal tableData={tableData} setTableData={setTableData} />
+      )}
     </>
   );
 };
