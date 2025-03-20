@@ -32,6 +32,12 @@ export namespace user {
     newUsername?: string;
   }
 
+  interface UserLoginData {
+    username: string;
+    id: Types.ObjectId;
+    message: string;
+  }
+
   interface UserMethods {}
 
   interface UserStatics {
@@ -39,12 +45,12 @@ export namespace user {
       this: UserModel,
       username: string,
       password: string
-    ): Promise<NativeError | Types.ObjectId>;
+    ): Promise<NativeError | UserLoginData>;
     updateProfile(
       this: UserModel,
       type: "username" | "password",
       data: UserUpdateData
-    ): Promise<NativeError | Types.ObjectId>;
+    ): Promise<NativeError | UserLoginData>;
   }
 
   interface UserVirtuals {

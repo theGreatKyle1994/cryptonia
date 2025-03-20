@@ -6,7 +6,6 @@ const useCryptoHandler = (
   setTableData: React.Dispatch<React.SetStateAction<Table.TableData>>
 ): void => {
   const getCryptoData = async (): Promise<void> => {
-    console.log("CRYPTO API CALL");
     await axios
       .get(
         `https://rest.coincap.io/v3/assets?apiKey=${import.meta.env.VITE_API_KEY}`

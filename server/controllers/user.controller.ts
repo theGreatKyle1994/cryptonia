@@ -1,11 +1,11 @@
 import type { Environment } from "../types/env";
-import { Types } from "mongoose";
 import type { Request, Response } from "express";
 import type { user } from "../types";
 import User from "../models/user.model";
 import * as jwt from "jsonwebtoken";
 
 type UserRequest = user.UserRequest;
+type UserLoginData = user.UserLoginData;
 const { SECRET_KEY } = process.env as Environment;
 
 const userController = {
@@ -43,14 +43,20 @@ const userController = {
             httpOnly: true,
             maxAge: 86400000 * 365,
           })
-          .json({ userId: user._id, msg: "Success" });
+          .json({
+            userId: user._id,
+            username: user.username,
+            success: {
+              message: "Account successfully created.",
+            },
+          });
       })
       .catch((err) => res.status(400).json(err));
   },
   login: async (req: UserRequest, res: Response): Promise<void> => {
     const result = await User.login(req.body.username, req.body.password);
-    if (Types.ObjectId.isValid(result as Types.ObjectId)) {
-      const id = result as Types.ObjectId;
+    if (typeof result !== typeof NativeError) {
+      const { id, username, message } = result as UserLoginData;
       const userToken = jwt.sign({ userId: id }, SECRET_KEY, {
         expiresIn: 86400000 * 365,
       });
@@ -60,18 +66,24 @@ const userController = {
           httpOnly: true,
           maxAge: 86400000 * 365,
         })
-        .json({ userId: id, msg: "Success" });
+        .json({
+          success: { message },
+          username,
+          userId: id,
+        });
     } else {
       res.status(400).json(result);
     }
   },
   updateUser: async (req: UserRequest, res: Response): Promise<void> => {
     const result = await User.updateProfile("username", req.body);
-    if (Types.ObjectId.isValid(result as Types.ObjectId)) {
-      const id = result as Types.ObjectId;
-      res
-        .status(200)
-        .json({ userId: id, username: req.body.newUsername, msg: "Sucess" });
+    if (typeof result !== typeof NativeError) {
+      const { id, message } = result as UserLoginData;
+      res.status(200).json({
+        success: { message },
+        username: req.body.newUsername,
+        userId: id,
+      });
     } else {
       res.status(400).json(result);
     }

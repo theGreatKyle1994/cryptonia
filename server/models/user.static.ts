@@ -1,5 +1,4 @@
 import type { user } from "../types";
-import { Types } from "mongoose";
 import User from "../models/user.model";
 import bcrypt from "bcrypt";
 
@@ -11,21 +10,23 @@ export function setStatics(UserSchema: UserSchema) {
     async function (
       username: string,
       password: string
-    ): Promise<NativeError | Types.ObjectId> {
+    ): Promise<NativeError | user.UserLoginData> {
       const account = await this.findOne({ username });
       if (account) {
-        if (await bcrypt.compare(password, account.password)) {
-          return account._id;
-        } else {
-          return <NativeError>(
-            new User().invalidate(
-              "password",
-              "Incorrect password.",
-              password,
-              "invalid"
-            )
-          );
-        }
+        return (await bcrypt.compare(password, account.password))
+          ? {
+              username: account.username,
+              id: account._id,
+              message: "Successfully logged in.",
+            }
+          : <NativeError>(
+              new User().invalidate(
+                "password",
+                "Incorrect password.",
+                password,
+                "invalid"
+              )
+            );
       } else {
         return <NativeError>(
           new User().invalidate(
@@ -44,11 +45,11 @@ export function setStatics(UserSchema: UserSchema) {
     async function (
       type: string,
       data: user.UserUpdateData
-    ): Promise<NativeError | Types.ObjectId> {
+    ): Promise<NativeError | user.UserLoginData> {
       const { username, password, newUsername } = data;
       const result = await this.login(username, password);
-      if (Types.ObjectId.isValid(result as Types.ObjectId)) {
-        const id = result as Types.ObjectId;
+      if (typeof result !== typeof NativeError) {
+        const { id } = result as user.UserLoginData;
         switch (type) {
           case "username": {
             const result = await User.findOne({ username: newUsername });
@@ -65,11 +66,19 @@ export function setStatics(UserSchema: UserSchema) {
                   { username: newUsername },
                   { runValidators: true }
                 )
-                  .then(() => id)
+                  .then(() => ({
+                    username: newUsername,
+                    id,
+                    message: "Successfully updated username.",
+                  }))
                   .catch((err) => err);
           }
           case "password": {
-            return id;
+            return {
+              username: "",
+              id,
+              message: "Successfully changed password.",
+            };
           }
           default: {
             throw new Error("Something went wrong when updating a profile.");
