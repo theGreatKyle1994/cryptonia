@@ -1,5 +1,5 @@
 import type { GlobalContext, API } from "../types/app";
-import type { AxiosError } from "axios";
+import type { AxiosError, AxiosResponse } from "axios";
 import { globalContext } from "../App";
 import { useEffect, useState, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -51,9 +51,10 @@ const useAPI = (): API.APIData => {
       withCredentials,
       data: { username, newUsername, password, confirmPassword },
     })
-      .then((res) => {
+      .then((res: AxiosResponse<API.APISuccess>) => {
+        console.log("Success: ", res.data);
         resetFormErrors({
-          successMsg: res.data.successMsg,
+          successMsg: res.data.success.message,
           isBtnDisabled: true,
         });
         setTimeout(() => {
@@ -62,10 +63,11 @@ const useAPI = (): API.APIData => {
         }, 1500);
       })
       .catch((err: AxiosError<API.APIError>) => {
-        console.log(err.response?.data.error);
-        if (err.response!.data.error.errors) {
+        console.log("Failed: ", err.response?.data.errors);
+        console.log(err.response?.data.errors);
+        if (err.response!.data.errors) {
           const { username, password, confirmPassword, newUsername } =
-            err.response!.data.error.errors;
+            err.response!.data.errors;
           setFormData((prevData) => ({
             ...prevData,
             errors: {

@@ -116,14 +116,20 @@ export namespace API {
     APIRequest
   ];
 
+  interface APISuccess {
+    success: {
+      message: string;
+    };
+    username: string;
+    userId: string;
+  }
+
   interface APIError {
-    error: {
-      errors: {
-        username: { message: string };
-        password: { message: string };
-        confirmPassword: { message: string };
-        newUsername: { message: string };
-      };
+    errors: {
+      username: { message: string };
+      password: { message: string };
+      confirmPassword: { message: string };
+      newUsername: { message: string };
     };
   }
 }

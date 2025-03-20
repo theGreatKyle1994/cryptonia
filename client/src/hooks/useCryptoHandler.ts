@@ -6,8 +6,11 @@ const useCryptoHandler = (
   setTableData: React.Dispatch<React.SetStateAction<Table.TableData>>
 ): void => {
   const getCryptoData = async (): Promise<void> => {
+    console.log("CRYPTO API CALL");
     await axios
-      .get("https://api.coincap.io/v2/assets")
+      .get(
+        `https://rest.coincap.io/v3/assets?apiKey=${import.meta.env.VITE_API_KEY}`
+      )
       .then((res) =>
         setTableData((prevData) => ({ ...prevData, cryptoData: res.data.data }))
       )
@@ -16,7 +19,7 @@ const useCryptoHandler = (
 
   useEffect(() => {
     getCryptoData();
-    const refreshCryptoData = setInterval(() => getCryptoData(), 10000);
+    const refreshCryptoData = setInterval(() => getCryptoData(), 30000);
     return () => clearInterval(refreshCryptoData);
   }, []);
 };
