@@ -1,6 +1,5 @@
-import { Link } from "react-router-dom";
 import getRouteData from "../utilities/getRouteData";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import useAPI from "../hooks/useAPI";
 import "./Form.css";
 
@@ -8,7 +7,7 @@ const Form: React.FC = (): React.ReactElement => {
   console.log("Form");
   const location = useLocation();
   const [formData, setFormData, APICall] = useAPI();
-  const routeData = getRouteData(location.pathname);
+  const routeData = getRouteData(location.pathname)
 
   const inputHandler = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = e.target;
