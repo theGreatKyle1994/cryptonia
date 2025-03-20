@@ -1,6 +1,6 @@
 import type { Table } from "../types/app";
 
-export const filterTable = (
+export const sortTable = (
   filter: Table.TableData["tableFilter"],
   cryptoData: Table.Crypto[]
 ): Table.Crypto[] => {

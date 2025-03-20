@@ -59,25 +59,22 @@ export namespace Table {
     filteredData: Crypto[];
   }
 
+  interface HeaderData {
+    name: stirng;
+    symbol: stirng;
+    price: stirng;
+    change: stirng;
+  }
+
   type FavoriteHandler = (
     event: React.MouseEvent<HTMLButtonElement>,
     crypto: Crypto
   ) => Promise<void>;
 
-  type Symbol = "" | `\u2228` | `\u2227`;
-
-  interface HeaderData {
-    [key as string]: Symbol;
-    name: Symbol;
-    symbol: Symbol;
-    price: Symbol;
-    change: Symbol;
-  }
-
-  type TableHeaderTitle = "name" | "symbol" | "price" | "change";
-
-  type FilterHandler = (newFilter: Table.TableHeaderTitle) => void;
-
+  type Symbols = "" | `\u2228` | `\u2227`;
+  type SymbolHandler = (symbol: string) => Symbols;
+  type TableTitles = "name" | "symbol" | "price" | "change";
+  type FilterHandler = (filter: TableTitles) => void;
   type FilterReturnData = [HeaderData, FilterHandler];
 }
 

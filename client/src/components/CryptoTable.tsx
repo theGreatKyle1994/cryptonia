@@ -2,11 +2,11 @@ import type { GlobalContext, Table } from "../types/app";
 import { globalContext } from "../App";
 import { useState, useContext, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import useFilterHandler from "../hooks/useFilterHandler";
 import useCryptoHandler from "../hooks/useCryptoHandler";
 import useFavoriteHandler from "../hooks/useFavoriteHandler";
+import useFilterHandler from "../hooks/useFilterHandler";
 import CryptoModal from "./CryptoModal";
-import { filterTable, filterFavs } from "../utilities/tableSorting";
+import { sortTable, filterFavs } from "../utilities/tableSorting";
 import "./CryptoTable.css";
 
 const CryptoTable: React.FC = (): React.ReactElement => {
@@ -27,14 +27,13 @@ const CryptoTable: React.FC = (): React.ReactElement => {
     tableData.tableFilter,
     setTableData
   );
-
   useCryptoHandler(setTableData);
 
   useEffect(
     () =>
       setTableData((prevData) => ({
         ...prevData,
-        filteredData: filterTable(
+        filteredData: sortTable(
           tableData.tableFilter,
           location.pathname == "/home"
             ? tableData.cryptoData
