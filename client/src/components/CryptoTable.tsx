@@ -11,6 +11,7 @@ import "./CryptoTable.css";
 
 const CryptoTable: React.FC = (): React.ReactElement => {
   const { userData } = useContext(globalContext) as GlobalContext;
+  const location = useLocation();
   const [tableData, setTableData] = useState<Table.TableData>({
     cryptoData: [],
     modal: { id: "" },
@@ -18,15 +19,17 @@ const CryptoTable: React.FC = (): React.ReactElement => {
     tableFilter: "none",
     filteredData: [],
   });
+
   const favoriteHandler = useFavoriteHandler(
     tableData.favoriteList,
     setTableData
   );
-  const location = useLocation();
+
   const [headers, filterHandler] = useFilterHandler(
     tableData.tableFilter,
     setTableData
   );
+
   useCryptoHandler(setTableData);
 
   useEffect(
