@@ -52,7 +52,6 @@ const useAPI = (): API.APIData => {
       data: { username, newUsername, password, confirmPassword },
     })
       .then((res: AxiosResponse<API.APISuccess>) => {
-        console.log("Success: ", res.data);
         resetFormErrors({
           successMsg: res.data.success.message,
           isBtnDisabled: true,
@@ -63,8 +62,6 @@ const useAPI = (): API.APIData => {
         }, 1500);
       })
       .catch((err: AxiosError<API.APIError>) => {
-        console.log("Failed: ", err.response?.data.errors);
-        console.log(err.response?.data.errors);
         if (err.response!.data.errors) {
           const { username, password, confirmPassword, newUsername } =
             err.response!.data.errors;
