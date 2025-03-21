@@ -34,7 +34,7 @@ const useFavoriteHandler = (
       { fav: crypto.id },
       { withCredentials: true }
     ).catch(() => logout("/login"));
-    getFavData();
+    await getFavData();
   };
 
   useEffect(() => {
