@@ -60,10 +60,10 @@ export namespace Table {
   }
 
   interface HeaderData {
-    name: stirng;
-    symbol: stirng;
-    price: stirng;
-    change: stirng;
+    name: string;
+    symbol: string;
+    price: string;
+    change: string;
   }
 
   type FavoriteHandler = (
