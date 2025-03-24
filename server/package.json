@@ -7,6 +7,8 @@
     "build": "tsc",
     "restart": "env NODE_ENV=production pm2 restart --update-env ./dist/server.js",
     "stop": "pm2 stop ./dist/server.js",
+    "kill": "pm2 kill",
+    "update-pm2": "pm2 update",
     "status": "pm2 status",
     "logs": "pm2 logs"
   },

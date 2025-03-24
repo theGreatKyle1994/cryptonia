@@ -1,20 +1,24 @@
 {
   "name": "cryptonia",
   "scripts": {
-    "build:frontend": "cd client && npm install && npm run build",
-    "build:backend": "cd server && npm install && npm run build",
-    "build": "npm run build:frontend && npm run build:backend",
     "start": "cd server && npm run start",
     "stop": "cd server && npm run stop",
     "restart": "cd server && npm run restart",
     "status": "cd server && npm run status",
-    "kill": "pm2 kill",
+    "kill": "cd server && npm run kill",
     "logs": "cd server && npm run logs",
+    "update-pm2": "cd server && npm run update-pm2",
+    "install:frontend": "cd client && npm install",
+    "install:backend": "cd server && npm install",
+    "install": "npm run install:frontend && npm run install:backend",
+    "build:frontend": "cd client && npm run build",
+    "build:backend": "cd server && npm run build",
+    "build": "npm run build:frontend && npm run build:backend",
     "update:frontend": "cd client && npm update",
     "update:backend": "cd server && npm update",
     "update": "npm run update:frontend && npm run update:backend",
     "update-new:frontend": "cd client && npx npm-check-updates -u",
     "update-new:backend": "cd server && npx npm-check-updates -u",
-    "update-new": "npm run update-new:frontend && npm run update-new:backend && npm run update"
+    "update-new": "npm run update-new:frontend && npm run update-new:backend"
   }
 }
