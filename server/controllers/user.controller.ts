@@ -55,7 +55,7 @@ const userController = {
   },
   login: async (req: UserRequest, res: Response): Promise<void> => {
     const result = await User.login(req.body.username, req.body.password);
-    if (typeof result !== typeof NativeError) {
+    if (Object.hasOwn(result, "id")) {
       const { id, username, message } = result as UserLoginData;
       const userToken = jwt.sign({ userId: id }, SECRET_KEY, {
         expiresIn: 86400000 * 365,
