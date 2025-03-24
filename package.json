@@ -8,6 +8,10 @@
     "stop": "cd server && npm run stop",
     "restart": "cd server && npm run restart",
     "status": "cd server && npm run status",
-    "logs": "cd server && npm run logs"
+    "kill": "pm2 kill",
+    "logs": "cd server && npm run logs",
+    "update:frontend": "cd client && npm update",
+    "update:backend": "cd server && npm update",
+    "update": "npm run update:frontend && npm run update:backend"
   }
 }
