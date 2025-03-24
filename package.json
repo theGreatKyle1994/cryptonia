@@ -12,6 +12,9 @@
     "logs": "cd server && npm run logs",
     "update:frontend": "cd client && npm update",
     "update:backend": "cd server && npm update",
-    "update": "npm run update:frontend && npm run update:backend"
+    "update": "npm run update:frontend && npm run update:backend",
+    "update-new:frontend": "cd client && npx npm-check-updates -u",
+    "update-new:backend": "cd server && npx npm-check-updates -u",
+    "update-new": "npm run update-new:frontend && npm run update-new:backend && npm run update"
   }
 }
