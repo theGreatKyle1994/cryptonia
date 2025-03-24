@@ -1,13 +1,14 @@
-import { Link } from "react-router-dom";
-import useRouteHandler from "../hooks/useRouteHandler";
+import getRouteData from "../utilities/getRouteData";
+import { useLocation, Link } from "react-router-dom";
 import useAPI from "../hooks/useAPI";
 import "./Form.css";
 
-const Form = () => {
+const Form: React.FC = (): React.ReactElement => {
+  const location = useLocation();
   const [formData, setFormData, APICall] = useAPI();
-  const routeData = useRouteHandler();
+  const routeData = getRouteData(location.pathname);
 
-  const inputHandler = (e) => {
+  const inputHandler = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = e.target;
     setFormData((prevFormData) => ({
       ...prevFormData,
@@ -15,7 +16,9 @@ const Form = () => {
     }));
   };
 
-  const submitHandler = async (e) => {
+  const submitHandler = async (
+    e: React.FormEvent<HTMLFormElement>
+  ): Promise<void> => {
     e.preventDefault();
     APICall({
       method: routeData.method,
@@ -91,7 +94,6 @@ const Form = () => {
         </div>
       )}
       <div id="button-container">
-        <span>{routeData.subText}</span>
         <Link to={routeData.routeTo}>{routeData.btnMsg}</Link>
         <button disabled={formData.isBtnDisabled}>{routeData.btnText}</button>
       </div>

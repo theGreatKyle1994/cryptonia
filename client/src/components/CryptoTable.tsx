@@ -1,50 +1,55 @@
+import type { GlobalContext, Table } from "../types/app";
 import { globalContext } from "../App";
 import { useState, useContext, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import useFilterHandler from "../hooks/useFilterHandler";
 import useCryptoHandler from "../hooks/useCryptoHandler";
+import useFilterHandler from "../hooks/useFilterHandler";
 import useFavoriteHandler from "../hooks/useFavoriteHandler";
 import CryptoModal from "./CryptoModal";
-import { filterTable, filterFavs } from "../utilities/tableSorting";
+import { sortTable, filterFavs } from "../utilities/tableSorting";
 import "./CryptoTable.css";
 
-const CryptoTable = () => {
-  const { userData } = useContext(globalContext);
-  const [tableData, setTableData] = useState({
+const CryptoTable: React.FC = (): React.ReactElement => {
+  const { userData } = useContext(globalContext) as GlobalContext;
+  const location = useLocation();
+  const [tableData, setTableData] = useState<Table.TableData>({
     cryptoData: [],
     modal: { id: "" },
     favoriteList: [],
     tableFilter: "none",
     filteredData: [],
   });
+
   const favoriteHandler = useFavoriteHandler(
     tableData.favoriteList,
     setTableData
   );
-  const location = useLocation();
-  const [symbols, filterHandler] = useFilterHandler(
+
+  const [headers, filterHandler] = useFilterHandler(
     tableData.tableFilter,
     setTableData
   );
 
   useCryptoHandler(setTableData);
 
-  useEffect(() => {
-    setTableData((prevData) => ({
-      ...prevData,
-      filteredData: filterTable(
-        tableData.tableFilter,
-        location.pathname == "/home"
-          ? tableData.cryptoData
-          : filterFavs(tableData.favoriteList, tableData.cryptoData)
-      ),
-    }));
-  }, [
-    tableData.tableFilter,
-    tableData.cryptoData,
-    tableData.favoriteList,
-    location.pathname,
-  ]);
+  useEffect(
+    () =>
+      setTableData((prevData) => ({
+        ...prevData,
+        filteredData: sortTable(
+          tableData.tableFilter,
+          location.pathname == "/home"
+            ? tableData.cryptoData
+            : filterFavs(tableData.favoriteList, tableData.cryptoData)
+        ),
+      })),
+    [
+      tableData.tableFilter,
+      tableData.cryptoData,
+      tableData.favoriteList,
+      location.pathname,
+    ]
+  );
 
   return (
     <>
@@ -52,15 +57,15 @@ const CryptoTable = () => {
         <table id="table-header">
           <thead>
             <tr id="table-header-row">
-              <th onClick={() => filterHandler("name")}>Name {symbols.name}</th>
+              <th onClick={() => filterHandler("name")}>Name {headers.name}</th>
               <th onClick={() => filterHandler("symbol")}>
-                Symbol {symbols.symbol}
+                Symbol {headers.symbol}
               </th>
               <th onClick={() => filterHandler("price")}>
-                Price {symbols.price}
+                Price {headers.price}
               </th>
               <th onClick={() => filterHandler("change")}>
-                24hr Change {symbols.change}
+                24hr Change {headers.change}
               </th>
               {userData.isAuthenticated && <th id="actions-tab">Actions</th>}
             </tr>
@@ -86,7 +91,7 @@ const CryptoTable = () => {
                     <td>${Number(crypto.priceUsd).toFixed(4)}</td>
                     <td
                       className={
-                        crypto.changePercent24Hr < 0
+                        Number(crypto.changePercent24Hr) < 0
                           ? "change-24hr-neg"
                           : "change-24hr-pos"
                       }
@@ -117,7 +122,9 @@ const CryptoTable = () => {
           </h3>
         )}
       </div>
-      <CryptoModal tableData={tableData} setTableData={setTableData} />
+      {tableData.modal.id && (
+        <CryptoModal tableData={tableData} setTableData={setTableData} />
+      )}
     </>
   );
 };
