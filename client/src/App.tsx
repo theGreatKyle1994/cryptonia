@@ -1,22 +1,24 @@
+import type { UserData, GlobalContext } from "./types/app";
 import { useState, useEffect, createContext } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Header from "./components/Header";
 import CryptoTable from "./components/CryptoTable";
 import Form from "./components/Form";
 
-export const globalContext = createContext();
+export const globalContext = createContext<GlobalContext | null>(null);
 
-const App = () => {
-  const [userData, setUserData] = useState(
-    JSON.parse(sessionStorage.getItem("userData")) || {
+const App: React.FC = (): React.ReactElement => {
+  const [userData, setUserData] = useState<UserData>(
+    JSON.parse(sessionStorage.getItem("userData")!) || {
       username: "",
       isAuthenticated: false,
     }
   );
 
-  useEffect(() => {
-    sessionStorage.setItem("userData", JSON.stringify(userData));
-  }, [userData]);
+  useEffect(
+    () => sessionStorage.setItem("userData", JSON.stringify(userData)),
+    [userData]
+  );
 
   return (
     <globalContext.Provider value={{ userData, setUserData }}>

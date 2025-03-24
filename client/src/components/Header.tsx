@@ -1,15 +1,16 @@
+import type { GlobalContext } from "../types/app";
 import { globalContext } from "../App";
 import { useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
 import useLogout from "../hooks/useLogout";
 import "./Header.css";
 
-const Header = () => {
-  const { userData } = useContext(globalContext);
+const Header: React.FC = (): React.ReactElement => {
+  const { userData } = useContext(globalContext) as GlobalContext;
   const location = useLocation();
   const logout = useLogout();
 
-  const headerName = (path) => {
+  const headerName = (path: string): string => {
     switch (path) {
       case "/home":
         return "Home";
@@ -21,6 +22,8 @@ const Header = () => {
         return "Create an Account";
       case "/profile":
         return "Profile";
+      default:
+        return "undefined";
     }
   };
 

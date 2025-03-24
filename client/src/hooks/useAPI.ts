@@ -1,17 +1,20 @@
+import type { GlobalContext, API } from "../types/app";
+import type { AxiosError, AxiosResponse } from "axios";
 import { globalContext } from "../App";
 import { useEffect, useState, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import useLogout from "./useLogout";
 import axios from "axios";
 
-const useAPI = () => {
-  const { setUserData } = useContext(globalContext);
+const useAPI = (): API.APIData => {
+  const { setUserData } = useContext(globalContext) as GlobalContext;
   const navigate = useNavigate();
   const logout = useLogout();
   const location = useLocation();
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<API.APIFormData>({
     username: "",
     password: "",
+    confirmPassword: "",
     newUsername: "",
     errors: {
       username: "",
@@ -23,7 +26,7 @@ const useAPI = () => {
     isBtnDisabled: false,
   });
 
-  const resetFormErrors = (additive = {}) => {
+  const resetFormErrors = (additive: API.APIFormAdditive = {}): void => {
     setFormData((prevFormData) => ({
       ...prevFormData,
       errors: {
@@ -36,22 +39,21 @@ const useAPI = () => {
     }));
   };
 
-  const request = ({
+  const request: API.APIRequest = async ({
     method = "get",
     route = "/api",
     withCredentials = false,
-  } = {}) => {
+  }: API.APIRequestConfig = {}): Promise<void> => {
     const { username, password, confirmPassword, newUsername } = formData;
-
-    axios({
+    await axios({
       method,
       url: `${import.meta.env.VITE_BACKEND_URL}${route}`,
       withCredentials,
       data: { username, newUsername, password, confirmPassword },
     })
-      .then((res) => {
+      .then((res: AxiosResponse<API.APISuccess>) => {
         resetFormErrors({
-          successMsg: res.data.successMsg,
+          successMsg: res.data.success.message,
           isBtnDisabled: true,
         });
         setTimeout(() => {
@@ -59,11 +61,10 @@ const useAPI = () => {
           navigate("/");
         }, 1500);
       })
-      .catch((err) => {
-        if (err.response.data?.error) {
+      .catch((err: AxiosError<API.APIError>) => {
+        if (err.response!.data.errors) {
           const { username, password, confirmPassword, newUsername } =
-            err.response.data?.error.errors;
-            
+            err.response!.data.errors;
           setFormData((prevData) => ({
             ...prevData,
             errors: {
