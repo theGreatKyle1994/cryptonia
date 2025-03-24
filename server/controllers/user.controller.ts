@@ -71,22 +71,18 @@ const userController = {
           username,
           userId: id,
         });
-    } else {
-      res.status(400).json(result);
-    }
+    } else res.status(400).json(result);
   },
   updateUser: async (req: UserRequest, res: Response): Promise<void> => {
     const result = await User.updateProfile("username", req.body);
-    if (typeof result !== typeof NativeError) {
+    if (Object.hasOwn(result, "id")) {
       const { id, message } = result as UserLoginData;
       res.status(200).json({
         success: { message },
         username: req.body.newUsername,
         userId: id,
       });
-    } else {
-      res.status(400).json(result);
-    }
+    } else res.status(400).json(result);
   },
 };
 

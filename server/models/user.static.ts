@@ -12,7 +12,7 @@ export function setStatics(UserSchema: UserSchema) {
       password: string
     ): Promise<NativeError | user.UserLoginData> {
       const account = await this.findOne({ username });
-      if (account) {
+      if (account)
         return (await bcrypt.compare(password, account.password))
           ? {
               username: account.username,
@@ -27,7 +27,7 @@ export function setStatics(UserSchema: UserSchema) {
                 "invalid"
               )
             );
-      } else {
+      else
         return <NativeError>(
           new User().invalidate(
             "username",
@@ -36,7 +36,6 @@ export function setStatics(UserSchema: UserSchema) {
             "invalid"
           )
         );
-      }
     }
   );
 
@@ -48,30 +47,47 @@ export function setStatics(UserSchema: UserSchema) {
     ): Promise<NativeError | user.UserLoginData> {
       const { username, password, newUsername } = data;
       const result = await this.login(username, password);
-      if (typeof result !== typeof NativeError) {
+      if (Object.hasOwn(result, "id")) {
         const { id } = result as user.UserLoginData;
         switch (type) {
           case "username": {
+            if (!newUsername)
+              return <NativeError>(
+                new User().invalidate(
+                  "newUsername",
+                  "New username is required.",
+                  newUsername
+                )
+              );
+            else if (newUsername.length < 3)
+              return <NativeError>(
+                new User().invalidate(
+                  "newUsername",
+                  "New username must be at least 3 characters.",
+                  newUsername
+                )
+              );
             const result = await User.findOne({ username: newUsername });
-            return result
-              ? <NativeError>(
-                  new User().invalidate(
-                    "newUsername",
-                    "Username already in use.",
-                    newUsername
-                  )
+            if (result)
+              return <NativeError>(
+                new User().invalidate(
+                  "newUsername",
+                  "Username already in use.",
+                  newUsername
                 )
-              : await User.findOneAndUpdate(
-                  { username },
-                  { username: newUsername },
-                  { runValidators: true }
-                )
-                  .then(() => ({
-                    username: newUsername,
-                    id,
-                    message: "Successfully updated username.",
-                  }))
-                  .catch((err) => err);
+              );
+            else
+              return await User.findOneAndUpdate(
+                { username },
+                { username: newUsername },
+                { runValidators: true }
+              )
+                .then(() => ({
+                  username: newUsername,
+                  id,
+                  message: "Successfully updated username.",
+                }))
+                .catch((err) => err);
           }
           case "password": {
             return {

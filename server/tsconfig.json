@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "target": "ES6",
+    "lib": ["ES2024"],
     "module": "Node16",
     "outDir": "./dist",
     "esModuleInterop": true,
